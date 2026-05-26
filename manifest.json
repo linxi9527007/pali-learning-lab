@@ -1,12 +1,12 @@
 {
-  "name": "Pāli Learning Lab 20.41",
+  "name": "Pāli Learning Lab 20.43",
   "short_name": "Pāli Lab",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "background_color": "#f3f4f6",
   "theme_color": "#111827",
-  "description": "Pāli Learning Lab 20.41 最终显示修正版：修复路线索引、本节单词、术语直达、IPA显示与冗余相关内容。",
+  "description": "内容恢复核查版：恢复术语库、句子分析、句型、佛典阅读等完整数据显示。",
   "icons": [
     {
       "src": "icon-192.png",

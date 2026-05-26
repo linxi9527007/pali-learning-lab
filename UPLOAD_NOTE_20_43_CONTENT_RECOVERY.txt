@@ -1,0 +1,22 @@
+Pāli Learning Lab 20.43 内容恢复核查版
+
+本版针对“术语库少术语、句子分析无句子、部分页面内容缺失”处理。
+
+修正要点：
+1. index.html 预加载关键数据文件，避免进入页面时数据尚未加载。
+2. app.js 增加内容恢复与逐项核查补丁，覆盖术语库、句子分析、句型模板、易混概念、佛典句式、佛典背景、阅读方法、语言小贴士等页面。
+3. 术语库按 TERMINOLOGY_GLOSSARY 全量显示，并保留 IPA 直接显示。
+4. 句子分析按 SENTENCE_ANALYSIS_DATA 全量显示，并恢复筛选、提示、完整分析。
+5. 保留 20.42 中课程页精简方向：删除“相关易混概念、相关句型模板、相关术语、相关佛典阅读句式”等冗余区块；概念术语仍可跳术语库。
+6. 不删除课程、练习、句子分析、术语库、佛典阅读数据。
+
+上传文件：
+index.html
+app.js
+style.css
+manifest.json
+learning-routes-data.js
+cache-reset.html
+sw.js
+.nojekyll
+UPLOAD_NOTE_20_43_CONTENT_RECOVERY.txt

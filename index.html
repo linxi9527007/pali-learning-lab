@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0"><title>Pāli Learning Lab｜巴利语学习实验室</title><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#111827"><link rel="stylesheet" href="style.css?v=20.41"></head><body><main class="app"><header class="hero"><p class="eyebrow">Pāli Learning Lab</p><h1>📘 巴利语学习实验室</h1><div class="hero-subnav" aria-label="常用入口导航">
+  <meta http-equiv="Expires" content="0"><title>Pāli Learning Lab｜巴利语学习实验室</title><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#111827"><link rel="stylesheet" href="style.css?v=20.43"></head><body><main class="app"><header class="hero"><p class="eyebrow">Pāli Learning Lab</p><h1>📘 巴利语学习实验室</h1><div class="hero-subnav" aria-label="常用入口导航">
           <button type="button" data-home-jump="homeTopLayer">首页</button>
           <span>｜</span>
           <button type="button" data-action="learningRoute">零基础</button>
@@ -16,7 +16,7 @@
           <span>｜</span>
           <button type="button" data-action="search">搜索</button>
         </div>
-        <div class="visual-version-badge">Pāli Learning Lab · 20.41 最终显示修正版</div><div class="hero-stats"><div><strong id="totalLessons">0</strong><span>语法点</span></div><div><strong id="totalExercises">0</strong><span>练习题</span></div><div><strong id="masteredCount">0</strong><span>已掌握</span></div><div><strong id="wrongCount">0</strong><span>错题</span></div></div></header><section id="homeView" class="view"><span id="homeTopLayer"></span><section class="card home-clean-card">
+        <div class="visual-version-badge">Pāli Learning Lab · 20.43 内容恢复核查版</div><div class="hero-stats"><div><strong id="totalLessons">0</strong><span>语法点</span></div><div><strong id="totalExercises">0</strong><span>练习题</span></div><div><strong id="masteredCount">0</strong><span>已掌握</span></div><div><strong id="wrongCount">0</strong><span>错题</span></div></div></header><section id="homeView" class="view"><span id="homeTopLayer"></span><section class="card home-clean-card">
         <h2>学习路径</h2>
         <p class="muted">网站按“基础入门—语言能力—佛典阅读”三层组织。首页只保留总入口，不再重复铺开各层内容；点击下面三张卡片会进入对应独立页面。</p>
 
@@ -188,19 +188,47 @@
       </div>
     </section>
 </main>
-  <script src="learning-routes-data.js?v=20.41"></script>
+  <script src="learning-routes-data.js?v=20.43"></script>
 <script>try{if(!window.LEARNING_ROUTES && typeof LEARNING_ROUTES!=="undefined") window.LEARNING_ROUTES=LEARNING_ROUTES;}catch(e){}</script>
-<script src="app.js?v=20.41"></script>
+
+<!-- 20.43 content preloader: 保证各功能页数据完整显示 -->
+<script src="learning-routes-data.js?v=20.43"></script>
+<script src="sentence-analysis-data.js?v=20.43"></script>
+<script src="terminology-glossary-data.js?v=20.43"></script>
+<script src="sentence-patterns-data.js?v=20.43"></script>
+<script src="confusion-pairs-data.js?v=20.43"></script>
+<script src="buddhist-reading-data.js?v=20.43"></script>
+<script src="buddhist-background-data.js?v=20.43"></script>
+<script src="academic-training-data.js?v=20.43"></script>
+<script src="linguistics-tips-data.js?v=20.43"></script>
+<script src="module-guides-data.js?v=20.43"></script>
+<script src="dictionary-sites-data.js?v=20.43"></script>
+<script src="token-analysis-data.js?v=20.43"></script>
+<script>
+(function(){
+  const pairs=[
+    ['LEARNING_ROUTES','LEARNING_ROUTES'],['SENTENCE_ANALYSIS_DATA','SENTENCE_ANALYSIS_DATA'],
+    ['TERMINOLOGY_GLOSSARY','TERMINOLOGY_GLOSSARY'],['SENTENCE_PATTERNS','SENTENCE_PATTERNS'],
+    ['CONFUSION_PAIRS','CONFUSION_PAIRS'],['BUDDHIST_READING_PATTERNS','BUDDHIST_READING_PATTERNS'],
+    ['BUDDHIST_BACKGROUND_DATA','BUDDHIST_BACKGROUND_DATA'],['ACADEMIC_TRAINING_DATA','ACADEMIC_TRAINING_DATA'],
+    ['LINGUISTICS_TIPS','LINGUISTICS_TIPS'],['MODULE_GUIDES','MODULE_GUIDES'],
+    ['PALI_DICTIONARY_SITES','PALI_DICTIONARY_SITES'],['TOKEN_ANALYSIS_DATA','TOKEN_ANALYSIS_DATA']
+  ];
+  pairs.forEach(([w,n])=>{try{ if(typeof window[w]==='undefined'){ window[w]=(0,eval)('typeof '+n+'!=="undefined"?'+n+':undefined'); }}catch(e){}});
+})();
+</script>
+
+<script src="app.js?v=20.43"></script>
 
 <script>
 (function(){
-  window.PALI_SITE_VERSION = "20.41";
-  window.PALI_SITE_LABEL = "Pāli Learning Lab · 20.41 最终显示修正版";
+  window.PALI_SITE_VERSION = "20.43";
+  window.PALI_SITE_LABEL = "Pāli Learning Lab · 20.43 内容恢复核查版";
   function forceVersion(){
     document.querySelectorAll(".visual-version-badge").forEach(function(el){
-      el.textContent = "Pāli Learning Lab · 20.41 最终显示修正版";
+      el.textContent = "Pāli Learning Lab · 20.43 内容恢复核查版";
     });
-    document.documentElement.setAttribute("data-pali-version", "20.41");
+    document.documentElement.setAttribute("data-pali-version", "20.43");
   }
   forceVersion();
   window.addEventListener("DOMContentLoaded", forceVersion);
@@ -214,13 +242,13 @@
 
 <script>
 (function(){
-  window.PALI_SITE_VERSION = "20.41";
-  window.PALI_SITE_LABEL = "Pāli Learning Lab · 20.41 最终显示修正版";
+  window.PALI_SITE_VERSION = "20.43";
+  window.PALI_SITE_LABEL = "Pāli Learning Lab · 20.43 内容恢复核查版";
   function forceVersion(){
     document.querySelectorAll(".visual-version-badge").forEach(function(el){
-      el.textContent = "Pāli Learning Lab · 20.41 最终显示修正版";
+      el.textContent = "Pāli Learning Lab · 20.43 内容恢复核查版";
     });
-    document.documentElement.setAttribute("data-pali-version", "20.41");
+    document.documentElement.setAttribute("data-pali-version", "20.43");
   }
   forceVersion();
   window.addEventListener("DOMContentLoaded", forceVersion);
@@ -229,6 +257,6 @@
   setTimeout(forceVersion, 1200);
 })();
 </script>
-<!-- redeploy 20.41 -->
+<!-- redeploy 20.43 -->
 
 </body></html>
