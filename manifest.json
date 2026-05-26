@@ -1,1 +1,22 @@
-{"name":"Pali Grammar Review 20.30","short_name":"巴利语语法","start_url":"./","scope":"./","display":"standalone","background_color":"#f3f4f6","theme_color":"#111827","description":"重新部署触发版：统一版本为 20.30，并在 index.html 末尾加入 redeploy 注释，用于触发 GitHub Pages 重新部署。","icons":[{"src":"icon-192.png","sizes":"192x192","type":"image/png"},{"src":"icon-512.png","sizes":"512x512","type":"image/png"}]}
+{
+  "name": "Pāli Learning Lab｜巴利语学习实验室",
+  "short_name": "Pāli Lab",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f3f4f6",
+  "theme_color": "#111827",
+  "description": "Pāli Learning Lab 20.33 显示清理版：统一名称、清理维护字段、优化课程页顺序、术语直达、分类搜索和本节单词显示。",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
