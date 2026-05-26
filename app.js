@@ -1,7 +1,7 @@
-/* Pāli Learning Lab · 1.0 重建清爽版
+/* Pāli Learning Lab · 1.1 融合稳定版
    纯 HTML/CSS/JS；无构建、无 service worker；GitHub Pages 可直接部署。
 */
-const VERSION = '1.0 重建清爽版';
+const VERSION = '1.1 融合稳定版';
 const FILE = {
   grammarIndex: 'grammar-index.json',
   manifest: 'grammar-lesson-manifest.json',
@@ -272,9 +272,10 @@ function conceptsHTML(lesson){
   if(!cs.length) return '';
   return `<section class="card compact"><div class="section-title"><h3>核心概念</h3></div><div>${cs.map(c=>`<button class="concept-btn" data-term-query="${text(c)}">${text(c)}</button>`).join('')}</div></section>`;
 }
-const PALI_SMALL=new Set(['ca','na','mā','iti','ti','vā','kho','so','te','yo','me','no','taṃ','atha','eva','api','pana']);
-const MEANINGS={Buddha:'佛；觉者',Dhamma:'法；教法',Saṅgha:'僧伽；僧团',dhamma:'法；教法',bhikkhu:'比丘',vihāra:'寺院',citta:'心',phala:'果',rūpa:'色；形态',kamma:'业',saraṇa:'皈依；庇护',gāma:'村庄',patta:'钵',sadda:'声音',paññā:'智慧',purisa:'人',itthi:'女子',gacchati:'去',deseti:'说；开示',suṇāti:'听',hoti:'是；成为',karoti:'做',vasati:'住',viharati:'住；停留',passati:'看见',labhati:'得到',icchati:'想要',āgacchati:'来',vandati:'礼敬',pasīdati:'生信；欢喜'};
-const ROOTS={gacchati:'√gam',āgacchati:'√gam',deseti:'√dis',suṇāti:'√su',hoti:'√bhū',karoti:'√kar',vasati:'√vas',viharati:'√har / vihar',passati:'√pass',labhati:'√labh',icchati:'√is',vandati:'√vand',pasīdati:'√sad'};
+const PALI_SMALL=new Set(['ca','na','mā','iti','ti','vā','kho','so','te','yo','me','no','taṃ','atha','eva','api','pana','ce','hi']);
+const MEANINGS={Buddha:'佛；觉者',Dhamma:'法；教法',Saṅgha:'僧伽；僧团',dhamma:'法；教法',bhikkhu:'比丘',vihāra:'寺院',citta:'心',phala:'果',rūpa:'色；形态',kamma:'业',saraṇa:'皈依；庇护',gāma:'村庄',patta:'钵',sadda:'声音',paññā:'智慧',purisa:'人',itthi:'女子',sāvaka:'弟子',cetiya:'塔庙',Brahmā:'梵天',gacchati:'去',āgacchati:'来',deseti:'说；开示',suṇāti:'听',hoti:'是；成为',karoti:'做',vasati:'住',viharati:'住；停留',passati:'看见',labhati:'得到',icchati:'想要',vandati:'礼敬',pasīdati:'生信；欢喜',āroceti:'告知',pavisati:'进入',dadāti:'给',bhavati:'成为；存在'};
+const ROOTS={gacchati:'√gam',āgacchati:'√gam',deseti:'√dis',suṇāti:'√su',hoti:'√bhū',bhavati:'√bhū',karoti:'√kar',vasati:'√vas',viharati:'√har / vihar',passati:'√pass',labhati:'√labh',icchati:'√is',vandati:'√vand',pasīdati:'√sad',āroceti:'√ruc / āroceti',pavisati:'√vis',dadāti:'√dā'};
+const VERB_3SG_MAP={gacchāmi:'gacchati',gacchasi:'gacchati',gacchanti:'gacchati',gacchatha:'gacchati',gacchāma:'gacchati',gaccha:'gacchati',gacchatu:'gacchati',gaccheyya:'gacchati',gamissati:'gamissati',gamissāmi:'gamissati',agamāsi:'gacchati',suṇāmi:'suṇāti',suṇanti:'suṇāti',suṇātha:'suṇāti',desenti:'deseti',desessati:'deseti',karomi:'karoti',karonti:'karoti',kareyya:'karoti',akāsi:'karoti',honti:'hoti',bhavissati:'bhavati',labhanti:'labhati',labhāmi:'labhati',vasanti:'vasati',viharanti:'viharati',passanti:'passati',icchāmi:'icchati',vandāmi:'vandati',pasīdati:'pasīdati'};
 function tokenizePali(s){return dedupe(String(s||'').match(/[A-Za-zĀāĪīŪūṄṅÑñṬṭḌḍṆṇḶḷṂṃṀṁ]+/g)||[])}
 function lemmaNoun(tok){
   if(tok.length<2) return '';
@@ -288,29 +289,61 @@ function lemmaNoun(tok){
   if(tok.endsWith('ṃ') && tok.length>3) return tok.slice(0,-1);
   return tok;
 }
+function tokenDataLookup(raw, canonical){
+  const tokenData=cache.get(FILE.token[0]+'::'+FILE.token[1])||{};
+  return tokenData[raw]||tokenData[canonical]||tokenData[String(raw||'').toLowerCase()]||tokenData[String(canonical||'').toLowerCase()]||null;
+}
+function grammarFromAnalysis(item, fallback){
+  const g=item?.analyses?.find(a=>a.grammar)?.grammar || '';
+  if(!g) return fallback;
+  return g.length>60 ? g.slice(0,60)+'…' : g;
+}
+function meaningFromAnalysis(item, fallback){
+  const m=item?.analyses?.find(a=>a.meaning)?.meaning || '';
+  return m || fallback;
+}
+function canonicalVerb(tok){
+  if(VERB_3SG_MAP[tok]) return VERB_3SG_MAP[tok];
+  if(/ti$/i.test(tok) && tok.toLowerCase()!=='iti') return tok;
+  if(/anti$/i.test(tok) && tok.length>6) return tok.replace(/anti$/i,'ati');
+  if(/āmi$/i.test(tok) && tok.length>5) return tok.replace(/āmi$/i,'ati');
+  if(/āma$/i.test(tok) && tok.length>5) return tok.replace(/āma$/i,'ati');
+  return '';
+}
 function classifyToken(tok){
   if(!tok || tok.length<2) return null;
   if(tok.length<=3 && !PALI_SMALL.has(tok)) return null;
   if(/^[A-Z]{2,}$/.test(tok)) return null;
-  if(['sg','pl','nom','acc','gen','dat','loc','ins','abl','voc','prs','indic','act','pass','json','lesson','html','css'].includes(tok.toLowerCase())) return null;
-  if(/ti$/i.test(tok) && tok.toLowerCase()!=='iti'){
-    return {form:tok, type:'verb', grammar:`v. 3sg${ROOTS[tok]?`；${ROOTS[tok]}`:''}`, meaning:MEANINGS[tok]||'动词；需结合词典确认'};
+  const low=tok.toLowerCase();
+  if(['sg','pl','nom','acc','gen','dat','loc','ins','abl','voc','prs','indic','act','pass','json','lesson','html','css','ipa','pali','grammar','review','learning','lab','root'].includes(low)) return null;
+  const v=canonicalVerb(tok);
+  if(v){
+    const item=tokenDataLookup(tok,v);
+    return {form:v,type:'verb',grammar:`v. 3sg${ROOTS[v]?`；${ROOTS[v]}`:''}`,meaning:meaningFromAnalysis(item,MEANINGS[v]||'动词；需结合巴利词典复核')};
   }
-  if(PALI_SMALL.has(tok)) return {form:tok,type:'other',grammar:'ind. / pron. 等；按语境判断',meaning:MEANINGS[tok]||'小词；按语境判断'};
+  if(PALI_SMALL.has(tok)){
+    const item=tokenDataLookup(tok,tok);
+    return {form:tok,type:'other',grammar:grammarFromAnalysis(item,'ind. / pron. 等；按语境判断'),meaning:meaningFromAnalysis(item,MEANINGS[tok]||'小词；按语境判断')};
+  }
   const lemma=lemmaNoun(tok);
-  if(!lemma || lemma.length<2) return null;
-  return {form:lemma,type:'noun',grammar:'n.；原形/词典形',meaning:MEANINGS[lemma]||'名词；需结合巴利词典确认'};
+  if(!lemma || lemma.length<2 || (lemma.length<=3 && !PALI_SMALL.has(lemma))) return null;
+  const item=tokenDataLookup(tok,lemma);
+  let grammar=grammarFromAnalysis(item,'n.；原形/词典形');
+  if(!/\bn\.|m\.sg|f\.sg|n\.sg|nom|acc|gen|loc|ins/.test(grammar)) grammar='n.；原形/词典形';
+  return {form:lemma,type:'noun',grammar,meaning:meaningFromAnalysis(item,MEANINGS[lemma]||'名词；需结合巴利词典复核')};
 }
 async function vocabHTML(lesson,exercises){
+  await loadData('token').catch(()=>null);
   const parts=[];
-  (lesson.examples||[]).forEach(e=>parts.push(e.pali,e.note,e.grammar_note));
+  (lesson.examples||[]).forEach(e=>parts.push(e.pali,e.note,e.grammar_note,e.natural_cn,e.cn));
   (lesson.table||[]).flat().forEach(x=>parts.push(x));
-  (exercises||[]).slice(0,30).forEach(e=>parts.push(e.question,e.answer,...(e.options||[])));
+  (lesson.explanation||[]).forEach(x=>parts.push(x));
+  (exercises||[]).slice(0,40).forEach(e=>parts.push(e.question,e.answer,...(e.options||[]),e.explanation));
   const tokens=dedupe(parts.flatMap(tokenizePali));
   const map=new Map();
   tokens.map(classifyToken).filter(Boolean).forEach(v=>{if(!map.has(v.form)) map.set(v.form,v)});
   const order={verb:1,noun:2,other:3};
-  let rows=[...map.values()].sort((a,b)=>(order[a.type]-order[b.type])||a.form.localeCompare(b.form)).slice(0,18);
+  let rows=[...map.values()].sort((a,b)=>(order[a.type]-order[b.type])||a.form.localeCompare(b.form)).slice(0,24);
   if(!rows.length) return '';
   const table=`<div class="table-wrap"><table class="vocab-table"><thead><tr><th>词形</th><th>语法信息</th><th>基本义</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${text(r.form)}</td><td>${text(r.grammar)}</td><td>${text(r.meaning)}</td></tr>`).join('')}</tbody></table></div>`;
   const body=rows.length>8?`<details class="vocab-details"><summary>本节单词（${rows.length} 个，点击展开）</summary>${table}</details>`:table;
@@ -573,4 +606,4 @@ document.addEventListener('click',(e)=>{
 // Clean old service worker registration without registering a new one.
 (async function cleanupOldSW(){try{if('serviceWorker' in navigator){const regs=await navigator.serviceWorker.getRegistrations(); for(const r of regs) await r.unregister();}}catch(e){}})();
 // Initial route
-window.addEventListener('DOMContentLoaded',()=>navigate('home',{},false));
+window.addEventListener('DOMContentLoaded',()=>{ if(app && !app.innerHTML.trim()) app.innerHTML='<div class="card loading">正在加载，请稍候……</div>'; navigate('home',{},false); });
