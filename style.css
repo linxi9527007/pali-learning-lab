@@ -4606,7 +4606,7 @@ input, select, textarea, button{
 }
 
 
-/* ===== Pāli Learning Lab 20.33 display cleanup ===== */
+/* ===== Pāli Learning Lab 20.34 display cleanup ===== */
 .visual-version-badge{font-weight:800}
 .term-card summary::after{content:"展开" !important; justify-self:end; font-size:12px; color:#2563eb; background:#dbeafe; border-radius:999px; padding:5px 9px;}
 .term-card[open] summary::after{content:"收起" !important; color:#6b21a8; background:#ede9fe;}
@@ -4622,7 +4622,7 @@ input, select, textarea, button{
 .term-card summary{cursor:pointer}
 
 
-/* ===== Pāli Learning Lab 20.33 display cleanup ===== */
+/* ===== Pāli Learning Lab 20.34 display cleanup ===== */
 :root{--pll-blue:#2563eb;--pll-blue-soft:#dbeafe;--pll-green:#16a34a;--pll-green-soft:#dcfce7;--pll-red:#dc2626;--pll-red-soft:#fee2e2;--pll-gray:#6b7280;--pll-gray-soft:#f3f4f6;--pll-ink:#111827;}
 button,.home-btn,.primary{border-radius:14px;transition:transform .15s ease,box-shadow .15s ease,background .15s ease}.primary{background:var(--pll-blue);color:#fff}.secondary{background:var(--pll-gray);color:#fff}.success{background:var(--pll-green);color:#fff}.danger{background:var(--pll-red);color:#fff}.danger-outline{background:#fff;color:var(--pll-red);border:1px solid var(--pll-red)}
 button:hover{transform:translateY(-1px);box-shadow:0 8px 18px rgba(15,23,42,.12)}

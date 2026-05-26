@@ -1,4 +1,4 @@
-// Pāli Learning Lab 20.33 cache cleaner
+// Pāli Learning Lab 20.34 cache cleaner
 self.addEventListener("install", event => {
   self.skipWaiting();
 });
