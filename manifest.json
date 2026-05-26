@@ -6,7 +6,7 @@
   "display": "standalone",
   "background_color": "#f3f4f6",
   "theme_color": "#111827",
-  "description": "Pāli Learning Lab 20.37 安全微优化版：保持20.36稳定结构，仅做视觉与显示层轻量优化。",
+  "description": "Pāli Learning Lab 20.39 综合优化版：稳定显示、学习路线修正、正文术语去链接、课程页顺序优化。",
   "icons": [
     {
       "src": "icon-192.png",
