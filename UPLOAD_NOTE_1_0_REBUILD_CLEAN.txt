@@ -1,0 +1,32 @@
+Pāli Learning Lab · 1.0 重建清爽版 上传说明
+
+一、版本定位
+这是按“巴利语语法复习 / Pāli Learning Lab”需求重新搭建的干净版：
+- 纯 HTML + CSS + JavaScript
+- 不使用框架、不需要 Node/npm/Vite
+- 不注册 service worker
+- 不沿用旧 app.js 的历史补丁结构
+- 数据懒加载，页面按钮直接进入对应页面
+
+二、数据保留核查
+- 语法点：109 个
+- 练习题：1004 道
+- lesson chunk：11 个
+- module 文件：8 个
+- 术语库：120 条
+- 句子分析：92 条
+- 词形分析：206 条左右
+
+三、上传方法
+1. 解压本 zip。
+2. 打开 GitHub 仓库 pali-learning-lab。
+3. Add file → Upload files。
+4. 把解压后的全部文件拖入根目录。
+5. Commit changes。
+6. Settings/Actions 确认 Pages 部署成功。
+7. 先打开 cache-reset.html 清理旧缓存。
+
+四、重要提醒
+本版不需要 sw.js。若仓库根目录仍有旧 sw.js，建议在 GitHub 中删除；如果暂时不删除，也请先打开 cache-reset.html 注销旧 Service Worker。
+网站首页为：/pali-learning-lab/
+清缓存页为：/pali-learning-lab/cache-reset.html
