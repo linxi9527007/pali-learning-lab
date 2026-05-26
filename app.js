@@ -1,4 +1,4 @@
-const VERSION="20.39";
+const VERSION="20.40";
 let GRAMMAR=[],currentModule='',currentLesson=null,currentFilter='全部',lastView='homeView',cardItems=[],cardIndex=0,exerciseItems=[],exerciseIndex=0,selectedChoice='',exerciseStats={total:0,right:0,wrong:0};const WRONG_KEY='pali_grammar_wrong_exercises_v1',STATUS_KEY='pali_grammar_lesson_status_v2';const MODULE_ORDER=['使用说明','入门与发音','动词系统','名词变格','代词与形容词','分词与非限定动词','不变词与常用句式','句法与阅读','其他'];const TRAINING_PRESETS=[['case','格位识别专项','集中练习主格、宾格、工具格、处格、属格等。'],['verb','动词变位专项','集中练习现在时、将来时、过去时、命令语气等。'],['nonfinite','非限定动词专项','集中练习inf.、ger.、分词。'],['particles','ind.与句型专项','集中练习 na、mā、ca、vā、eva、iti 等。'],['reading','阅读分析专项','集中练习短句中的主语、宾语、动词和格位。'],['input','输入生成专项','只练需要手动输入答案的题目。']];function $(id){return document.getElementById(id)}function show(id){const el=$(id); if(el) el.classList.remove('hidden')}function hide(id){const el=$(id); if(el) el.classList.add('hidden')}function switchView(id){document.querySelectorAll('.view').forEach(v=>v.classList.add('hidden'));show(id);window.scrollTo({top:0,behavior:'smooth'})}function norm(t){return String(t||'').trim().replace(/\s+/g,' ').toLowerCase()}function strip(t){const m={ā:'a',ī:'i',ū:'u',ṅ:'n',ñ:'n',ṭ:'t',ḍ:'d',ṇ:'n',ḷ:'l',ṃ:'m',ṁ:'m'};return String(t||'').replace(/[āīūṅñṭḍṇḷṃṁ]/g,ch=>m[ch]||ch)}function ok(u,e){u=norm(u);e=norm(e);if(u===e)return true;let lu=strip(u),le=strip(e);if(lu===le)return true;return e.split(/\s*\/\s*|；|;|，|,|、/).some(x=>u===norm(x)||lu===strip(norm(x)))}function getW(){try{return JSON.parse(localStorage.getItem(WRONG_KEY))||{}}catch{return {}}}function saveW(r){localStorage.setItem(WRONG_KEY,JSON.stringify(r));stats()}function getS(){try{return JSON.parse(localStorage.getItem(STATUS_KEY))||{}}catch{return {}}}function saveS(s){localStorage.setItem(STATUS_KEY,JSON.stringify(s));stats()}function lstat(id){return getS()[id]||'未学'}function setLStat(id,s){let x=getS();x[id]=s;saveS(x);statusBtns();renderModules();if(currentModule)renderLessonList(currentModule)}function scls(s){return s==='已掌握'?'mastered':s==='学习中'?'learning':s==='需复习'?'review':''}function lessons(m){return m==='全部模块'?GRAMMAR:GRAMMAR.filter(x=>x.module===m)}function stats(){let total=GRAMMAR.reduce((a,l)=>a+(l.exercises||[]).length,0),s=getS(),master=GRAMMAR.filter(l=>s[l.id]==='已掌握').length;if($('totalLessons'))$('totalLessons').textContent=GRAMMAR.length;if($('totalExercises'))$('totalExercises').textContent=total;if($('masteredCount'))$('masteredCount').textContent=master;if($('wrongCount'))$('wrongCount').textContent=Object.keys(getW()).length}function progress(ls){let m=ls.filter(l=>lstat(l.id)==='已掌握').length,p=ls.length?Math.round(m/ls.length*100):0;return `<div class="progress-wrap"><div class="progress-bar" style="width:${p}%"></div></div><p class="muted">掌握进度：${m}/${ls.length}（${p}%）</p>`}function cardHTML(l){let s=lstat(l.id),n=(l.exercises||[]).length;return `<h3>${l.lesson_number||l.id}. ${l.title}</h3><div class="lesson-badges"><span class="badge ${scls(s)}">${s}</span><span class="badge">${l.category||''}</span><span class="badge">${n}题</span></div><p>${l.summary||''}</p>`}function renderModules(){let grids=[$('moduleGrid'),$('moduleGridPage')].filter(Boolean);grids.forEach(grid=>{grid.innerHTML='';MODULE_ORDER.forEach(m=>{let ls=lessons(m);if(!ls.length)return;let d=document.createElement('div');d.className='module-card';d.innerHTML=`<h3>${m}</h3><p class="muted">${ls.length} 个语法点</p>${progress(ls)}`;d.onclick=()=>openModule(m);grid.appendChild(d)})})}function renderLessonList(m){currentModule=m;let all=lessons(m),ls=all.filter(l=>currentFilter==='全部'||lstat(l.id)===currentFilter);$('moduleTitle').textContent=m;$('moduleSubtitle').textContent=`${all.length} 个语法点`;$('lessonList').innerHTML=ls.length?'':'<p class="muted">当前筛选下没有语法点。</p>';ls.forEach(l=>{let d=document.createElement('div');d.className='lesson-item';d.innerHTML=cardHTML(l);d.onclick=()=>openLesson(l.id);$('lessonList').appendChild(d)})}function openModule(m){lastView='lessonListView';currentFilter='全部';document.querySelectorAll('.filter-btn').forEach(b=>b.classList.toggle('active',b.dataset.filter==='全部'));renderLessonList(m);switchView('lessonListView')}function statusBtns(){if(!currentLesson)return;let s=lstat(currentLesson.id);document.querySelectorAll('.status-btn').forEach(b=>b.classList.toggle('active',b.dataset.status===s))}function openLesson(id){currentLesson=GRAMMAR.find(x=>x.id===id);if(!currentLesson)return;$('lessonModule').textContent=currentLesson.module||'';$('lessonTitle').textContent=currentLesson.title;$('lessonMeta').textContent=`${currentLesson.category||''}｜${currentLesson.difficulty||currentLesson.level||''}`;$('lessonSummary').textContent=currentLesson.summary||'';document.querySelectorAll('.high-risk-box,.content-tier-box,.minimal-mastery-box,.misjudge-box,.lesson-guide-box,.linked-confusion-box,.linked-pattern-box,.linked-buddhist-box,.linked-background-box,.linked-academic-box,.linked-term-box').forEach(x=>x.remove());let polish=contentPolishHTML(currentLesson)+linkedConfusionHTML(currentLesson)+linkedPatternHTML(currentLesson)+linkedBuddhistReadingHTML(currentLesson)+linkedBuddhistBackgroundHTML(currentLesson)+linkedAcademicTrainingHTML(currentLesson)+linkedTerminologyHTML(currentLesson)+lessonStudyGuideHTML(currentLesson);if(currentLesson.high_risk_note){polish+=`<div class="high-risk-box"><strong>进阶/需复核提示：</strong>${currentLesson.high_risk_note}<br><button class="feedback-mini-btn" onclick="copyCurrentLessonFeedback()">反馈本课问题</button></div>`}$('lessonSummary').insertAdjacentHTML('afterend',polish);let e=$('lessonExplanation');e.innerHTML='';(currentLesson.explanation||[]).forEach(x=>{let li=document.createElement('li');li.textContent=x;e.appendChild(li)});let mb=$('mistakeBlock'),ml=$('lessonMistakes');if(ml){ml.innerHTML='';if(currentLesson.common_mistakes&&currentLesson.common_mistakes.length){currentLesson.common_mistakes.forEach(x=>{let li=document.createElement('li');li.textContent=x;ml.appendChild(li)});show('mistakeBlock')}else hide('mistakeBlock')}let t=$('lessonTable');t.innerHTML='';(currentLesson.table||[]).forEach(r=>{let tr=document.createElement('tr');r.forEach(c=>{let td=document.createElement('td');td.textContent=c;tr.appendChild(td)});t.appendChild(tr)});let ex=$('lessonExamples');ex.innerHTML='';(currentLesson.examples||[]).forEach(a=>{let d=document.createElement('div');d.className='example';d.innerHTML=exampleHTML(a);ex.appendChild(d)});statusBtns();switchView('lessonView')}function allEx(m){return lessons(m).flatMap(l=>(l.exercises||[]).map(ex=>({...ex,lesson_id:l.id,lesson_title:l.title,module:l.module,category:l.category})))}function shuffle(a){return [...a].sort(()=>Math.random()-.5)}function startCards(cs){cardItems=cs||[];cardIndex=0;if(!cardItems.length)return alert('当前没有卡片。');show('cardPanel');hide('exercisePanel');renderCard()}function renderCard(){let c=cardItems[cardIndex];$('cardProgress').textContent=`卡片 ${cardIndex+1}/${cardItems.length}`;$('cardQuestion').textContent=c.q;$('cardAnswer').textContent=c.a;hide('cardAnswer');show('cardBeforeButtons');hide('cardAfterButtons')}function nextCard(){if(++cardIndex>=cardItems.length){alert('卡片复习完成。');hide('cardPanel')}else renderCard()}function startExercises(items,title='练习'){exerciseItems=items||[];exerciseIndex=0;selectedChoice='';exerciseStats={total:0,right:0,wrong:0};if(!exerciseItems.length)return alert('当前没有练习题。');show('exercisePanel');hide('cardPanel');$('exerciseModeTitle').textContent=title;renderExercise()}function renderExercise(){let ex=exerciseItems[exerciseIndex];selectedChoice='';$('exerciseProgress').textContent=`题目 ${exerciseIndex+1}/${exerciseItems.length}｜正确 ${exerciseStats.right}｜错误 ${exerciseStats.wrong}`;$('exerciseLessonLabel').textContent=`${ex.module||''}｜${ex.lesson_title||''}`;$('exerciseQuestion').textContent=ex.question;$('exerciseFeedback').innerHTML='';$('exerciseFeedback').className='answer-box hidden';hide('nextExerciseBtn');show('submitExerciseBtn');let opts=$('exerciseOptions'),inp=$('exerciseInput');opts.innerHTML='';inp.value='';if(ex.type==='choice'){hide('exerciseInput');hide('paliKeyboard');(ex.options||[]).forEach(o=>{let b=document.createElement('button');b.className='option-btn';b.textContent=o;b.onclick=()=>{selectedChoice=o;document.querySelectorAll('.option-btn').forEach(x=>x.classList.remove('selected'));b.classList.add('selected')};opts.appendChild(b)})}else{show('exerciseInput');show('paliKeyboard')}}function submitExercise(){let ex=exerciseItems[exerciseIndex],ua='';if(ex.type==='choice'){ua=selectedChoice;if(!ua)return alert('请先选择一个答案。')}else{ua=$('exerciseInput').value;if(!ua.trim())return alert('请先输入答案。')}let good=ok(ua,ex.answer);exerciseStats.total++;let w=getW();if(good){exerciseStats.right++;delete w[ex.id]}else{exerciseStats.wrong++;w[ex.id]={...ex,wrong_at:new Date().toISOString()}}saveW(w);$('exerciseFeedback').innerHTML=`<strong>${good?'回答正确 ✅':'回答错误 ❌'}</strong><p>你的答案：${ua}</p><p>标准答案：${ex.answer}</p><p>${ex.explanation||''}</p>`;$('exerciseFeedback').classList.remove('hidden');if(!good)$('exerciseFeedback').classList.add('incorrect');show('nextExerciseBtn');hide('submitExerciseBtn')}function nextEx(){if(++exerciseIndex>=exerciseItems.length){alert(`本轮练习完成：正确 ${exerciseStats.right}，错误 ${exerciseStats.wrong}`);hide('exercisePanel');renderWrong();stats()}else renderExercise()}function renderSelect(){let s=$('exerciseModuleSelect');s.innerHTML='<option value="全部模块">全部模块</option>';MODULE_ORDER.forEach(m=>{if(GRAMMAR.some(x=>x.module===m)){let o=document.createElement('option');o.value=m;o.textContent=m;s.appendChild(o)}})}function renderWrong(){let items=Object.values(getW()),box=$('wrongList');box.innerHTML=items.length?'':'<p class="muted">目前没有错题。</p>';items.forEach(it=>{let d=document.createElement('div');d.className='wrong-item';d.innerHTML=`<strong>${it.question}</strong><p class="muted">${it.module||''}｜${it.lesson_title||''}</p><p>答案：${it.answer}</p>`;box.appendChild(d)})}function search(q){let box=$('searchResults');q=String(q||'').trim().toLowerCase();box.innerHTML=q?'':'<p class="muted">输入关键词后显示搜索结果。</p>';if(!q)return;let res=GRAMMAR.filter(l=>[l.title,l.category,l.module,l.summary,...(l.explanation||[]),...(l.examples||[]).flatMap(e=>[e.pali,e.cn,e.note]),...(l.cards||[]).flatMap(c=>[c.q,c.a])].join(' ').toLowerCase().includes(q));if(!res.length){box.innerHTML='<p class="muted">没有找到相关语法点。</p>';return}res.forEach(l=>{let d=document.createElement('div');d.className='lesson-item';d.innerHTML=cardHTML(l);d.onclick=()=>{lastView='searchView';openLesson(l.id)};box.appendChild(d)})}function train(key){let all=GRAMMAR.flatMap(l=>(l.exercises||[]).map(ex=>({...ex,lesson_id:l.id,lesson_title:l.title,module:l.module,category:l.category})));let f=all;if(key==='input')f=all.filter(e=>e.type==='input');else if(key==='reading')f=all.filter(e=>e.lesson_id===75||e.category==='阅读训练');else if(key==='case')f=all.filter(e=>/格|主格|宾格|工具格|处格|属格|与格|从格|呼格/.test(e.question+e.explanation));else if(key==='verb')f=all.filter(e=>/动词|现在时|将来时|过去|命令|祈愿|条件式|使役|被动|人称|词尾/.test(e.question+e.explanation));else if(key==='nonfinite')f=all.filter(e=>/inf.|ger.|分词|gantvā|gantuṃ|katvā|kātuṃ|sutvā/.test(e.question+e.explanation));else if(key==='particles')f=all.filter(e=>/ind.|na|mā|ca|vā|eva|iti|ti|关联|引语|否定|并列|选择/.test(e.question+e.explanation));return f}function renderTraining(){let grid=$('trainingGrid');grid.innerHTML='';TRAINING_PRESETS.forEach(p=>{let count=train(p[0]).length,d=document.createElement('div');d.className='training-card';d.innerHTML=`<h3>${p[1]}</h3><p class="muted">${p[2]}</p><p class="muted">${count} 道题</p><button class="primary">开始专项强化</button>`;d.onclick=()=>startExercises(shuffle(train(p[0])).slice(0,20),p[1]);grid.appendChild(d)})}
 
 
@@ -1450,7 +1450,7 @@ async function forceClearAllCaches(){
       const keys=await caches.keys();
       await Promise.all(keys.map(k=>caches.delete(k)));
     }
-    location.href='./index.html?v=20.39&cache=cleared&ts='+Date.now();
+    location.href='./index.html?v=20.40&cache=cleared&ts='+Date.now();
   }catch(e){
     alert('缓存清理失败，请手动 Ctrl+F5。'+e);
   }
@@ -1573,7 +1573,7 @@ async function forceClearAllCaches(){
   document.addEventListener('input',function(e){const id=e.target.id;if(id==='searchInput')renderGrammarSearch();if(id==='sentenceSearchInput'){sentenceIndex=0;renderSentenceSelect();}if(id==='confusionSearchInput')renderConfusions();if(id==='patternSearchInput')renderPatterns();if(id==='linguisticsSearchInput')renderTips();if(id==='buddhistReadingSearchInput')renderBuddhistReadingFull();if(id==='backgroundSearchInput')renderBackground();if(id==='academicSearchInput')renderAcademic();if(id==='termSearchInput')renderTerms();if(id==='globalSiteSearchInput')renderGlobalSearchFull();},true);
   document.addEventListener('change',function(e){const id=e.target.id;if(['sentenceLevelSelect','sentencePrioritySelect','sentenceTagSelect','sentenceSourceSelect','sentenceStatusSelect'].includes(id)){sentenceIndex=0;renderSentenceSelect();}if(id==='sentenceSelect'){sentenceIndex=parseInt(e.target.value||'0');renderSentenceSelect();}if(id==='confusionCategorySelect')renderConfusions();if(id==='patternLevelSelect')renderPatterns();if(id==='linguisticsCategorySelect')renderTips();if(id==='buddhistReadingCategorySelect'||id==='buddhistReadingLevelSelect')renderBuddhistReadingFull();if(id==='backgroundCategorySelect')renderBackground();if(id==='academicCategorySelect')renderAcademic();if(id==='termCategorySelect')renderTerms();},true);
 
-  window.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('button').forEach(b=>{if(!b.type)b.type='button';});const badge=document.querySelector('.visual-version-badge');if(badge)badge.textContent='Pāli Learning Lab · 20.39 综合优化版';updateLessonNav();renderGlobalSearchFull();});
+  window.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('button').forEach(b=>{if(!b.type)b.type='button';});const badge=document.querySelector('.visual-version-badge');if(badge)badge.textContent='Pāli Learning Lab · 20.40 综合修正版';updateLessonNav();renderGlobalSearchFull();});
   window.__paliQA={route,openLessonHard,jumpLesson,updateLessonNav,renderTips,renderTerms,renderGlobalSearchFull,buildGlobalIndexFull};
 })();
 
@@ -2013,7 +2013,7 @@ async function forceClearAllCaches(){
 
   window.addEventListener('DOMContentLoaded',function(){
     const badge=document.querySelector('.visual-version-badge');
-    if(badge)badge.textContent='Pāli Learning Lab · 20.39 综合优化版';
+    if(badge)badge.textContent='Pāli Learning Lab · 20.40 综合修正版';
     if(!byId('learningRouteView')?.classList.contains('hidden'))renderLearningRoutesFinal('zero');
   });
 
@@ -2104,7 +2104,7 @@ async function forceClearAllCaches(){
   },true);
   window.addEventListener('DOMContentLoaded',function(){
     const badge=document.querySelector('.visual-version-badge');
-    if(badge)badge.textContent='Pāli Learning Lab · 20.39 综合优化版';
+    if(badge)badge.textContent='Pāli Learning Lab · 20.40 综合修正版';
     setup();
   });
   document.addEventListener('click',function(e){
@@ -2662,7 +2662,7 @@ async function forceClearAllCaches(){
   window.addEventListener('DOMContentLoaded',function(){
     patchViewFunctions143();
     const badge=document.querySelector('.visual-version-badge');
-    if(badge)badge.textContent='Pāli Learning Lab · 20.39 综合优化版';
+    if(badge)badge.textContent='Pāli Learning Lab · 20.40 综合修正版';
     setTimeout(annotateCurrentLesson143,200);
   });
   document.addEventListener('click',function(){setTimeout(annotateCurrentLesson143,160);},true);
@@ -2792,7 +2792,7 @@ async function forceClearAllCaches(){
   }, true);
   window.addEventListener('DOMContentLoaded', function(){
     const badge=document.querySelector('.visual-version-badge');
-    if(badge) badge.textContent='Pāli Learning Lab · 20.39 综合优化版';
+    if(badge) badge.textContent='Pāli Learning Lab · 20.40 综合修正版';
     syncBottomNav144();
   });
   setInterval(function(){
@@ -3025,7 +3025,7 @@ async function forceClearAllCaches(){
   }
   window.addEventListener("DOMContentLoaded",function(){
     const badge=document.querySelector(".visual-version-badge");
-    if(badge) badge.textContent="Pāli Learning Lab · 20.39 综合优化版";
+    if(badge) badge.textContent="Pāli Learning Lab · 20.40 综合修正版";
     setTimeout(annotateVisibleIPA145,200);
   });
   document.addEventListener("click",function(){setTimeout(annotateVisibleIPA145,220);},true);
@@ -3089,7 +3089,7 @@ async function forceClearAllCaches(){
   },true);
   window.addEventListener('DOMContentLoaded',function(){
     const badge=document.querySelector('.visual-version-badge');
-    if(badge) badge.textContent='Pāli Learning Lab · 20.39 综合优化版';
+    if(badge) badge.textContent='Pāli Learning Lab · 20.40 综合修正版';
     setup146();
   });
   document.addEventListener('click',function(e){
@@ -3343,7 +3343,7 @@ async function forceClearAllCaches(){
   },true);
   window.addEventListener("DOMContentLoaded",function(){
     const badge=document.querySelector(".visual-version-badge");
-    if(badge) badge.textContent="Pāli Learning Lab · 20.39 综合优化版";
+    if(badge) badge.textContent="Pāli Learning Lab · 20.40 综合修正版";
     setTimeout(annotateVisible149,350);
   });
   document.addEventListener("click",function(){setTimeout(annotateVisible149,260);},true);
@@ -3668,7 +3668,7 @@ async function forceClearAllCaches(){
   },true);
   window.addEventListener('DOMContentLoaded',function(){
     const badge=document.querySelector('.visual-version-badge');
-    if(badge)badge.textContent='Pāli Learning Lab · 20.39 综合优化版';
+    if(badge)badge.textContent='Pāli Learning Lab · 20.40 综合修正版';
     setTimeout(annotateVisible155,450);
   });
   document.addEventListener('click',function(){setTimeout(annotateVisible155,260);},true);
@@ -3768,7 +3768,7 @@ async function forceClearAllCaches(){
   }, true);
   window.addEventListener('DOMContentLoaded', function(){
     const badge=document.querySelector('.visual-version-badge');
-    if(badge) badge.textContent='Pāli Learning Lab · 20.39 综合优化版';
+    if(badge) badge.textContent='Pāli Learning Lab · 20.40 综合修正版';
     setTimeout(()=>{decorateTermButtons156(); addLessonGlossaryBox156();}, 500);
   });
   window.__termGlossary156={findGlossary156,openGlossary156,decorateTermButtons156,addLessonGlossaryBox156};
@@ -3845,7 +3845,7 @@ async function forceClearAllCaches(){
   },true);
   function run158(){
     const badge=document.querySelector('.visual-version-badge');
-    if(badge)badge.textContent='Pāli Learning Lab · 20.39 综合优化版';
+    if(badge)badge.textContent='Pāli Learning Lab · 20.40 综合修正版';
     const card=document.querySelector('#lessonView:not(.hidden) .card');
     if(card){card.dataset.glossaryTerms158='';annotateGlossaryTerms158(card);}
   }
@@ -3860,7 +3860,7 @@ async function forceClearAllCaches(){
 (function(){
   window.addEventListener('DOMContentLoaded',function(){
     const badge=document.querySelector('.visual-version-badge');
-    if(badge) badge.textContent='Pāli Learning Lab · 20.39 综合优化版';
+    if(badge) badge.textContent='Pāli Learning Lab · 20.40 综合修正版';
   });
 })();
 
@@ -3869,7 +3869,7 @@ async function forceClearAllCaches(){
 (function(){
   window.addEventListener('DOMContentLoaded',function(){
     const badge=document.querySelector('.visual-version-badge');
-    if(badge) badge.textContent='Pāli Learning Lab · 20.39 综合优化版';
+    if(badge) badge.textContent='Pāli Learning Lab · 20.40 综合修正版';
   });
 })();
 
@@ -3948,7 +3948,7 @@ async function forceClearAllCaches(){
   }
   window.addEventListener("DOMContentLoaded",function(){
     const badge=document.querySelector(".visual-version-badge");
-    if(badge) badge.textContent="Pāli Learning Lab · 20.39 综合优化版";
+    if(badge) badge.textContent="Pāli Learning Lab · 20.40 综合修正版";
     setTimeout(renderLayeredExercises161,300);
   });
   window.__layeredPractice161={renderLayeredExercises161,startLayeredPractice161};
@@ -3996,7 +3996,7 @@ async function forceClearAllCaches(){
   }
   window.addEventListener("DOMContentLoaded",function(){
     const badge=document.querySelector(".visual-version-badge");
-    if(badge) badge.textContent="Pāli Learning Lab · 20.39 综合优化版";
+    if(badge) badge.textContent="Pāli Learning Lab · 20.40 综合修正版";
     setTimeout(renderLectureSupplement162,350);
   });
   window.__lectureSupplement162={renderLectureSupplement162};
@@ -4054,7 +4054,7 @@ async function forceClearAllCaches(){
   }
   window.addEventListener("DOMContentLoaded",function(){
     const badge=document.querySelector(".visual-version-badge");
-    if(badge) badge.textContent="Pāli Learning Lab · 20.39 综合优化版";
+    if(badge) badge.textContent="Pāli Learning Lab · 20.40 综合修正版";
     setTimeout(()=>{try{renderTerminologyGlossary163()}catch(e){}},400);
   });
   window.__terminologyEnhanced163={renderTerminologyGlossary163};
@@ -4110,7 +4110,7 @@ async function forceClearAllCaches(){
   }
   window.addEventListener("DOMContentLoaded",function(){
     const badge=document.querySelector(".visual-version-badge");
-    if(badge) badge.textContent="Pāli Learning Lab · 20.39 综合优化版";
+    if(badge) badge.textContent="Pāli Learning Lab · 20.40 综合修正版";
     setTimeout(renderGroupedExamples164,400);
   });
   window.__exampleGranularity164={renderGroupedExamples164};
@@ -4185,7 +4185,7 @@ async function forceClearAllCaches(){
   }
   window.addEventListener("DOMContentLoaded",function(){
     const badge=document.querySelector(".visual-version-badge");
-    if(badge) badge.textContent="Pāli Learning Lab · 20.39 综合优化版";
+    if(badge) badge.textContent="Pāli Learning Lab · 20.40 综合修正版";
     setTimeout(renderRefinedExamples165,450);
   });
   window.__examplePriority165={renderRefinedExamples165};
@@ -4218,7 +4218,7 @@ async function forceClearAllCaches(){
   }
   window.addEventListener("DOMContentLoaded",function(){
     const badge=document.querySelector(".visual-version-badge");
-    if(badge) badge.textContent="Pāli Learning Lab · 20.39 综合优化版";
+    if(badge) badge.textContent="Pāli Learning Lab · 20.40 综合修正版";
     setTimeout(cleanupIntegratedWording166,500);
   });
   window.__integratedWording166={cleanupIntegratedWording166};
@@ -4308,7 +4308,7 @@ async function forceClearAllCaches(){
   }
   window.addEventListener("DOMContentLoaded",function(){
     const badge=document.querySelector(".visual-version-badge");
-    if(badge) badge.textContent="Pāli Learning Lab · 20.39 综合优化版";
+    if(badge) badge.textContent="Pāli Learning Lab · 20.40 综合修正版";
     setTimeout(renderMoreExamples167,650);
   });
   window.__moreExamples167={renderMoreExamples167};
@@ -4379,7 +4379,7 @@ async function forceClearAllCaches(){
   }
   window.addEventListener("DOMContentLoaded",function(){
     const badge=document.querySelector(".visual-version-badge");
-    if(badge) badge.textContent="Pāli Learning Lab · 20.39 综合优化版";
+    if(badge) badge.textContent="Pāli Learning Lab · 20.40 综合修正版";
     setTimeout(cleanupConcise168,750);
   });
   window.__conciseWording168={cleanupConcise168};
@@ -4391,7 +4391,7 @@ async function forceClearAllCaches(){
   function cleanupKeyPointBox169(){
     document.querySelectorAll(".lecture-brief-box").forEach(x=>x.remove());
     const badge=document.querySelector(".visual-version-badge");
-    if(badge) badge.textContent="Pāli Learning Lab · 20.39 综合优化版";
+    if(badge) badge.textContent="Pāli Learning Lab · 20.40 综合修正版";
   }
   if(typeof openLesson==="function" && !window.__mergeKeyPoints169){
     const oldOpenLesson=openLesson;
@@ -4570,7 +4570,7 @@ async function forceClearAllCaches(){
     movePractice170();
     cleanupLessonLayoutText170();
     const badge=document.querySelector(".visual-version-badge");
-    if(badge) badge.textContent="Pāli Learning Lab · 20.39 综合优化版";
+    if(badge) badge.textContent="Pāli Learning Lab · 20.40 综合修正版";
   }
   if(typeof openLesson==="function" && !window.__integratedLessonLayout170){
     const oldOpenLesson=openLesson;
@@ -4592,7 +4592,7 @@ async function forceClearAllCaches(){
 (function(){
   window.addEventListener("DOMContentLoaded",function(){
     const badge=document.querySelector(".visual-version-badge");
-    if(badge) badge.textContent="Pāli Learning Lab · 20.39 综合优化版";
+    if(badge) badge.textContent="Pāli Learning Lab · 20.40 综合修正版";
   });
 })();
 
@@ -4601,7 +4601,7 @@ async function forceClearAllCaches(){
 (function(){
   window.addEventListener("DOMContentLoaded",function(){
     const badge=document.querySelector(".visual-version-badge");
-    if(badge) badge.textContent="Pāli Learning Lab · 20.39 综合优化版";
+    if(badge) badge.textContent="Pāli Learning Lab · 20.40 综合修正版";
   });
 })();
 
@@ -4610,7 +4610,7 @@ async function forceClearAllCaches(){
 (function(){
   window.addEventListener("DOMContentLoaded",function(){
     const badge=document.querySelector(".visual-version-badge");
-    if(badge) badge.textContent="Pāli Learning Lab · 20.39 综合优化版";
+    if(badge) badge.textContent="Pāli Learning Lab · 20.40 综合修正版";
   });
 })();
 
@@ -4650,7 +4650,7 @@ async function forceClearAllCaches(){
     renderLessonSummary174();
     improveFeedbackDisplay174();
     const badge=document.querySelector(".visual-version-badge");
-    if(badge) badge.textContent="Pāli Learning Lab · 20.39 综合优化版";
+    if(badge) badge.textContent="Pāli Learning Lab · 20.40 综合修正版";
   }
   if(typeof openLesson==="function" && !window.__courseLoop174){
     const oldOpenLesson=openLesson;
@@ -4691,7 +4691,7 @@ async function forceClearAllCaches(){
     document.querySelectorAll("#mistakeBlock h3").forEach(h=>h.textContent="易错点");
     document.querySelectorAll(".concept-mistake-subtitle").forEach(x=>x.textContent="概念误判");
     const badge=document.querySelector(".visual-version-badge");
-    if(badge) badge.textContent="Pāli Learning Lab · 20.39 综合优化版";
+    if(badge) badge.textContent="Pāli Learning Lab · 20.40 综合修正版";
   }
   if(typeof openLesson==="function" && !window.__mergeMisjudge175){
     const oldOpenLesson=openLesson;
@@ -4744,7 +4744,7 @@ async function forceClearAllCaches(){
       }
     }
     const badge=document.querySelector(".visual-version-badge");
-    if(badge) badge.textContent="Pāli Learning Lab · 20.39 综合优化版";
+    if(badge) badge.textContent="Pāli Learning Lab · 20.40 综合修正版";
   }
   if(typeof openLesson==="function" && !window.__learningTargets179){
     const oldOpenLesson=openLesson;
@@ -4766,14 +4766,14 @@ async function forceClearAllCaches(){
 (function(){
   window.addEventListener("DOMContentLoaded",function(){
     const badge=document.querySelector(".visual-version-badge");
-    if(badge) badge.textContent="Pāli Learning Lab · 20.39 综合优化版";
+    if(badge) badge.textContent="Pāli Learning Lab · 20.40 综合修正版";
   });
 })();
 
 
 /* ===== Pāli Learning Lab 18.4: global lesson vocabulary audit ===== */
 (function(){
-  const VERSION_LABEL_184 = "Pāli Learning Lab · 20.39 综合优化版";
+  const VERSION_LABEL_184 = "Pāli Learning Lab · 20.40 综合修正版";
 
   function esc184(s){return String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));}
 
@@ -4977,7 +4977,7 @@ async function forceClearAllCaches(){
 
 /* ===== Pāli Learning Lab 18.5: term link policy finalization ===== */
 (function(){
-  const VERSION_LABEL_185 = "Pāli Learning Lab · 20.39 综合优化版";
+  const VERSION_LABEL_185 = "Pāli Learning Lab · 20.40 综合修正版";
 
   const TERM_EXTRA_185 = [
     "主语","宾语","谓语","格位","主格","宾格","工具格","与格","从格","属格","处格","呼格",
@@ -5239,7 +5239,7 @@ window.__pali185 = {apply185, removeLinksInCleanZones185};
 
 /* ===== Pāli Learning Lab 18.6: IPA display without label ===== */
 (function(){
-  const VERSION_LABEL_186 = "Pāli Learning Lab · 20.39 综合优化版";
+  const VERSION_LABEL_186 = "Pāli Learning Lab · 20.40 综合修正版";
 
   function cleanIpaLabel186(root){
     root = root || document;
@@ -5281,7 +5281,7 @@ window.__pali186 = {cleanIpaLabel186};
 
 /* ===== Pāli Learning Lab 18.7: term and vocabulary experience refinement ===== */
 (function(){
-  const VERSION_LABEL_187 = "Pāli Learning Lab · 20.39 综合优化版";
+  const VERSION_LABEL_187 = "Pāli Learning Lab · 20.40 综合修正版";
   const CATEGORY_ORDER_187 = [
     "全部",
     "音系与转写",
@@ -5415,7 +5415,7 @@ window.__pali187 = {apply187, rewriteTermPopovers187, addVocabLookupPanel187};
 
 /* ===== Pāli Learning Lab 18.8: grammar note only, no duplicate example analysis ===== */
 (function(){
-  const VERSION_LABEL_188 = "Pāli Learning Lab · 20.39 综合优化版";
+  const VERSION_LABEL_188 = "Pāli Learning Lab · 20.40 综合修正版";
 
   const ANNOT188 = {
     "Buddho":"Buddho < Buddha, m.sg.nom",
@@ -5524,7 +5524,7 @@ window.__pali187 = {apply187, rewriteTermPopovers187, addVocabLookupPanel187};
 
 /* ===== Pāli Learning Lab 18.9: root label cleanup ===== */
 (function(){
-  const VERSION_LABEL_189 = "Pāli Learning Lab · 20.39 综合优化版";
+  const VERSION_LABEL_189 = "Pāli Learning Lab · 20.40 综合修正版";
   function cleanRootLabels189(root){
     root = root || document;
     const badge = document.querySelector(".visual-version-badge");
@@ -5559,7 +5559,7 @@ window.__pali187 = {apply187, rewriteTermPopovers187, addVocabLookupPanel187};
 
 /* ===== Pāli Learning Lab 19.0: global sync + bilingual grammar notes ===== */
 (function(){
-  const VERSION_LABEL_190 = "Pāli Learning Lab · 20.39 综合优化版";
+  const VERSION_LABEL_190 = "Pāli Learning Lab · 20.40 综合修正版";
 
   const CN190 = {
     "m.":"阳性","f.":"阴性","n.":"中性",
@@ -5748,7 +5748,7 @@ window.__pali187 = {apply187, rewriteTermPopovers187, addVocabLookupPanel187};
 
 /* ===== Pāli Learning Lab 19.1: usage cleanup ===== */
 (function(){
-  const VERSION_LABEL_191 = "Pāli Learning Lab · 20.39 综合优化版";
+  const VERSION_LABEL_191 = "Pāli Learning Lab · 20.40 综合修正版";
   const REMOVED_USAGE_IDS_191 = new Set([102,104,105,106,113,117]);
   const USAGE_IDS_191 = new Set([99,103,107,108,112,114]);
 
@@ -5803,7 +5803,7 @@ window.__pali187 = {apply187, rewriteTermPopovers187, addVocabLookupPanel187};
 
 /* ===== Pāli Learning Lab 19.2: sentence analysis optimization ===== */
 (function(){
-  const VERSION_LABEL_192 = "Pāli Learning Lab · 20.39 综合优化版";
+  const VERSION_LABEL_192 = "Pāli Learning Lab · 20.40 综合修正版";
 
   const CN192 = {
     m:"阳性", f:"阴性", n:"中性", sg:"单数", pl:"复数",
@@ -5892,7 +5892,7 @@ window.__pali187 = {apply187, rewriteTermPopovers187, addVocabLookupPanel187};
 
 /* ===== Pāli Learning Lab 19.3: academic training and Tipitaka integration ===== */
 (function(){
-  const VERSION_LABEL_193 = "Pāli Learning Lab · 20.39 综合优化版";
+  const VERSION_LABEL_193 = "Pāli Learning Lab · 20.40 综合修正版";
 
   function applyAcademic193(){
     const badge=document.querySelector(".visual-version-badge");
@@ -5943,7 +5943,7 @@ window.__pali187 = {apply187, rewriteTermPopovers187, addVocabLookupPanel187};
 
 /* ===== Pāli Learning Lab 19.7: distinguish sentence analysis and sentence patterns ===== */
 (function(){
-  const VERSION_LABEL_197 = "Pāli Learning Lab · 20.39 综合优化版";
+  const VERSION_LABEL_197 = "Pāli Learning Lab · 20.40 综合修正版";
 
   function apply197(){
     const badge=document.querySelector(".visual-version-badge");
@@ -5988,7 +5988,7 @@ window.__pali187 = {apply187, rewriteTermPopovers187, addVocabLookupPanel187};
 
 /* ===== Pāli Learning Lab 19.8: practice naming and Buddhist terms ===== */
 (function(){
-  const VERSION_LABEL_198 = "Pāli Learning Lab · 20.39 综合优化版";
+  const VERSION_LABEL_198 = "Pāli Learning Lab · 20.40 综合修正版";
 
   function apply198(){
     const badge=document.querySelector(".visual-version-badge");
@@ -6027,7 +6027,7 @@ window.__pali187 = {apply187, rewriteTermPopovers187, addVocabLookupPanel187};
 
 /* ===== Pāli Learning Lab 19.9: mobile layout and staged answers ===== */
 (function(){
-  const VERSION_LABEL_199 = "Pāli Learning Lab · 20.39 综合优化版";
+  const VERSION_LABEL_199 = "Pāli Learning Lab · 20.40 综合修正版";
 
   function apply199(){
     const badge=document.querySelector(".visual-version-badge");
@@ -6063,7 +6063,7 @@ window.__pali187 = {apply187, rewriteTermPopovers187, addVocabLookupPanel187};
 
 /* ===== Pāli Learning Lab 20.1: module learning standalone page ===== */
 (function(){
-  const VERSION_LABEL_201 = "Pāli Learning Lab · 20.39 综合优化版";
+  const VERSION_LABEL_201 = "Pāli Learning Lab · 20.40 综合修正版";
 
   function ensureModulePage201(){
     const badge=document.querySelector(".visual-version-badge");
@@ -6119,7 +6119,7 @@ window.__pali187 = {apply187, rewriteTermPopovers187, addVocabLookupPanel187};
 
 /* ===== Pāli Learning Lab 20.2: page navigation and previous/back-to-top ===== */
 (function(){
-  const VERSION_LABEL_202 = "Pāli Learning Lab · 20.39 综合优化版";
+  const VERSION_LABEL_202 = "Pāli Learning Lab · 20.40 综合修正版";
 
   function visibleView202(){
     const views=[...document.querySelectorAll(".view")];
@@ -6242,7 +6242,7 @@ window.__pali187 = {apply187, rewriteTermPopovers187, addVocabLookupPanel187};
 
 /* ===== Pāli Learning Lab 20.13: three layer pages ===== */
 (function(){
-  const VERSION_LABEL_2013 = "Pāli Learning Lab · 20.39 综合优化版";
+  const VERSION_LABEL_2013 = "Pāli Learning Lab · 20.40 综合修正版";
 
   function gotoLayer2013(action){
     const map = {
@@ -6286,7 +6286,7 @@ window.__pali187 = {apply187, rewriteTermPopovers187, addVocabLookupPanel187};
 
 /* ===== Pāli Learning Lab 20.14: robust three-layer entry click fix ===== */
 (function(){
-  const VERSION_LABEL_2014 = "Pāli Learning Lab · 20.39 综合优化版";
+  const VERSION_LABEL_2014 = "Pāli Learning Lab · 20.40 综合修正版";
   function gotoLayer2014(action){
     const map = {
       startLayer: "startLayerView",
@@ -6352,14 +6352,14 @@ window.__pali187 = {apply187, rewriteTermPopovers187, addVocabLookupPanel187};
   };
   window.addEventListener("DOMContentLoaded", function(){
     const badge = document.querySelector(".visual-version-badge");
-    if(badge) badge.textContent = "Pāli Learning Lab · 20.39 综合优化版";
+    if(badge) badge.textContent = "Pāli Learning Lab · 20.40 综合修正版";
   });
 })();
 
 
 /* ===== Pāli Learning Lab 20.18: data lazy loading ===== */
 (function(){
-  const VERSION_LABEL_2018 = "Pāli Learning Lab · 20.39 综合优化版";
+  const VERSION_LABEL_2018 = "Pāli Learning Lab · 20.40 综合修正版";
   const DATA_2018 = {
     sentence: ["sentence-analysis-data.js", "SENTENCE_ANALYSIS_DATA"],
     linguistics: ["linguistics-tips-data.js", "LINGUISTICS_TIPS"],
@@ -6423,7 +6423,7 @@ window.__pali187 = {apply187, rewriteTermPopovers187, addVocabLookupPanel187};
 
     loading2018[key] = new Promise((resolve, reject)=>{
       const s = document.createElement("script");
-      s.src = file + "?v=20.39";
+      s.src = file + "?v=20.40";
       s.onload = () => {
         exposeGlobal2018(varName);
         loaded2018.add(key);
@@ -6528,7 +6528,7 @@ window.__pali187 = {apply187, rewriteTermPopovers187, addVocabLookupPanel187};
 
 /* ===== Pāli Learning Lab 20.19: core lesson terminology first links only ===== */
 (function(){
-  const VERSION_LABEL_2019 = "Pāli Learning Lab · 20.39 综合优化版";
+  const VERSION_LABEL_2019 = "Pāli Learning Lab · 20.40 综合修正版";
 
   // Basic high-frequency grammar labels should stay as plain text unless explicitly listed as this lesson's core term.
   const COMMON_SKIP_2019 = new Set([
@@ -6787,9 +6787,9 @@ window.__pali187 = {apply187, rewriteTermPopovers187, addVocabLookupPanel187};
 
 /* ===== Pāli Learning Lab 20.20: grammar split lazy loading ===== */
 (function(){
-  const VERSION_LABEL_2020 = "Pāli Learning Lab · 20.39 综合优化版";
-  const INDEX_URL_2020 = "grammar-index.json?v=20.39";
-  const MANIFEST_URL_2020 = "grammar-lesson-manifest.json?v=20.39";
+  const VERSION_LABEL_2020 = "Pāli Learning Lab · 20.40 综合修正版";
+  const INDEX_URL_2020 = "grammar-index.json?v=20.40";
+  const MANIFEST_URL_2020 = "grammar-lesson-manifest.json?v=20.40";
   const LESSON_BASE_2020 = "";
   let indexPromise2020 = null;
   let manifestPromise2020 = null;
@@ -6861,7 +6861,7 @@ window.__pali187 = {apply187, rewriteTermPopovers187, addVocabLookupPanel187};
     lessonPromises2020[id] = manifest2020().then(map => {
       const fname = map[String(id)];
       if(!fname) throw new Error("未找到课程详情：" + id);
-      return fetch(LESSON_BASE_2020 + fname + "?v=20.39", {cache:"no-store"});
+      return fetch(LESSON_BASE_2020 + fname + "?v=20.40", {cache:"no-store"});
     }).then(r => {
       if(!r.ok) throw new Error("课程详情加载失败：" + id);
       return r.json();
@@ -7019,7 +7019,7 @@ window.__pali187 = {apply187, rewriteTermPopovers187, addVocabLookupPanel187};
 
 /* ===== Pāli Learning Lab 20.21: loading feedback for lazy data ===== */
 (function(){
-  const VERSION_LABEL_2021 = "Pāli Learning Lab · 20.39 综合优化版";
+  const VERSION_LABEL_2021 = "Pāli Learning Lab · 20.40 综合修正版";
   let loadingCount2021 = 0;
   let hideTimer2021 = null;
 
@@ -7189,8 +7189,8 @@ window.__pali187 = {apply187, rewriteTermPopovers187, addVocabLookupPanel187};
 
 /* ===== Pāli Learning Lab 20.24: module index secondary lazy loading ===== */
 (function(){
-  const VERSION_LABEL_2022 = "Pāli Learning Lab · 20.39 综合优化版";
-  const MODULE_DIRECTORY_URL_2022 = "grammar-module-directory.json?v=20.39";
+  const VERSION_LABEL_2022 = "Pāli Learning Lab · 20.40 综合修正版";
+  const MODULE_DIRECTORY_URL_2022 = "grammar-module-directory.json?v=20.40";
   const MODULE_BASE_2022 = "";
   let directoryPromise2022 = null;
   let moduleDirectory2022 = null;
@@ -7252,7 +7252,7 @@ window.__pali187 = {apply187, rewriteTermPopovers187, addVocabLookupPanel187};
     if(!entry) throw new Error("未找到模块：" + moduleName);
     if(modulePromises2022[moduleName]) return modulePromises2022[moduleName];
 
-    modulePromises2022[moduleName] = fetch(MODULE_BASE_2022 + entry.file + "?v=20.39", {cache:"no-store"})
+    modulePromises2022[moduleName] = fetch(MODULE_BASE_2022 + entry.file + "?v=20.40", {cache:"no-store"})
       .then(r => {
         if(!r.ok) throw new Error("本模块课程加载失败：" + moduleName);
         return r.json();
@@ -7346,8 +7346,8 @@ window.__pali187 = {apply187, rewriteTermPopovers187, addVocabLookupPanel187};
 
 /* ===== Pāli Learning Lab 20.24: exercise data separate lazy loading ===== */
 (function(){
-  const VERSION_LABEL_2023 = "Pāli Learning Lab · 20.39 综合优化版";
-  const EXERCISE_URL_2023 = "exercise-index.json?v=20.39";
+  const VERSION_LABEL_2023 = "Pāli Learning Lab · 20.40 综合修正版";
+  const EXERCISE_URL_2023 = "exercise-index.json?v=20.40";
   let exercisePromise2023 = null;
   let exercises2023 = null;
 
@@ -7493,8 +7493,8 @@ window.__pali187 = {apply187, rewriteTermPopovers187, addVocabLookupPanel187};
 
 /* ===== Pāli Learning Lab 20.24: independent search index lazy loading ===== */
 (function(){
-  const VERSION_LABEL_2024 = "Pāli Learning Lab · 20.39 综合优化版";
-  const SEARCH_URL_2024 = "search-index.json?v=20.39";
+  const VERSION_LABEL_2024 = "Pāli Learning Lab · 20.40 综合修正版";
+  const SEARCH_URL_2024 = "search-index.json?v=20.40";
   let searchPromise2024 = null;
   let searchIndex2024 = null;
 
@@ -7604,14 +7604,14 @@ window.__pali187 = {apply187, rewriteTermPopovers187, addVocabLookupPanel187};
   };
   window.addEventListener("DOMContentLoaded", function(){
     const badge = document.querySelector(".visual-version-badge");
-    if(badge) badge.textContent = "Pāli Learning Lab · 20.39 综合优化版";
+    if(badge) badge.textContent = "Pāli Learning Lab · 20.40 综合修正版";
   });
 })();
 
 
 /* ===== Pāli Learning Lab 20.26: grammar labels and core concepts separation ===== */
 (function(){
-  const VERSION_LABEL_2026 = "Pāli Learning Lab · 20.39 综合优化版";
+  const VERSION_LABEL_2026 = "Pāli Learning Lab · 20.40 综合修正版";
 
   const ABBR_2026 = [
     ["f.p.p.", "将来被动分词"],
@@ -7776,7 +7776,7 @@ window.__pali187 = {apply187, rewriteTermPopovers187, addVocabLookupPanel187};
   };
   window.addEventListener("DOMContentLoaded", function(){
     const badge = document.querySelector(".visual-version-badge");
-    if(badge) badge.textContent = "Pāli Learning Lab · 20.39 综合优化版";
+    if(badge) badge.textContent = "Pāli Learning Lab · 20.40 综合修正版";
   });
 })();
 
@@ -7791,54 +7791,54 @@ window.__pali187 = {apply187, rewriteTermPopovers187, addVocabLookupPanel187};
   };
   window.addEventListener("DOMContentLoaded", function(){
     const badge = document.querySelector(".visual-version-badge");
-    if(badge) badge.textContent = "Pāli Learning Lab · 20.39 综合优化版";
+    if(badge) badge.textContent = "Pāli Learning Lab · 20.40 综合修正版";
   });
 })();
 
 
-/* ===== Pāli Learning Lab 20.39: force final version label ===== */
+/* ===== Pāli Learning Lab 20.40: force final version label ===== */
 (function(){
-  const FINAL_LABEL = "Pāli Learning Lab · 20.39 综合优化版";
+  const FINAL_LABEL = "Pāli Learning Lab · 20.40 综合修正版";
   function forceFinalVersion(){
     const badge = document.querySelector(".visual-version-badge");
     if(badge) badge.textContent = FINAL_LABEL;
-    document.documentElement.setAttribute("data-pali-version", "20.39");
+    document.documentElement.setAttribute("data-pali-version", "20.40");
   }
   window.addEventListener("DOMContentLoaded", forceFinalVersion);
   window.addEventListener("load", forceFinalVersion);
   setTimeout(forceFinalVersion, 500);
   setTimeout(forceFinalVersion, 1500);
-  window.__paliForceVersion2029 = {version:"20.39", label:FINAL_LABEL, force:forceFinalVersion};
+  window.__paliForceVersion2029 = {version:"20.40", label:FINAL_LABEL, force:forceFinalVersion};
 })();
 
 
-/* ===== Pāli Learning Lab 20.39: final redeploy version label ===== */
+/* ===== Pāli Learning Lab 20.40: final redeploy version label ===== */
 (function(){
-  const FINAL_LABEL = "Pāli Learning Lab · 20.39 综合优化版";
+  const FINAL_LABEL = "Pāli Learning Lab · 20.40 综合修正版";
   function forceFinalVersion(){
     const badge = document.querySelector(".visual-version-badge");
     if(badge) badge.textContent = FINAL_LABEL;
-    document.documentElement.setAttribute("data-pali-version", "20.39");
+    document.documentElement.setAttribute("data-pali-version", "20.40");
   }
   window.addEventListener("DOMContentLoaded", forceFinalVersion);
   window.addEventListener("load", forceFinalVersion);
   setTimeout(forceFinalVersion, 500);
   setTimeout(forceFinalVersion, 1500);
-  window.__paliForceVersion2030 = {version:"20.39", label:FINAL_LABEL, force:forceFinalVersion};
+  window.__paliForceVersion2030 = {version:"20.40", label:FINAL_LABEL, force:forceFinalVersion};
 })();
 
 
-/* ===== Pāli Learning Lab 20.39 emergency responsiveness patch ===== */
+/* ===== Pāli Learning Lab 20.40 emergency responsiveness patch ===== */
 (function(){
-  window.PALI_SITE_VERSION="20.39";
-  window.PALI_SITE_LABEL="Pāli Learning Lab · 20.39 综合优化版";
+  window.PALI_SITE_VERSION="20.40";
+  window.PALI_SITE_LABEL="Pāli Learning Lab · 20.40 综合修正版";
   function aliasGlobals(){try{if(!window.LEARNING_ROUTES && typeof LEARNING_ROUTES!=="undefined") window.LEARNING_ROUTES=LEARNING_ROUTES;}catch(e){}}
   function identity(){
     document.title="Pāli Learning Lab｜巴利语学习实验室";
     document.querySelectorAll('.eyebrow').forEach(el=>{el.textContent='Pāli Learning Lab';});
     const h1=document.querySelector('.hero h1'); if(h1) h1.textContent='📘 巴利语学习实验室';
     document.querySelectorAll('.visual-version-badge').forEach(el=>{el.textContent=window.PALI_SITE_LABEL;});
-    document.documentElement.setAttribute('data-pali-version','20.39');
+    document.documentElement.setAttribute('data-pali-version','20.40');
   }
   function safeRenderLearningRoutes(){
     aliasGlobals();
@@ -7855,9 +7855,9 @@ window.__pali187 = {apply187, rewriteTermPopovers187, addVocabLookupPanel187};
 })();
 
 
-/* ===== Pāli Learning Lab 20.39: route lookup fix + remove inline Chinese term links ===== */
+/* ===== Pāli Learning Lab 20.40: route lookup fix + remove inline Chinese term links ===== */
 (function(){
-  const VERSION_LABEL_2038 = "Pāli Learning Lab · 20.39 综合优化版";
+  const VERSION_LABEL_2038 = "Pāli Learning Lab · 20.40 综合修正版";
   function byId(id){return document.getElementById(id);}
   function esc(s){return String(s ?? "").replace(/[&<>\"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
   function safeSwitch2038(id){
@@ -7885,7 +7885,7 @@ window.__pali187 = {apply187, rewriteTermPopovers187, addVocabLookupPanel187};
     if(window.__paliGrammarLazy2020 && typeof window.__paliGrammarLazy2020.ensureIndex === 'function'){
       return window.__paliGrammarLazy2020.ensureIndex();
     }
-    const r = await fetch('grammar-index.json?v=20.39',{cache:'no-store'});
+    const r = await fetch('grammar-index.json?v=20.40',{cache:'no-store'});
     if(!r.ok) throw new Error('课程索引加载失败');
     const data = await r.json();
     try{GRAMMAR=data;}catch(e){window.GRAMMAR=data;}
@@ -7988,9 +7988,9 @@ window.__pali187 = {apply187, rewriteTermPopovers187, addVocabLookupPanel187};
 })();
 
 
-/* ===== Pāli Learning Lab 20.39: integrated display cleanup + safe polish ===== */
+/* ===== Pāli Learning Lab 20.40: integrated display cleanup + safe polish ===== */
 (function(){
-  const SITE_LABEL="Pāli Learning Lab · 20.39 综合优化版";
+  const SITE_LABEL="Pāli Learning Lab · 20.40 综合修正版";
   const COURSE_FIELD_BLACKLIST=new Set([
     'target_cleanup_status','coverage_check_status','exercise_calibration_status','coverage_checklist','coverage_check_note','order_note','calibrated_version','exercise_source','example_coverage_note','visible','checked','__detailLoaded'
   ]);
@@ -8002,7 +8002,7 @@ window.__pali187 = {apply187, rewriteTermPopovers187, addVocabLookupPanel187};
   function textHas(x,q){return !q || String(x||'').toLowerCase().includes(q.toLowerCase())}
   function setIdentity2039(){
     document.title='Pāli Learning Lab｜巴利语学习实验室';
-    document.documentElement.setAttribute('data-pali-version','20.39');
+    document.documentElement.setAttribute('data-pali-version','20.40');
     document.querySelectorAll('.eyebrow').forEach(el=>el.textContent='Pāli Learning Lab');
     const h1=document.querySelector('.hero h1'); if(h1) h1.textContent='📘 巴利语学习实验室';
     document.querySelectorAll('.visual-version-badge').forEach(el=>el.textContent=SITE_LABEL);
@@ -8126,4 +8126,225 @@ window.__pali187 = {apply187, rewriteTermPopovers187, addVocabLookupPanel187};
   window.addEventListener('DOMContentLoaded',function(){setIdentity2039();patchGlobals2039();cleanInlineTermLinks2039(document);setTimeout(()=>{setIdentity2039();patchGlobals2039();cleanInlineTermLinks2039(document);},500);});
   window.addEventListener('load',function(){setIdentity2039();patchGlobals2039();cleanInlineTermLinks2039(document);});
   window.__paliIntegratedPolish2039={setIdentity2039,cleanInlineTermLinks2039,reorderLesson2039,renderTerms2039,renderClassifiedSearch2039,goTerm2039};
+})();
+
+/* ===== Pāli Learning Lab 20.40: integrated fix requested by user ===== */
+(function(){
+  const VERSION_2040 = "20.40";
+  const LABEL_2040 = "Pāli Learning Lab · 20.40 综合修正版";
+  const STOPWORDS_2040 = new Set([
+    "a","an","and","or","the","to","from","of","in","on","with","by","for","as","is","are","be","was","were","not","no","yes",
+    "case","nominative","accusative","instrumental","dative","ablative","genitive","locative","vocative","gender","number","singular","plural","masculine","feminine","neuter","root","stem","ending","suffix","prefix","voice","tense","mood","syntax","grammar","lesson","module","route","search","json","html","data","true","false","null","undefined",
+    "inf","infinitive","ger","gerund","absolutive","pr","pp","participle","present","past","future","passive","active","middle","indicative","imperative","optative","causative","sandhi","ipa","pali","learning","lab",
+    "sg","pl","nom","acc","ins","dat","abl","gen","loc","voc","prs","indic","act","mid","pass","m","f","n","id","cn","en","note","table","cards","examples"
+  ]);
+  function byId(id){return document.getElementById(id)}
+  function esc(s){return String(s ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));}
+  function safeArray(v){return Array.isArray(v)?v:[]}
+  function scriptLoaded(src){return !![...document.scripts].find(s=>(s.getAttribute('src')||'').includes(src));}
+  function loadScript2040(src){
+    return new Promise((resolve,reject)=>{
+      if(scriptLoaded(src.split('?')[0])) return resolve();
+      const s=document.createElement('script');
+      s.src=src+(src.includes('?')?'&':'?')+'v='+VERSION_2040+'&t='+Date.now();
+      s.onload=()=>resolve();
+      s.onerror=()=>reject(new Error('无法加载 '+src));
+      document.head.appendChild(s);
+    });
+  }
+  async function ensureGrammarIndex2040(){
+    try{ if(Array.isArray(window.GRAMMAR) && window.GRAMMAR.length) return window.GRAMMAR; }catch(e){}
+    try{ if(typeof GRAMMAR!=='undefined' && Array.isArray(GRAMMAR) && GRAMMAR.length){ window.GRAMMAR=GRAMMAR; return GRAMMAR; } }catch(e){}
+    const res=await fetch('grammar-index.json?v='+VERSION_2040+'&t='+Date.now(),{cache:'no-store'});
+    if(!res.ok) throw new Error('grammar-index.json 加载失败');
+    const data=await res.json();
+    window.GRAMMAR=data;
+    try{ GRAMMAR=data; }catch(e){}
+    if(typeof stats==='function') stats();
+    return data;
+  }
+  async function ensureLearningRoutes2040(){
+    if(Array.isArray(window.LEARNING_ROUTES) && window.LEARNING_ROUTES.length) return window.LEARNING_ROUTES;
+    try{ if(typeof LEARNING_ROUTES!=='undefined' && Array.isArray(LEARNING_ROUTES)){window.LEARNING_ROUTES=LEARNING_ROUTES;return LEARNING_ROUTES;} }catch(e){}
+    await loadScript2040('learning-routes-data.js');
+    try{ if(!window.LEARNING_ROUTES && typeof LEARNING_ROUTES!=='undefined') window.LEARNING_ROUTES=LEARNING_ROUTES; }catch(e){}
+    return window.LEARNING_ROUTES||[];
+  }
+  async function ensureTerms2040(){
+    if(Array.isArray(window.TERMINOLOGY_GLOSSARY) && window.TERMINOLOGY_GLOSSARY.length) return window.TERMINOLOGY_GLOSSARY;
+    try{ if(typeof TERMINOLOGY_GLOSSARY!=='undefined' && Array.isArray(TERMINOLOGY_GLOSSARY)){window.TERMINOLOGY_GLOSSARY=TERMINOLOGY_GLOSSARY;return TERMINOLOGY_GLOSSARY;} }catch(e){}
+    try{ await loadScript2040('terminology-glossary-data.js'); }catch(e){}
+    try{ if(!window.TERMINOLOGY_GLOSSARY && typeof TERMINOLOGY_GLOSSARY!=='undefined') window.TERMINOLOGY_GLOSSARY=TERMINOLOGY_GLOSSARY; }catch(e){}
+    return window.TERMINOLOGY_GLOSSARY||[];
+  }
+  function setIdentity2040(){
+    document.title='Pāli Learning Lab｜巴利语学习实验室';
+    document.documentElement.setAttribute('data-pali-version',VERSION_2040);
+    window.PALI_SITE_VERSION=VERSION_2040;
+    window.PALI_SITE_LABEL=LABEL_2040;
+    document.querySelectorAll('.eyebrow').forEach(el=>el.textContent='Pāli Learning Lab');
+    const h1=document.querySelector('.hero h1'); if(h1) h1.textContent='📘 巴利语学习实验室';
+    document.querySelectorAll('.visual-version-badge').forEach(el=>el.textContent=LABEL_2040);
+  }
+  function unwrap2040(el){ if(el && el.parentNode) el.parentNode.replaceChild(document.createTextNode(el.textContent||''),el); }
+  function cleanupIPA2040(root=document){
+    // Stop old IPA hover/click annotations. Keep IPA values directly displayed inside glossary cards.
+    try{
+      if(window.__paliIPA145){window.__paliIPA145.annotateIPA145=function(){};window.__paliIPA145.annotateVisibleIPA145=function(){};}
+      if(window.__paliIPA149){window.__paliIPA149.annotate149=function(){};window.__paliIPA149.annotateVisible149=function(){};}
+    }catch(e){}
+    root.querySelectorAll('.ipa-hover,.ipa-touch-popover,.ipa-popover,.ipa-mobile-popover').forEach(el=>{
+      if(el.classList && el.classList.contains('ipa-hover')) unwrap2040(el); else el.remove();
+    });
+    const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode(n){return /(点击查看\s*IPA|点击查观察\s*IPA|悬停查看|hover\s*IPA|英文术语下方虚线)/i.test(n.nodeValue)?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}});
+    const nodes=[]; while(walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(n=>{n.nodeValue=n.nodeValue.replace(/点击查看\s*IPA|点击查观察\s*IPA|悬停查看|hover\s*IPA/ig,'').replace(/英文术语下方虚线[^。]*。?/g,'');});
+  }
+  function removeInlineTermLinks2040(root=document){
+    const preserve='.core-term-box-2040,#termGlossaryList,.term-card,.term-table,.term-count,.hero-subnav,.route-tabs,#routeTabs,.route-lesson-list,.button-row,.pali-keyboard,.status-buttons';
+    root.querySelectorAll('.concept-inline-link,.concept-extra-link,.term-direct-link,.term-once-link-185,.term-first-link-2019,.term-once-link-172,[data-concept],[data-concept-extra],[data-term-first-2019]').forEach(el=>{
+      if(el.closest(preserve)) return;
+      unwrap2040(el);
+    });
+    document.querySelectorAll('.term-popover-185,.term-popover-2019,.term-popover-187,.tip-modal').forEach(x=>x.remove());
+    cleanupIPA2040(root);
+  }
+  function removeBuddhistRelated2040(root=document){
+    root.querySelectorAll('.linked-buddhist-box,.linked-background-box,.linked-academic-box').forEach(x=>x.remove());
+    [...root.querySelectorAll('div,section,aside')].forEach(el=>{
+      const t=(el.textContent||'').trim();
+      if(/^相关佛典阅读句式|^相关佛典阅读|^相关佛典背景|^相关学术训练/.test(t)) el.remove();
+    });
+  }
+  function termCandidates2040(lesson){
+    const text=[lesson?.title,lesson?.category,lesson?.module,lesson?.summary,...safeArray(lesson?.minimal_mastery),...safeArray(lesson?.learning_goals),...safeArray(lesson?.common_mistakes)].join(' ');
+    const seeds=['格','主格','宾格','工具格','与格','从格','属格','处格','呼格','变格','变位','词根','词干','词尾','限定动词','动词','现在时','将来时','过去时','命令语气','祈愿语气','主动语态','中间语态','被动语态','不定式','连续体','分词','过去分词','未来被动分词','不变词','否定','并列','选择','引语','句法','主语','宾语','sandhi','连读音变','复合词','佛典公式句'];
+    const out=[];
+    seeds.forEach(s=>{ if(text.includes(s)) out.push(s); });
+    safeArray(lesson?.linked_terminology).forEach(x=>out.push(x));
+    safeArray(lesson?.related_terms).forEach(x=>out.push(x));
+    return [...new Set(out)].slice(0,14);
+  }
+  function normalizeToken2040(w){return String(w||'').replace(/^[^A-Za-zĀĪŪāīūṄṅÑñṬṭḌḍṆṇḶḷṂṃṀṁ√]+|[^A-Za-zĀĪŪāīūṄṅÑñṬṭḌḍṆṇḶḷṂṃṀṁ]+$/g,'');}
+  function addTokensFromString2040(str,score,map,strictPaliContext=false){
+    str=String(str||'');
+    const re=/[A-Za-zĀĪŪāīūṄṅÑñṬṭḌḍṆṇḶḷṂṃṀṁ√][A-Za-zĀĪŪāīūṄṅÑñṬṭḌḍṆṇḶḷṂṃṀṁ√\.\-]*/g;
+    let m;
+    while((m=re.exec(str))){
+      let w=normalizeToken2040(m[0]); if(!w || w.length<2) continue;
+      const lw=w.toLowerCase().replace(/\.$/,'');
+      if(STOPWORDS_2040.has(lw) || STOPWORDS_2040.has(w)) continue;
+      if(/\d/.test(w)) continue;
+      if(/^(m|f|n|sg|pl|nom|acc|gen|loc|dat|ins|abl|voc|prs|act|mid|pass|indic)$/i.test(w)) continue;
+      const hasDia=/[ĀĪŪāīūṄṅÑñṬṭḌḍṆṇḶḷṂṃṀṁ]/.test(w);
+      const likelyPali = strictPaliContext || hasDia || /^(Buddh|Dhamm|Saṅgh|Bhikkh|Ahaṃ|Tvaṃ|Mayaṃ|Tumhe|Te|So|Taṃ|Eta|Yo|Yadā|Tadā|Evaṃ|Ekaṃ|Bhagav|gacch|dese|suṇ|vand|vas|vihar|kar|hoti|atthi|natthi|dhamma|buddha|saṅgha|saraṇa|citta|phala|rūpa|paññ|suta|gata|kata|kamma|dukkha|anicc|anatt|vihār|samay)/i.test(w);
+      if(!likelyPali) continue;
+      map[w]=(map[w]||0)+score;
+    }
+  }
+  function extractVocab2040(lesson){
+    const map={};
+    safeArray(lesson?.examples).forEach(ex=>{
+      addTokensFromString2040(ex.pali,8,map,true);
+      addTokensFromString2040(ex.source,6,map,true);
+      addTokensFromString2040(ex.formula,5,map,true);
+      addTokensFromString2040(ex.note,2,map,false);
+      addTokensFromString2040(ex.grammar_note,2,map,false);
+    });
+    safeArray(lesson?.table).forEach(row=>safeArray(row).forEach(cell=>addTokensFromString2040(cell,2,map,false)));
+    safeArray(lesson?.cards).forEach(c=>{addTokensFromString2040(c.q,1,map,false);addTokensFromString2040(c.a,1,map,false);});
+    [lesson?.title,lesson?.summary,...safeArray(lesson?.explanation)].forEach(s=>addTokensFromString2040(s,1,map,false));
+    return Object.entries(map).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0])).slice(0,24).map(x=>x[0]);
+  }
+  function findInsertionPoint2040(){
+    return [...document.querySelectorAll('#lessonView h3')].find(h=>/重点说明|形式与结构/.test(h.textContent||'')) || byId('lessonExplanation') || byId('lessonTable');
+  }
+  function renderCoreTerms2040(lesson){
+    const old=document.querySelectorAll('#lessonConcepts2039,#lessonConcepts2040,.linked-term-box,.lesson-term-box-185,.lesson-term-library-box,.related-term-box-2039,.core-concepts-2039');
+    old.forEach(x=>x.remove());
+    const terms=termCandidates2040(lesson); if(!terms.length) return;
+    const box=document.createElement('div'); box.id='lessonConcepts2040'; box.className='core-term-box-2040';
+    box.innerHTML=`<h3 class="lesson-section-title">核心概念与相关术语</h3><div class="term-chip-row-2040">${terms.map(t=>`<button type="button" class="term-chip-2040" data-term-jump-2040="${esc(t)}">${esc(t)}</button>`).join('')}</div><p class="muted">点击术语可直接进入术语库对应内容。</p>`;
+    const point=findInsertionPoint2040(); if(point&&point.parentNode) point.parentNode.insertBefore(box,point); else byId('lessonView')?.querySelector('.card')?.appendChild(box);
+  }
+  function renderVocab2040(lesson){
+    document.querySelectorAll('#lessonVocab2039,#lessonVocab2040,.lesson-vocab-2039').forEach(x=>x.remove());
+    const vocab=extractVocab2040(lesson);
+    const box=document.createElement('div'); box.id='lessonVocab2040'; box.className='lesson-vocab-2040';
+    box.innerHTML=`<h3 class="lesson-section-title">本节单词</h3>${vocab.length?`<div class="vocab-chip-row-2040">${vocab.map(w=>`<span class="vocab-chip-plain">${esc(w)}</span>`).join('')}</div><p class="muted">本词表为自动提取，主要来自本课例句、表格和说明；不再逐词链接查词，以减少干扰。</p>`:`<p class="muted">本课未检出明确巴利语词形；请以本课核心概念和例句为主。</p>`}`;
+    const point=findInsertionPoint2040(); if(point&&point.parentNode) point.parentNode.insertBefore(box,point); else byId('lessonView')?.querySelector('.card')?.appendChild(box);
+  }
+  function polishLesson2040(){
+    let lesson=null; try{lesson=currentLesson||null;}catch(e){}
+    if(!lesson || !byId('lessonView')) return;
+    removeBuddhistRelated2040(byId('lessonView'));
+    renderCoreTerms2040(lesson);
+    renderVocab2040(lesson);
+    removeInlineTermLinks2040(byId('lessonView'));
+  }
+  function getLessonById2040(id,grammar){
+    id=String(id);
+    return safeArray(grammar).find(l=>String(l.id)===id || String(l.lesson_number)===id);
+  }
+  function routeLessonButton2040(id,grammar){
+    const l=getLessonById2040(id,grammar);
+    if(!l) return `<span class="route-missing-2040">语法点 ${esc(id)}（索引加载中）</span>`;
+    return `<button type="button" class="route-lesson-btn" data-route-lesson="${esc(l.id)}">${esc(l.lesson_number||l.id)}. ${esc(l.title||'语法点')}</button>`;
+  }
+  async function renderLearningRoutes2040(routeId){
+    const tabs=byId('routeTabs'), content=byId('routeContent'); if(!content) return;
+    content.innerHTML='<p class="muted">正在加载学习路线……</p>';
+    let routes=[], grammar=[];
+    try{ routes=await ensureLearningRoutes2040(); grammar=await ensureGrammarIndex2040(); }catch(e){content.innerHTML='<p class="muted">学习路线加载失败：'+esc(e.message||e)+'</p>';return;}
+    if(!routes.length){content.innerHTML='<p class="muted">暂无学习路线。请确认 learning-routes-data.js 已上传。</p>';return;}
+    let active=routeId || window.__activeRoute2040 || routes[0].id;
+    if(!routes.some(r=>r.id===active)) active=routes[0].id;
+    window.__activeRoute2040=active;
+    const route=routes.find(r=>r.id===active)||routes[0];
+    if(tabs){tabs.innerHTML=routes.map(r=>`<button type="button" class="route-tab ${r.id===active?'active':''}" data-route-tab-2040="${esc(r.id)}">${esc(r.title||r.id)}</button>`).join('');}
+    content.innerHTML=`<div class="route-full-card"><h3>${esc(route.title||'学习路线')}</h3><p class="muted">${esc(route.desc||'')}</p>${safeArray(route.steps).map((step,i)=>`<div class="route-step-card"><div class="route-step-number">${i+1}</div><div class="route-step-main"><h4>${esc(step.title||'')}</h4><p>${esc(step.desc||'')}</p><div class="route-lesson-list">${safeArray(step.lesson_ids).map(id=>routeLessonButton2040(id,grammar)).join('')}</div>${step.sentence_priority?`<button type="button" class="route-sentence-btn" data-sentence-priority="${esc(step.sentence_priority)}">进入句子分析：${esc(step.sentence_priority)}</button>`:''}</div></div>`).join('')}</div>`;
+    removeInlineTermLinks2040(content);
+  }
+  async function openLearningRoute2040(routeId='zero'){
+    document.querySelectorAll('.view').forEach(v=>v.classList.add('hidden'));
+    byId('learningRouteView')?.classList.remove('hidden');
+    window.scrollTo({top:0,behavior:'smooth'});
+    await renderLearningRoutes2040(routeId);
+  }
+  async function goTerm2040(term){
+    term=String(term||'').trim();
+    await ensureTerms2040();
+    if(typeof route==='function') route('terminologyGlossary');
+    else {document.querySelectorAll('.view').forEach(v=>v.classList.add('hidden')); byId('terminologyGlossaryView')?.classList.remove('hidden');}
+    setTimeout(()=>{
+      const input=byId('termSearchInput'); if(input){input.value=term; input.dispatchEvent(new Event('input',{bubbles:true}));}
+      if(typeof renderTerms==='function') try{renderTerms();}catch(e){}
+      setTimeout(()=>{const first=document.querySelector('#termGlossaryList details,#termGlossaryList .term-card,#termGlossaryList tr:nth-child(2)'); if(first){if(first.tagName==='DETAILS')first.open=true; first.scrollIntoView({behavior:'smooth',block:'center'});}},180);
+    },120);
+  }
+  function patchGlobals2040(){
+    window.renderLearningRoutes=renderLearningRoutes2040;
+    window.__paliRenderLearningRoutes2040=renderLearningRoutes2040;
+    const oldOpen=window.openLesson;
+    if(typeof oldOpen==='function' && !oldOpen.__patched2040){
+      window.openLesson=function(){const r=oldOpen.apply(this,arguments); setTimeout(polishLesson2040,80); setTimeout(polishLesson2040,260); return r;};
+      window.openLesson.__patched2040=true;
+    }
+  }
+  document.addEventListener('click',function(e){
+    const lr=e.target.closest('[data-action="learningRoute"]');
+    if(lr){e.preventDefault(); e.stopImmediatePropagation(); openLearningRoute2040('zero'); return;}
+    const tab=e.target.closest('[data-route-tab-2040]');
+    if(tab){e.preventDefault(); e.stopImmediatePropagation(); renderLearningRoutes2040(tab.dataset.routeTab2040); return;}
+    const lesson=e.target.closest('[data-route-lesson]');
+    if(lesson){e.preventDefault(); e.stopImmediatePropagation(); ensureGrammarIndex2040().then(()=>{try{window.__paliLastView='learningRouteView';}catch(err){} if(typeof openLesson==='function')openLesson(lesson.dataset.routeLesson);}); return;}
+    const term=e.target.closest('[data-term-jump-2040], [data-term-jump]');
+    if(term){e.preventDefault(); e.stopImmediatePropagation(); goTerm2040(term.dataset.termJump2040 || term.dataset.termJump || term.textContent); return;}
+    setTimeout(()=>{removeInlineTermLinks2040(document.querySelector('.view:not(.hidden)')||document);removeBuddhistRelated2040(document.querySelector('.view:not(.hidden)')||document);},200);
+  },true);
+  function boot2040(){setIdentity2040(); patchGlobals2040(); cleanupIPA2040(document); removeInlineTermLinks2040(document); removeBuddhistRelated2040(document); setTimeout(()=>{setIdentity2040();patchGlobals2040();cleanupIPA2040(document);removeInlineTermLinks2040(document);},600);}
+  window.addEventListener('DOMContentLoaded',boot2040);
+  window.addEventListener('load',boot2040);
+  setInterval(()=>{const v=document.querySelector('.view:not(.hidden)'); if(v){cleanupIPA2040(v); removeBuddhistRelated2040(v);}},1200);
+  window.__paliFix2040={renderLearningRoutes2040,openLearningRoute2040,goTerm2040,polishLesson2040,extractVocab2040,cleanupIPA2040};
 })();
