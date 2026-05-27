@@ -1,6 +1,6 @@
-/* Pāli Learning Lab · 20.78 佛典阅读与搜索修复版；纯 HTML/CSS/JS；无构建、无 service worker；GitHub Pages 可直接部署。
+/* Pāli Learning Lab · 20.79 语法说明逐课去重版；纯 HTML/CSS/JS；无构建、无 service worker；GitHub Pages 可直接部署。
 */
-const VERSION = '20.78 佛典阅读与搜索修复版';
+const VERSION = '20.79 语法说明逐课去重版';
 const FILE = {
   grammarIndex: 'grammar-index.json',
   manifest: 'grammar-lesson-manifest.json',
@@ -27,7 +27,7 @@ const EXERCISE_SESSION_KEY='pll_exercise_session_v1';
 const SENT_STATUS_KEY='pll_sentence_status_v1';
 const HISTORY_KEY='pll_lookup_history_v1';
 const LAST_LESSON_KEY='pll_last_lesson_v1';
-const PROGRESS_SCHEMA_VERSION='pll-progress-20.78';
+const PROGRESS_SCHEMA_VERSION='pll-progress-20.79';
 const app = document.getElementById('app');
 const cache = new Map();
 let currentPage='home';
@@ -896,7 +896,7 @@ async function drawSearch(q){
 }
 
 
-/* 20.78 佛典阅读与搜索修复版语库、搜索、练习反馈与页面体验。 */
+/* 20.79 语法说明逐课去重版语库、搜索、练习反馈与页面体验。 */
 function dictionarySiteCards(sites){
   const extras=[
     {name:'Digital Pāli Dictionary (DPD)',url:'https://dpdict.net/',level:'词形与构词',best_for:'查词形、构词、派生和英文义项，适合进阶复核。',note:'适合复核词根、词类和复合词。'},
@@ -1313,7 +1313,7 @@ document.addEventListener('click',(e)=>{
 // Initial route
 window.addEventListener('DOMContentLoaded',()=>{ if(app && !app.innerHTML.trim()) app.innerHTML='<div class="card loading">正在加载，请稍候……</div>'; navigate('home',{},false); });
 
-// 20.78 佛典阅读与搜索修复版for dictionary and lookup history.
+// 20.79 语法说明逐课去重版for dictionary and lookup history.
 document.addEventListener('click', (e)=>{
   const a=e.target.closest('[data-action]')?.dataset.action;
   if(a==='clearLookupHistory'){
@@ -1324,7 +1324,7 @@ document.addEventListener('click', (e)=>{
 });
 
 
-/* 20.78 佛典阅读与搜索修复版加变音符号输入表，词典链接自动复制并尽量直达查询。 */
+/* 20.79 语法说明逐课去重版加变音符号输入表，词典链接自动复制并尽量直达查询。 */
 const DICT_QUERY_SITES_2056 = [
   {id:'sutta-dict', name:'巴利字典 Pāli Dictionary', level:'中文优先', best_for:'适合中文学习者快速查基本义。', url:'https://dictionary.sutta.org/', query:'https://dictionary.sutta.org/?q={q}'},
   {id:'dpd', name:'Digital Pāli Dictionary (DPD)', level:'词形与构词', best_for:'适合复核词根、词类、构词和英文义项。', url:'https://dpdict.net/', query:'https://dpdict.net/?q={q}'},
@@ -1381,7 +1381,7 @@ document.addEventListener('click',(e)=>{
   if(dict){e.preventDefault(); openDictionaryQuery2056(dict); return;}
 });
 
-/* 20.78 佛典阅读与搜索修复版不做词形分析，只做字母输入、推荐词形、复制并打开词典。
+/* 20.79 语法说明逐课去重版不做词形分析，只做字母输入、推荐词形、复制并打开词典。
    - 本节单词：名词类词语显示词典形/lemma，不显示主格形式；语法信息只显示性别，如 m. / f. / n.。
    - 本节单词：动词显示现在时第三人称单数形式；语法信息只显示可靠词根，如 √gam。
    - 分词、inf.、ger. 等若可确认，归并到对应现在时第三人称单数；无法确认则不收。
@@ -1635,7 +1635,7 @@ function examplesHTML(lesson){
 }
 
 
-/* ===== 20.78 佛典阅读与搜索修复版：全站词根白名单与句法功能修正 =====
+/* ===== 20.79 语法说明逐课去重版：全站词根白名单与句法功能修正 =====
    原则：词根只来自白名单；ind. 只表示不变词；indic. 表示陈述语气；
    名词/代词/形容词在句子中尽量给出确定格位，不机械显示 nom/acc 或 gen/dat。
 */
@@ -1916,7 +1916,7 @@ function parseSentenceTokens2057(pali){
 }
 
 
-/* 20.78 佛典阅读与搜索修复版：增强系统检查，不改动学习数据。 */
+/* 20.79 语法说明逐课去重版：增强系统检查，不改动学习数据。 */
 const DIAG_ROOT_WHITELIST_2061 = new Set([
   'gam','kar','bhū','as','su','dis','pass','vas','vand','khād','pat','ñā','vac','vad','labh','pac','dā','han','pucch','sikkh','jān','hū','des'
 ]);
@@ -2204,7 +2204,7 @@ document.addEventListener('click', async (e)=>{
 });
 
 
-/* ===== 20.78 佛典阅读与搜索修复版：句子分析页重接管 ===== */
+/* ===== 20.79 语法说明逐课去重版：句子分析页重接管 ===== */
 const SENT_LAST_KEY_2063 = 'pll_sentence_last_v2';
 function sentenceLast2063(){try{return JSON.parse(localStorage.getItem(SENT_LAST_KEY_2063))||{}}catch{return {}}}
 function saveSentenceLast2063(x){try{localStorage.setItem(SENT_LAST_KEY_2063,JSON.stringify(x||{}))}catch(e){}}
@@ -2321,7 +2321,7 @@ document.addEventListener('input', function(e){
   }
 });
 
-/* ===== 20.78 佛典阅读与搜索修复版：课程练习体验重接管 ===== */
+/* ===== 20.79 语法说明逐课去重版：课程练习体验重接管 ===== */
 const EXERCISE_SESSION_KEY_2065 = 'pll_exercise_session_v2065';
 function exerciseId2065(ex,idx){return String(ex?.id||`${ex?.lesson_id||'lesson'}_${idx}_${ex?.question||''}`).slice(0,180)}
 function exerciseAnswers2065(){return Array.isArray(currentExerciseMeta?.answers)?currentExerciseMeta.answers:[]}
@@ -2442,7 +2442,7 @@ document.addEventListener('click', function(e){
   }
 }, true);
 
-/* ===== 20.78 佛典阅读与搜索修复版：统一搜索页面与分类结果 ===== */
+/* ===== 20.79 语法说明逐课去重版：统一搜索页面与分类结果 ===== */
 function searchBlob2066(obj){
   try{return JSON.stringify(obj||{}).toLowerCase()}catch{return String(obj||'').toLowerCase()}
 }
@@ -2525,7 +2525,7 @@ document.addEventListener('click', function(e){
 }, true);
 
 
-/* ===== 20.78 佛典阅读与搜索修复版：内容质量诊断重接管 ===== */
+/* ===== 20.79 语法说明逐课去重版：内容质量诊断重接管 ===== */
 const DIAG_ROOT_WHITELIST_2070 = new Set([
   'gam','kar','bhū','as','su','dis','pass','vas','vand','khād','pat','ñā','vac','vad','labh','pac','dā','han','pucch','sikkh','jān','hū','des','ā','i','ñā','rudh','hā','har','sad','ṭhā','bhaj','likh','rakkh','pā','pī','sev','cint','man','sar','gah','gaṇh','āp','āpucch','muc','chid','bandh','sev','vad','brū'
 ]);
@@ -2723,12 +2723,12 @@ async function renderDiagnostics(){
   add('发布验收','路线未找到残留',routeNF===0,routeNF?`发现 ${routeNF} 处“语法点未找到”残留`:'未发现路线未找到残留','若页面实际出现，修 learning-routes-data.js。',routeNF>0);
   const counts={ok:items.filter(x=>x.level==='ok').length,warn:items.filter(x=>x.level==='warn').length,bad:items.filter(x=>x.level==='bad').length}; const report={version:VERSION,generatedAt:new Date().toISOString(),counts,sections,items}; window.__PALI_DIAG_REPORT=report; const plain=plainReport2070(report);
   const priority=`<section class="card"><h2>内容质量优先处理顺序</h2><ol><li>先修异常项：文件缺失、课程无法对应、练习题 lesson_id 错误。</li><li>再修教学准确性：并列格位、ind./indic.、多词根、词根白名单外项目。</li><li>再修课程质量：缺例句、缺解析、目标空泛、常见误判空泛。</li><li>最后修体验问题：IPA 提示废话、冗余相关区块、路线残留文案。</li></ol></section>`;
-  const summary=`<section class="card"><h1>系统检查 / 内容质量诊断</h1><p class="muted">20.78 佛典阅读与搜索修复版：除数据完整性和发布流程外，新增课程目标、例句、练习相关性、词根、缩略语、本节单词质量等检查。它只读取数据，不修改内容。</p><div class="stats"><div class="stat"><strong>${counts.ok}</strong><span>通过</span></div><div class="stat"><strong>${counts.warn}</strong><span>需核查</span></div><div class="stat"><strong>${counts.bad}</strong><span>异常</span></div><div class="stat"><strong>${fileOk}</strong><span>文件已加载</span></div></div><div class="button-row"><button data-action="copyDiag2061">复制检查报告</button><button data-action="downloadDiag2061">下载检查报告</button></div><textarea id="diagReportText" class="diag-report-text" readonly>${text(plain)}</textarea></section>`;
+  const summary=`<section class="card"><h1>系统检查 / 内容质量诊断</h1><p class="muted">20.79 语法说明逐课去重版：除数据完整性和发布流程外，新增课程目标、例句、练习相关性、词根、缩略语、本节单词质量等检查。它只读取数据，不修改内容。</p><div class="stats"><div class="stat"><strong>${counts.ok}</strong><span>通过</span></div><div class="stat"><strong>${counts.warn}</strong><span>需核查</span></div><div class="stat"><strong>${counts.bad}</strong><span>异常</span></div><div class="stat"><strong>${fileOk}</strong><span>文件已加载</span></div></div><div class="button-row"><button data-action="copyDiag2061">复制检查报告</button><button data-action="downloadDiag2061">下载检查报告</button></div><textarea id="diagReportText" class="diag-report-text" readonly>${text(plain)}</textarea></section>`;
   app.innerHTML=`${navControls()}${summary}${diagTable2070('一、数据规模核查',items.filter(x=>x.section==='数据规模'))}${diagTable2070('二、文件加载核查',items.filter(x=>x.section==='文件加载'))}${diagTable2070('三、路由与 ID 对应核查',items.filter(x=>x.section==='路由与 ID'))}${diagTable2070('四、内容质量核查',items.filter(x=>x.section==='内容质量'))}${diagTable2070('五、练习与例句相关性核查',items.filter(x=>x.section==='练习与例句相关性'))}${diagTable2070('六、语法标注与词根核查',items.filter(x=>x.section==='语法标注与词根'))}${diagTable2070('七、本节单词质量核查',items.filter(x=>x.section==='本节单词质量'))}${diagTable2070('八、发布验收核查',items.filter(x=>x.section==='发布验收'))}${priority}${releaseChecklist2069()}`;
 }
 
 
-/* 20.78 佛典阅读与搜索修复版：用受控词表生成“本节单词”，避免误抓、错还原、重复收录。 */
+/* 20.79 语法说明逐课去重版：用受控词表生成“本节单词”，避免误抓、错还原、重复收录。 */
 const PALI_CORE_EXTRA_2073 = {
   // 常见名词
   dāna:{pos:'noun',gender:'n.',meaning:'布施；给予'}, sīla:{pos:'noun',gender:'n.',meaning:'戒；德行'},
@@ -2870,7 +2870,7 @@ async function vocabHTML(lesson,exercises=[]){
 }
 
 
-/* ===== 20.78 佛典阅读与搜索修复版：重接管佛典阅读、搜索、错题入口 ===== */
+/* ===== 20.79 语法说明逐课去重版：重接管佛典阅读、搜索、错题入口 ===== */
 function blob2078(x){
   try{return JSON.stringify(x||'').toLowerCase()}catch{return String(x||'').toLowerCase()}
 }

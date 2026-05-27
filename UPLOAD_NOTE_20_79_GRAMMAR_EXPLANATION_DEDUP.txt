@@ -1,0 +1,5 @@
+Pāli Learning Lab 20.79 语法说明逐课去重版
+
+基于20.78，仅检查并精修课程语法说明（lesson-chunk-01.json 至 lesson-chunk-11.json），合并重复或近似表述，删除泛泛说明；其他功能、页面、数据结构不做改动。
+
+上传：解压后上传全部文件到 GitHub 根目录覆盖同名文件，Actions变绿后访问 cache-reset.html。
