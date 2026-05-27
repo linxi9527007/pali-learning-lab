@@ -1,11 +1,12 @@
-/* Pāli Learning Lab · 1.1 融合稳定版
+/* Pāli Learning Lab · 20.46 融合稳定修复版
    纯 HTML/CSS/JS；无构建、无 service worker；GitHub Pages 可直接部署。
 */
-const VERSION = '1.1 融合稳定版';
+const VERSION = '20.46 融合稳定修复版';
 const FILE = {
   grammarIndex: 'grammar-index.json',
   manifest: 'grammar-lesson-manifest.json',
   moduleIndex: 'module-index.json',
+  moduleDirectory: 'grammar-module-directory.json',
   exercise: 'exercise-index.json',
   search: 'search-index.json',
   routes: ['learning-routes-data.js','LEARNING_ROUTES'],
