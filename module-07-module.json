@@ -1,1 +1,628 @@
-[{"id":52,"title":"na：普通否定词","category":"ind.","module":"不变词与常用句式","level":"基础","difficulty":"基础","status":"已核准","summary":"na 是巴利语最常见的普通否定词之一，通常否定动词、形容词或整个判断，相当于“不、非、没有”。","lesson_number":55,"order_note":"8.1版按“发音—动词—名词—代词—非限定动词—ind.—格位—阅读训练”的学习路径重排。","content_level":"必学","study_tier":"必学","minimal_mastery":["知道 na 是普通否定。","能区分 na 和 mā。","核心对照：na gacchati = 他不去。"],"target_cleanup_status":{"version":"18.0","all_chapters_specific_targets":true,"visible":false},"example_coverage_note":"本课例子已按《na：普通否定词》的核心学习内容重配。","coverage_check_status":{"checked":true,"visible":false,"note":"本项仅供维护核查，不在网站页面显示。"},"exercise_calibration_status":{"version":"17.3","basis":["learning_goal","core_table","must_see_examples"],"visible":false},"exercise_count":7,"card_count":5,"__detailLoaded":false},{"id":53,"title":"mā：禁止否定词","category":"ind.","module":"不变词与常用句式","level":"基础","difficulty":"基础","status":"已核准","summary":"mā 常用于禁止、劝止，相当于“不要、勿”。它不同于普通否定 na。","lesson_number":56,"order_note":"8.1版按“发音—动词—名词—代词—非限定动词—ind.—格位—阅读训练”的学习路径重排。","content_level":"必学","study_tier":"必学","minimal_mastery":["知道 mā 常表示禁止或劝止。","能区分 mā 和普通否定 na。","核心对照：mā gaccha = 不要去。"],"target_cleanup_status":{"version":"18.0","all_chapters_specific_targets":true,"visible":false},"example_coverage_note":"本课例子已按《mā：禁止否定词》的核心学习内容重配。","coverage_check_status":{"checked":true,"visible":false,"note":"本项仅供维护核查，不在网站页面显示。"},"exercise_calibration_status":{"version":"17.3","basis":["learning_goal","core_table","must_see_examples"],"visible":false},"exercise_count":7,"card_count":5,"__detailLoaded":false},{"id":54,"title":"ca：并列连接词","category":"ind.","module":"不变词与常用句式","level":"基础","difficulty":"基础","status":"已核准","summary":"ca 是非常常见的并列连接词，相当于“和、并且、又”。它通常放在被连接成分之后。","lesson_number":57,"order_note":"8.1版按“发音—动词—名词—代词—非限定动词—ind.—格位—阅读训练”的学习路径重排。","content_level":"必学","study_tier":"必学","minimal_mastery":["知道 ca 常后置，表示并列。","A ca B ca 可先理解为“A 和 B”。","不要按汉语“和”的位置寻找 ca。"],"target_cleanup_status":{"version":"18.0","all_chapters_specific_targets":true,"visible":false},"example_coverage_note":"本课例子已按《ca：并列连接词》的核心学习内容重配。","coverage_check_status":{"checked":true,"visible":false,"note":"本项仅供维护核查，不在网站页面显示。"},"exercise_calibration_status":{"version":"17.3","basis":["learning_goal","core_table","must_see_examples"],"visible":false},"exercise_count":9,"card_count":5,"__detailLoaded":false},{"id":55,"title":"vā：选择连接词","category":"ind.","module":"不变词与常用句式","level":"基础","difficulty":"基础","status":"已核准","summary":"vā 是选择连接词，相当于“或、或者”。和 ca 一样，vā 也常后置。","lesson_number":58,"order_note":"8.1版按“发音—动词—名词—代词—非限定动词—ind.—格位—阅读训练”的学习路径重排。","content_level":"必学","study_tier":"必学","minimal_mastery":["知道 vā 常后置，表示选择。","A vā B vā 可先理解为“A 或 B”。","不要把 vā 和 ca 混用。"],"target_cleanup_status":{"version":"18.0","all_chapters_specific_targets":true,"visible":false},"example_coverage_note":"本课例子已按《vā：选择连接词》的核心学习内容重配。","coverage_check_status":{"checked":true,"visible":false,"note":"本项仅供维护核查，不在网站页面显示。"},"exercise_calibration_status":{"version":"17.3","basis":["learning_goal","core_table","must_see_examples"],"visible":false},"exercise_count":9,"card_count":5,"__detailLoaded":false},{"id":56,"title":"eva / yeva：强调与限定","category":"ind.","module":"不变词与常用句式","level":"基础","difficulty":"基础","status":"已核准","summary":"eva 是常见强调词，可表示“正是、恰恰、仅仅、确实”。yeva 是 eva 的连读相关形式之一。","lesson_number":59,"order_note":"8.1版按“发音—动词—名词—代词—非限定动词—ind.—格位—阅读训练”的学习路径重排。","content_level":"必学","study_tier":"必学","minimal_mastery":["掌握本课核心形式。","能用一个例句说明它的基本功能。","遇到不确定用法时，结合句子和词典复核。"],"target_cleanup_status":{"version":"18.0","all_chapters_specific_targets":true,"visible":false},"example_coverage_note":"本课例子已按《eva / yeva：强调与限定》的核心学习内容重配。","coverage_check_status":{"checked":true,"visible":false,"note":"本项仅供维护核查，不在网站页面显示。"},"exercise_calibration_status":{"version":"17.3","basis":["learning_goal","core_table","must_see_examples"],"visible":false},"exercise_count":8,"card_count":5,"__detailLoaded":false},{"id":57,"title":"iti / ti：引语标记","category":"ind.","module":"不变词与常用句式","level":"基础","difficulty":"基础","status":"已核准","summary":"iti 是常见引语标记，可表示“如此、这样说、……曰”。ti 是其缩略或连读形式。","lesson_number":60,"order_note":"8.1版按“发音—动词—名词—代词—非限定动词—ind.—格位—阅读训练”的学习路径重排。","content_level":"必学","study_tier":"必学","minimal_mastery":["知道 iti / ti 常标记引语。","先找它前面的引语内容。","不要把 ti 当成普通实义动词。"],"target_cleanup_status":{"version":"18.0","all_chapters_specific_targets":true,"visible":false},"example_coverage_note":"本课例子已按《iti / ti：引语标记》的核心学习内容重配。","coverage_check_status":{"checked":true,"visible":false,"note":"本项仅供维护核查，不在网站页面显示。"},"exercise_calibration_status":{"version":"17.3","basis":["learning_goal","core_table","must_see_examples"],"visible":false},"exercise_count":9,"card_count":5,"__detailLoaded":false},{"id":58,"title":"kho / pana / hi：常见语气与衔接词","category":"ind.","module":"不变词与常用句式","level":"进阶基础","difficulty":"进阶基础","status":"已核准","summary":"kho、pana、hi 都是常见ind.，用于语气强调、话题推进、解释说明等。它们常不宜硬译。","lesson_number":61,"order_note":"8.1版按“发音—动词—名词—代词—非限定动词—ind.—格位—阅读训练”的学习路径重排。","content_level":"进阶","study_tier":"选学","minimal_mastery":["掌握本课核心形式。","能用一个例句说明它的基本功能。","遇到不确定用法时，结合句子和词典复核。"],"target_cleanup_status":{"version":"18.0","all_chapters_specific_targets":true,"visible":false},"example_coverage_note":"本课例子已按《kho / pana / hi：常见语气与衔接词》的核心学习内容重配。","coverage_check_status":{"checked":true,"visible":false,"note":"本项仅供维护核查，不在网站页面显示。"},"exercise_calibration_status":{"version":"17.3","basis":["learning_goal","core_table","must_see_examples"],"visible":false},"exercise_count":8,"card_count":5,"__detailLoaded":false},{"id":60,"title":"yo...so...：关系—指示结构","category":"复合句","module":"不变词与常用句式","level":"进阶基础","difficulty":"进阶基础","status":"已核准","summary":"yo...so... 是常见关系—指示结构，可理解为“凡……者，他/那……”。关系代词 yo 与指示代词 so 相互呼应。","lesson_number":62,"order_note":"8.1版按“发音—动词—名词—代词—非限定动词—ind.—格位—阅读训练”的学习路径重排。","content_level":"进阶","study_tier":"选学","minimal_mastery":["知道 yo 与 so 常形成关系—指示呼应。","先整体理解为“凡……者，他……”。","不要孤立翻译 yo 或 so。"],"target_cleanup_status":{"version":"18.0","all_chapters_specific_targets":true,"visible":false},"example_coverage_note":"本课例子已按《yo...so...：关系—指示结构》的核心学习内容重配。","coverage_check_status":{"checked":true,"visible":false,"note":"本项仅供维护核查，不在网站页面显示。"},"exercise_calibration_status":{"version":"17.3","basis":["learning_goal","core_table","must_see_examples"],"visible":false},"exercise_count":9,"card_count":5,"__detailLoaded":false},{"id":61,"title":"yadā...tadā...：时间关联结构","category":"复合句","module":"不变词与常用句式","level":"进阶基础","difficulty":"进阶基础","status":"已核准","summary":"yadā...tadā... 表示时间关联，可理解为“当……时，那时……”。","lesson_number":63,"order_note":"8.1版按“发音—动词—名词—代词—非限定动词—ind.—格位—阅读训练”的学习路径重排。","content_level":"进阶","study_tier":"选学","minimal_mastery":["掌握本课核心形式。","能用一个例句说明它的基本功能。","遇到不确定用法时，结合句子和词典复核。"],"target_cleanup_status":{"version":"18.0","all_chapters_specific_targets":true,"visible":false},"example_coverage_note":"本课例子已按《yadā...tadā...：时间关联结构》的核心学习内容重配。","coverage_check_status":{"checked":true,"visible":false,"note":"本项仅供维护核查，不在网站页面显示。"},"exercise_calibration_status":{"version":"17.3","basis":["learning_goal","core_table","must_see_examples"],"visible":false},"exercise_count":9,"card_count":5,"__detailLoaded":false},{"id":62,"title":"yattha...tattha...：地点关联结构","category":"复合句","module":"不变词与常用句式","level":"进阶基础","difficulty":"进阶基础","status":"已核准","summary":"yattha...tattha... 表示地点关联，可理解为“在何处……，在那里……”。","lesson_number":64,"order_note":"8.1版按“发音—动词—名词—代词—非限定动词—ind.—格位—阅读训练”的学习路径重排。","content_level":"进阶","study_tier":"选学","minimal_mastery":["掌握本课核心形式。","能用一个例句说明它的基本功能。","遇到不确定用法时，结合句子和词典复核。"],"target_cleanup_status":{"version":"18.0","all_chapters_specific_targets":true,"visible":false},"example_coverage_note":"本课例子已按《yattha...tattha...：地点关联结构》的核心学习内容重配。","coverage_check_status":{"checked":true,"visible":false,"note":"本项仅供维护核查，不在网站页面显示。"},"exercise_calibration_status":{"version":"17.3","basis":["learning_goal","core_table","must_see_examples"],"visible":false},"exercise_count":9,"card_count":5,"__detailLoaded":false},{"id":63,"title":"yathā...tathā...：方式关联结构","category":"复合句","module":"不变词与常用句式","level":"进阶基础","difficulty":"进阶基础","status":"已核准","summary":"yathā...tathā... 表示方式或相似关系，可理解为“如……那样”。","lesson_number":65,"order_note":"8.1版按“发音—动词—名词—代词—非限定动词—ind.—格位—阅读训练”的学习路径重排。","content_level":"进阶","study_tier":"选学","minimal_mastery":["掌握本课核心形式。","能用一个例句说明它的基本功能。","遇到不确定用法时，结合句子和词典复核。"],"target_cleanup_status":{"version":"18.0","all_chapters_specific_targets":true,"visible":false},"example_coverage_note":"本课例子已按《yathā...tathā...：方式关联结构》的核心学习内容重配。","coverage_check_status":{"checked":true,"visible":false,"note":"本项仅供维护核查，不在网站页面显示。"},"exercise_calibration_status":{"version":"17.3","basis":["learning_goal","core_table","must_see_examples"],"visible":false},"exercise_count":9,"card_count":5,"__detailLoaded":false},{"id":64,"title":"yāva...tāva...：直到、只要、范围关联","category":"复合句","module":"不变词与常用句式","level":"进阶基础","difficulty":"进阶基础","status":"已核准","summary":"yāva...tāva... 可表示时间、程度或范围的关联，常理解为“直到……时、只要……就、至于……”。","lesson_number":66,"order_note":"8.1版按“发音—动词—名词—代词—非限定动词—ind.—格位—阅读训练”的学习路径重排。","content_level":"进阶","study_tier":"选学","minimal_mastery":["掌握本课核心形式。","能用一个例句说明它的基本功能。","遇到不确定用法时，结合句子和词典复核。"],"target_cleanup_status":{"version":"18.0","all_chapters_specific_targets":true,"visible":false},"example_coverage_note":"本课例子已按《yāva...tāva...：直到、只要、范围关联》的核心学习内容重配。","coverage_check_status":{"checked":true,"visible":false,"note":"本项仅供维护核查，不在网站页面显示。"},"exercise_calibration_status":{"version":"17.3","basis":["learning_goal","core_table","must_see_examples"],"visible":false},"exercise_count":9,"card_count":5,"__detailLoaded":false},{"id":87,"title":"复习专题五：ind.与句型信号","category":"复习专题","module":"不变词与常用句式","level":"复习","difficulty":"复习","status":"教学复习专题","summary":"集中复习 na、mā、ca、vā、eva、iti/ti、kho、pana、hi 等高频ind.。","lesson_number":87,"content_level":"复习","study_tier":"选学","minimal_mastery":["掌握本课核心形式。","能用一个例句说明它的基本功能。","遇到不确定用法时，结合句子和词典复核。"],"target_cleanup_status":{"version":"18.0","all_chapters_specific_targets":true,"visible":false},"example_coverage_note":"本课例子应覆盖该章主要形式、功能和易混点；后续修改需保持例子与章节内容对应。","coverage_check_status":{"checked":true,"visible":false,"note":"本项仅供维护核查，不在网站页面显示。"},"exercise_calibration_status":{"version":"17.3","basis":["learning_goal","core_table","must_see_examples"],"visible":false},"exercise_count":10,"card_count":3,"__detailLoaded":false},{"id":94,"title":"阶段测验五：ind.、关联句与阅读信号","category":"阶段测验","module":"不变词与常用句式","level":"测验","difficulty":"阶段测验","status":"教学测验专题","summary":"检测学生是否能识别高频ind.、否定、引语、并列、选择和关联句。","lesson_number":94,"content_level":"阶段测验","study_tier":"选学","minimal_mastery":["掌握本课核心形式。","能用一个例句说明它的基本功能。","遇到不确定用法时，结合句子和词典复核。"],"target_cleanup_status":{"version":"18.0","all_chapters_specific_targets":true,"visible":false},"example_coverage_note":"本课例子已按《阶段测验五：ind.、关联句与阅读信号》的核心学习内容重配。","coverage_check_status":{"checked":true,"visible":false,"note":"本项仅供维护核查，不在网站页面显示。"},"exercise_calibration_status":{"version":"17.3","basis":["learning_goal","core_table","must_see_examples"],"visible":false},"exercise_count":10,"card_count":2,"__detailLoaded":false}]
+[
+  {
+    "id": 52,
+    "title": "na：普通否定词",
+    "category": "ind.",
+    "module": "不变词与常用句式",
+    "level": "基础",
+    "difficulty": "基础",
+    "status": "已核准",
+    "summary": "na 是普通否定词，用于否定动词、形容词或判断。",
+    "lesson_number": 55,
+    "order_note": "8.1版按“发音—动词—名词—代词—非限定动词—ind.—格位—阅读训练”的学习路径重排。",
+    "content_level": "必学",
+    "study_tier": "必学",
+    "minimal_mastery": [
+      "能识别 na 表普通否定。",
+      "能区分 na 和 mā。",
+      "能在短句中判断 na 否定的对象。"
+    ],
+    "target_cleanup_status": {
+      "version": "18.0",
+      "all_chapters_specific_targets": true,
+      "visible": false
+    },
+    "example_coverage_note": "本课例子已按《na：普通否定词》的核心学习内容重配。",
+    "coverage_check_status": {
+      "checked": true,
+      "visible": false,
+      "note": "本项仅供维护核查，不在网站页面显示。"
+    },
+    "exercise_calibration_status": {
+      "version": "17.3",
+      "basis": [
+        "learning_goal",
+        "core_table",
+        "must_see_examples"
+      ],
+      "visible": false
+    },
+    "exercise_count": 7,
+    "card_count": 5,
+    "__detailLoaded": false,
+    "learning_goals": [
+      "能识别 na 表普通否定。",
+      "能区分 na 和 mā。",
+      "能在短句中判断 na 否定的对象。"
+    ],
+    "common_mistakes": [
+      "把 na 和 mā 混用；na 是普通否定，mā 常用于禁止。",
+      "看到 na 只机械译“不”，不判断它否定的是动词还是判断。",
+      "把 natthi 与 na atthi 的关系完全割裂。"
+    ]
+  },
+  {
+    "id": 53,
+    "title": "mā：禁止否定词",
+    "category": "ind.",
+    "module": "不变词与常用句式",
+    "level": "基础",
+    "difficulty": "基础",
+    "status": "已核准",
+    "summary": "mā 常用于禁止、劝止，基本义为“不要、勿”。",
+    "lesson_number": 56,
+    "order_note": "8.1版按“发音—动词—名词—代词—非限定动词—ind.—格位—阅读训练”的学习路径重排。",
+    "content_level": "必学",
+    "study_tier": "必学",
+    "minimal_mastery": [
+      "能识别 mā 表禁止否定。",
+      "能区分 mā 和普通否定 na。",
+      "能理解 mā 后动词表示被禁止的动作。"
+    ],
+    "target_cleanup_status": {
+      "version": "18.0",
+      "all_chapters_specific_targets": true,
+      "visible": false
+    },
+    "example_coverage_note": "本课例子已按《mā：禁止否定词》的核心学习内容重配。",
+    "coverage_check_status": {
+      "checked": true,
+      "visible": false,
+      "note": "本项仅供维护核查，不在网站页面显示。"
+    },
+    "exercise_calibration_status": {
+      "version": "17.3",
+      "basis": [
+        "learning_goal",
+        "core_table",
+        "must_see_examples"
+      ],
+      "visible": false
+    },
+    "exercise_count": 7,
+    "card_count": 5,
+    "__detailLoaded": false,
+    "learning_goals": [
+      "能识别 mā 表禁止否定。",
+      "能区分 mā 和普通否定 na。",
+      "能理解 mā 后动词表示被禁止的动作。"
+    ],
+    "common_mistakes": [
+      "把 mā 当普通否定 na 使用。",
+      "只按中文“不”理解，忽略 mā 的禁止语气。",
+      "不看 mā 后动词形式，无法识别禁令结构。"
+    ]
+  },
+  {
+    "id": 54,
+    "title": "ca：并列连接词",
+    "category": "ind.",
+    "module": "不变词与常用句式",
+    "level": "基础",
+    "difficulty": "基础",
+    "status": "已核准",
+    "summary": "ca 是后置并列连接词，常表示“和、也”。",
+    "lesson_number": 57,
+    "order_note": "8.1版按“发音—动词—名词—代词—非限定动词—ind.—格位—阅读训练”的学习路径重排。",
+    "content_level": "必学",
+    "study_tier": "必学",
+    "minimal_mastery": [
+      "能识别 ca 的后置并列功能。",
+      "能理解 A ca B ca 的并列结构。",
+      "能避免按汉语“和”的前置位置误读。"
+    ],
+    "target_cleanup_status": {
+      "version": "18.0",
+      "all_chapters_specific_targets": true,
+      "visible": false
+    },
+    "example_coverage_note": "本课例子已按《ca：并列连接词》的核心学习内容重配。",
+    "coverage_check_status": {
+      "checked": true,
+      "visible": false,
+      "note": "本项仅供维护核查，不在网站页面显示。"
+    },
+    "exercise_calibration_status": {
+      "version": "17.3",
+      "basis": [
+        "learning_goal",
+        "core_table",
+        "must_see_examples"
+      ],
+      "visible": false
+    },
+    "exercise_count": 9,
+    "card_count": 5,
+    "__detailLoaded": false,
+    "learning_goals": [
+      "能识别 ca 的后置并列功能。",
+      "能理解 A ca B ca 的并列结构。",
+      "能避免按汉语“和”的前置位置误读。"
+    ],
+    "common_mistakes": [
+      "把 ca 按汉语“和”的位置前置理解。",
+      "漏看第二个 ca，导致并列范围判断不完整。",
+      "把 ca 当可变格词处理；ca 是 ind. 不变词。"
+    ]
+  },
+  {
+    "id": 55,
+    "title": "vā：选择连接词",
+    "category": "ind.",
+    "module": "不变词与常用句式",
+    "level": "基础",
+    "difficulty": "基础",
+    "status": "已核准",
+    "summary": "vā 是选择连接词，常表示“或、或者”。",
+    "lesson_number": 58,
+    "order_note": "8.1版按“发音—动词—名词—代词—非限定动词—ind.—格位—阅读训练”的学习路径重排。",
+    "content_level": "必学",
+    "study_tier": "必学",
+    "minimal_mastery": [
+      "能识别 vā 的选择功能。",
+      "能理解 A vā B vā 的选择结构。",
+      "能区分 vā 与 ca 的并列功能。"
+    ],
+    "target_cleanup_status": {
+      "version": "18.0",
+      "all_chapters_specific_targets": true,
+      "visible": false
+    },
+    "example_coverage_note": "本课例子已按《vā：选择连接词》的核心学习内容重配。",
+    "coverage_check_status": {
+      "checked": true,
+      "visible": false,
+      "note": "本项仅供维护核查，不在网站页面显示。"
+    },
+    "exercise_calibration_status": {
+      "version": "17.3",
+      "basis": [
+        "learning_goal",
+        "core_table",
+        "must_see_examples"
+      ],
+      "visible": false
+    },
+    "exercise_count": 9,
+    "card_count": 5,
+    "__detailLoaded": false,
+    "learning_goals": [
+      "能识别 vā 的选择功能。",
+      "能理解 A vā B vā 的选择结构。",
+      "能区分 vā 与 ca 的并列功能。"
+    ],
+    "common_mistakes": [
+      "把 vā 误解为 ca；vā 是选择，ca 是并列。",
+      "忽略 vā 后置特点，误判选择范围。",
+      "只看到一个 vā，漏掉成对结构中的另一个选择项。"
+    ]
+  },
+  {
+    "id": 56,
+    "title": "eva / yeva：强调与限定",
+    "category": "ind.",
+    "module": "不变词与常用句式",
+    "level": "基础",
+    "difficulty": "基础",
+    "status": "已核准",
+    "summary": "eva 是常见强调词，可表示“正是、恰恰、仅仅、确实”。yeva 是 eva 的连读相关形式之一。",
+    "lesson_number": 59,
+    "order_note": "8.1版按“发音—动词—名词—代词—非限定动词—ind.—格位—阅读训练”的学习路径重排。",
+    "content_level": "必学",
+    "study_tier": "必学",
+    "minimal_mastery": [
+      "掌握本课核心形式。",
+      "能用一个例句说明它的基本功能。",
+      "遇到不确定用法时，结合句子和词典复核。"
+    ],
+    "target_cleanup_status": {
+      "version": "18.0",
+      "all_chapters_specific_targets": true,
+      "visible": false
+    },
+    "example_coverage_note": "本课例子已按《eva / yeva：强调与限定》的核心学习内容重配。",
+    "coverage_check_status": {
+      "checked": true,
+      "visible": false,
+      "note": "本项仅供维护核查，不在网站页面显示。"
+    },
+    "exercise_calibration_status": {
+      "version": "17.3",
+      "basis": [
+        "learning_goal",
+        "core_table",
+        "must_see_examples"
+      ],
+      "visible": false
+    },
+    "exercise_count": 8,
+    "card_count": 5,
+    "__detailLoaded": false
+  },
+  {
+    "id": 57,
+    "title": "iti / ti：引语标记",
+    "category": "ind.",
+    "module": "不变词与常用句式",
+    "level": "基础",
+    "difficulty": "基础",
+    "status": "已核准",
+    "summary": "iti 是常见引语标记，可表示“如此、这样说、……曰”。ti 是其缩略或连读形式。",
+    "lesson_number": 60,
+    "order_note": "8.1版按“发音—动词—名词—代词—非限定动词—ind.—格位—阅读训练”的学习路径重排。",
+    "content_level": "必学",
+    "study_tier": "必学",
+    "minimal_mastery": [
+      "知道 iti / ti 常标记引语。",
+      "先找它前面的引语内容。",
+      "不要把 ti 当成普通实义动词。"
+    ],
+    "target_cleanup_status": {
+      "version": "18.0",
+      "all_chapters_specific_targets": true,
+      "visible": false
+    },
+    "example_coverage_note": "本课例子已按《iti / ti：引语标记》的核心学习内容重配。",
+    "coverage_check_status": {
+      "checked": true,
+      "visible": false,
+      "note": "本项仅供维护核查，不在网站页面显示。"
+    },
+    "exercise_calibration_status": {
+      "version": "17.3",
+      "basis": [
+        "learning_goal",
+        "core_table",
+        "must_see_examples"
+      ],
+      "visible": false
+    },
+    "exercise_count": 9,
+    "card_count": 5,
+    "__detailLoaded": false
+  },
+  {
+    "id": 58,
+    "title": "kho / pana / hi：常见语气与衔接词",
+    "category": "ind.",
+    "module": "不变词与常用句式",
+    "level": "进阶基础",
+    "difficulty": "进阶基础",
+    "status": "已核准",
+    "summary": "kho、pana、hi 都是常见ind.，用于语气强调、话题推进、解释说明等。它们常不宜硬译。",
+    "lesson_number": 61,
+    "order_note": "8.1版按“发音—动词—名词—代词—非限定动词—ind.—格位—阅读训练”的学习路径重排。",
+    "content_level": "进阶",
+    "study_tier": "选学",
+    "minimal_mastery": [
+      "掌握本课核心形式。",
+      "能用一个例句说明它的基本功能。",
+      "遇到不确定用法时，结合句子和词典复核。"
+    ],
+    "target_cleanup_status": {
+      "version": "18.0",
+      "all_chapters_specific_targets": true,
+      "visible": false
+    },
+    "example_coverage_note": "本课例子已按《kho / pana / hi：常见语气与衔接词》的核心学习内容重配。",
+    "coverage_check_status": {
+      "checked": true,
+      "visible": false,
+      "note": "本项仅供维护核查，不在网站页面显示。"
+    },
+    "exercise_calibration_status": {
+      "version": "17.3",
+      "basis": [
+        "learning_goal",
+        "core_table",
+        "must_see_examples"
+      ],
+      "visible": false
+    },
+    "exercise_count": 8,
+    "card_count": 5,
+    "__detailLoaded": false
+  },
+  {
+    "id": 60,
+    "title": "yo...so...：关系—指示结构",
+    "category": "复合句",
+    "module": "不变词与常用句式",
+    "level": "进阶基础",
+    "difficulty": "进阶基础",
+    "status": "已核准",
+    "summary": "yo...so... 是常见关系—指示结构，可理解为“凡……者，他/那……”。关系代词 yo 与指示代词 so 相互呼应。",
+    "lesson_number": 62,
+    "order_note": "8.1版按“发音—动词—名词—代词—非限定动词—ind.—格位—阅读训练”的学习路径重排。",
+    "content_level": "进阶",
+    "study_tier": "选学",
+    "minimal_mastery": [
+      "知道 yo 与 so 常形成关系—指示呼应。",
+      "先整体理解为“凡……者，他……”。",
+      "不要孤立翻译 yo 或 so。"
+    ],
+    "target_cleanup_status": {
+      "version": "18.0",
+      "all_chapters_specific_targets": true,
+      "visible": false
+    },
+    "example_coverage_note": "本课例子已按《yo...so...：关系—指示结构》的核心学习内容重配。",
+    "coverage_check_status": {
+      "checked": true,
+      "visible": false,
+      "note": "本项仅供维护核查，不在网站页面显示。"
+    },
+    "exercise_calibration_status": {
+      "version": "17.3",
+      "basis": [
+        "learning_goal",
+        "core_table",
+        "must_see_examples"
+      ],
+      "visible": false
+    },
+    "exercise_count": 9,
+    "card_count": 5,
+    "__detailLoaded": false
+  },
+  {
+    "id": 61,
+    "title": "yadā...tadā...：时间关联结构",
+    "category": "复合句",
+    "module": "不变词与常用句式",
+    "level": "进阶基础",
+    "difficulty": "进阶基础",
+    "status": "已核准",
+    "summary": "yadā...tadā... 表示时间关联，可理解为“当……时，那时……”。",
+    "lesson_number": 63,
+    "order_note": "8.1版按“发音—动词—名词—代词—非限定动词—ind.—格位—阅读训练”的学习路径重排。",
+    "content_level": "进阶",
+    "study_tier": "选学",
+    "minimal_mastery": [
+      "掌握本课核心形式。",
+      "能用一个例句说明它的基本功能。",
+      "遇到不确定用法时，结合句子和词典复核。"
+    ],
+    "target_cleanup_status": {
+      "version": "18.0",
+      "all_chapters_specific_targets": true,
+      "visible": false
+    },
+    "example_coverage_note": "本课例子已按《yadā...tadā...：时间关联结构》的核心学习内容重配。",
+    "coverage_check_status": {
+      "checked": true,
+      "visible": false,
+      "note": "本项仅供维护核查，不在网站页面显示。"
+    },
+    "exercise_calibration_status": {
+      "version": "17.3",
+      "basis": [
+        "learning_goal",
+        "core_table",
+        "must_see_examples"
+      ],
+      "visible": false
+    },
+    "exercise_count": 9,
+    "card_count": 5,
+    "__detailLoaded": false
+  },
+  {
+    "id": 62,
+    "title": "yattha...tattha...：地点关联结构",
+    "category": "复合句",
+    "module": "不变词与常用句式",
+    "level": "进阶基础",
+    "difficulty": "进阶基础",
+    "status": "已核准",
+    "summary": "yattha...tattha... 表示地点关联，可理解为“在何处……，在那里……”。",
+    "lesson_number": 64,
+    "order_note": "8.1版按“发音—动词—名词—代词—非限定动词—ind.—格位—阅读训练”的学习路径重排。",
+    "content_level": "进阶",
+    "study_tier": "选学",
+    "minimal_mastery": [
+      "掌握本课核心形式。",
+      "能用一个例句说明它的基本功能。",
+      "遇到不确定用法时，结合句子和词典复核。"
+    ],
+    "target_cleanup_status": {
+      "version": "18.0",
+      "all_chapters_specific_targets": true,
+      "visible": false
+    },
+    "example_coverage_note": "本课例子已按《yattha...tattha...：地点关联结构》的核心学习内容重配。",
+    "coverage_check_status": {
+      "checked": true,
+      "visible": false,
+      "note": "本项仅供维护核查，不在网站页面显示。"
+    },
+    "exercise_calibration_status": {
+      "version": "17.3",
+      "basis": [
+        "learning_goal",
+        "core_table",
+        "must_see_examples"
+      ],
+      "visible": false
+    },
+    "exercise_count": 9,
+    "card_count": 5,
+    "__detailLoaded": false
+  },
+  {
+    "id": 63,
+    "title": "yathā...tathā...：方式关联结构",
+    "category": "复合句",
+    "module": "不变词与常用句式",
+    "level": "进阶基础",
+    "difficulty": "进阶基础",
+    "status": "已核准",
+    "summary": "yathā...tathā... 表示方式或相似关系，可理解为“如……那样”。",
+    "lesson_number": 65,
+    "order_note": "8.1版按“发音—动词—名词—代词—非限定动词—ind.—格位—阅读训练”的学习路径重排。",
+    "content_level": "进阶",
+    "study_tier": "选学",
+    "minimal_mastery": [
+      "掌握本课核心形式。",
+      "能用一个例句说明它的基本功能。",
+      "遇到不确定用法时，结合句子和词典复核。"
+    ],
+    "target_cleanup_status": {
+      "version": "18.0",
+      "all_chapters_specific_targets": true,
+      "visible": false
+    },
+    "example_coverage_note": "本课例子已按《yathā...tathā...：方式关联结构》的核心学习内容重配。",
+    "coverage_check_status": {
+      "checked": true,
+      "visible": false,
+      "note": "本项仅供维护核查，不在网站页面显示。"
+    },
+    "exercise_calibration_status": {
+      "version": "17.3",
+      "basis": [
+        "learning_goal",
+        "core_table",
+        "must_see_examples"
+      ],
+      "visible": false
+    },
+    "exercise_count": 9,
+    "card_count": 5,
+    "__detailLoaded": false
+  },
+  {
+    "id": 64,
+    "title": "yāva...tāva...：直到、只要、范围关联",
+    "category": "复合句",
+    "module": "不变词与常用句式",
+    "level": "进阶基础",
+    "difficulty": "进阶基础",
+    "status": "已核准",
+    "summary": "yāva...tāva... 可表示时间、程度或范围的关联，常理解为“直到……时、只要……就、至于……”。",
+    "lesson_number": 66,
+    "order_note": "8.1版按“发音—动词—名词—代词—非限定动词—ind.—格位—阅读训练”的学习路径重排。",
+    "content_level": "进阶",
+    "study_tier": "选学",
+    "minimal_mastery": [
+      "掌握本课核心形式。",
+      "能用一个例句说明它的基本功能。",
+      "遇到不确定用法时，结合句子和词典复核。"
+    ],
+    "target_cleanup_status": {
+      "version": "18.0",
+      "all_chapters_specific_targets": true,
+      "visible": false
+    },
+    "example_coverage_note": "本课例子已按《yāva...tāva...：直到、只要、范围关联》的核心学习内容重配。",
+    "coverage_check_status": {
+      "checked": true,
+      "visible": false,
+      "note": "本项仅供维护核查，不在网站页面显示。"
+    },
+    "exercise_calibration_status": {
+      "version": "17.3",
+      "basis": [
+        "learning_goal",
+        "core_table",
+        "must_see_examples"
+      ],
+      "visible": false
+    },
+    "exercise_count": 9,
+    "card_count": 5,
+    "__detailLoaded": false
+  },
+  {
+    "id": 87,
+    "title": "复习专题五：ind.与句型信号",
+    "category": "复习专题",
+    "module": "不变词与常用句式",
+    "level": "复习",
+    "difficulty": "复习",
+    "status": "教学复习专题",
+    "summary": "集中复习 na、mā、ca、vā、eva、iti/ti、kho、pana、hi 等高频ind.。",
+    "lesson_number": 87,
+    "content_level": "复习",
+    "study_tier": "选学",
+    "minimal_mastery": [
+      "掌握本课核心形式。",
+      "能用一个例句说明它的基本功能。",
+      "遇到不确定用法时，结合句子和词典复核。"
+    ],
+    "target_cleanup_status": {
+      "version": "18.0",
+      "all_chapters_specific_targets": true,
+      "visible": false
+    },
+    "example_coverage_note": "本课例子应覆盖该章主要形式、功能和易混点；后续修改需保持例子与章节内容对应。",
+    "coverage_check_status": {
+      "checked": true,
+      "visible": false,
+      "note": "本项仅供维护核查，不在网站页面显示。"
+    },
+    "exercise_calibration_status": {
+      "version": "17.3",
+      "basis": [
+        "learning_goal",
+        "core_table",
+        "must_see_examples"
+      ],
+      "visible": false
+    },
+    "exercise_count": 10,
+    "card_count": 3,
+    "__detailLoaded": false
+  },
+  {
+    "id": 94,
+    "title": "阶段测验五：ind.、关联句与阅读信号",
+    "category": "阶段测验",
+    "module": "不变词与常用句式",
+    "level": "测验",
+    "difficulty": "阶段测验",
+    "status": "教学测验专题",
+    "summary": "检测学生是否能识别高频ind.、否定、引语、并列、选择和关联句。",
+    "lesson_number": 94,
+    "content_level": "阶段测验",
+    "study_tier": "选学",
+    "minimal_mastery": [
+      "掌握本课核心形式。",
+      "能用一个例句说明它的基本功能。",
+      "遇到不确定用法时，结合句子和词典复核。"
+    ],
+    "target_cleanup_status": {
+      "version": "18.0",
+      "all_chapters_specific_targets": true,
+      "visible": false
+    },
+    "example_coverage_note": "本课例子已按《阶段测验五：ind.、关联句与阅读信号》的核心学习内容重配。",
+    "coverage_check_status": {
+      "checked": true,
+      "visible": false,
+      "note": "本项仅供维护核查，不在网站页面显示。"
+    },
+    "exercise_calibration_status": {
+      "version": "17.3",
+      "basis": [
+        "learning_goal",
+        "core_table",
+        "must_see_examples"
+      ],
+      "visible": false
+    },
+    "exercise_count": 10,
+    "card_count": 2,
+    "__detailLoaded": false
+  }
+]

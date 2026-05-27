@@ -1,10 +1,10 @@
 {
-  "name": "巴利语语法复习｜Pāli Learning Lab",
-  "short_name": "Pāli Learning Lab",
+  "name": "Pāli Learning Lab 20.74 练习题质量精修版",
+  "short_name": "Pāli Lab",
   "start_url": "./",
   "scope": "./",
   "display": "browser",
   "background_color": "#f6f7fb",
   "theme_color": "#1f2937",
-  "description": "Pāli Learning Lab 20.55 分板块体验优化版"
+  "description": "Pāli Learning Lab 20.74 练习题质量精修版"
 }

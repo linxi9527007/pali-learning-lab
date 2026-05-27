@@ -1,1 +1,240 @@
-[{"id":65,"title":"巴利语音系：8 个元音与 33 个辅音","category":"语音与拼写","module":"入门与发音","level":"基础","difficulty":"基础","status":"已核准","summary":"巴利语传统字母体系通常列 41 个音：8 个元音和 33 个辅音。本节先掌握转写符号、发音分组和三皈依的基本读法。","lesson_number":1,"order_note":"8.1版按“发音—动词—名词—代词—非后续课程内容—ind.—后续课程内容—阅读训练”的学习路径重排。","content_level":"必学","study_tier":"必学","minimal_mastery":["能说出 8 个元音：a, ā, i, ī, u, ū, e, o。","能按组认读 33 个辅音。","能读写三皈依中的 Buddhaṃ、Dhammaṃ、Saṅghaṃ、saraṇaṃ、gacchāmi。"],"target_cleanup_status":{"version":"18.0","all_chapters_specific_targets":true,"visible":false},"example_coverage_note":"本课例子已按《巴利语音系：8 个元音与 33 个辅音》的核心学习内容重配。","coverage_check_status":{"checked":true,"visible":false,"note":"本项仅供维护核查，不在网站页面显示。"},"exercise_calibration_status":{"version":"17.3","basis":["learning_goal","core_table","must_see_examples"],"visible":false},"exercise_count":10,"card_count":4,"__detailLoaded":false},{"id":44,"title":"连读音变 sandhi：从未连音到连音","category":"连读音变","module":"入门与发音","level":"进阶基础","difficulty":"进阶基础","status":"已核准","summary":"直接对照连音前后的形式变化。","lesson_number":2,"order_note":"8.1版按“发音—动词—名词—代词—非后续语法内容—ind.—后续语法内容—阅读训练”的学习路径重排。","content_level":"进阶","study_tier":"进阶","minimal_mastery":["知道 sandhi 是音与音相接时的变化，不是单一固定公式。","能识别本课列出的常见变化即可，不要求一次背完所有规则。","遇到不确定形式时，先尝试还原，再查词典或教材。"],"target_cleanup_status":{"version":"18.0","all_chapters_specific_targets":true,"visible":false},"example_coverage_note":"本课例子已按《连读音变 sandhi：元音省略与结合》的核心学习内容重配。","coverage_check_status":{"checked":true,"visible":false,"note":"本项仅供维护核查，不在网站页面显示。"},"exercise_calibration_status":{"version":"17.3","basis":["learning_goal","core_table","must_see_examples"],"visible":false},"exercise_count":4,"card_count":4,"__detailLoaded":false},{"id":45,"title":"连读音变 sandhi：ṃ 的同化与变化","category":"连读音变","module":"入门与发音","level":"进阶基础","difficulty":"进阶基础","status":"已核准","summary":"本节学习 ṃ 在不同辅音前的同化现象，重点是能看出鼻音标记与后接音的关系。","lesson_number":3,"order_note":"8.1版按“发音—动词—名词—代词—非后续语法内容—ind.—后续语法内容—阅读训练”的学习路径重排。","content_level":"进阶","study_tier":"进阶","minimal_mastery":["知道 sandhi 是音与音相接时的变化，不是单一固定公式。","能识别本课列出的常见变化即可，不要求一次背完所有规则。","遇到不确定形式时，先尝试还原，再查词典或教材。"],"target_cleanup_status":{"version":"18.0","all_chapters_specific_targets":true,"visible":false},"example_coverage_note":"本课例子已按《连读音变 sandhi：ṃ 的同化与变化》的核心学习内容重配。","coverage_check_status":{"checked":true,"visible":false,"note":"本项仅供维护核查，不在网站页面显示。"},"exercise_calibration_status":{"version":"17.3","basis":["learning_goal","core_table","must_see_examples"],"visible":false},"exercise_count":10,"card_count":5,"__detailLoaded":false},{"id":83,"title":"复习专题一：巴利语转写与读音易错点","category":"复习专题","module":"入门与发音","level":"复习","difficulty":"复习","status":"教学复习专题","summary":"集中复习长短元音、卷舌音、鼻音和 ṃ 等转写符号，避免一开始就把词形看错。","lesson_number":83,"content_level":"复习","study_tier":"选学","minimal_mastery":["掌握本课核心形式。","能用一个例句说明它的基本功能。","遇到不确定用法时，结合句子和词典复核。"],"target_cleanup_status":{"version":"18.0","all_chapters_specific_targets":true,"visible":false},"example_coverage_note":"本课例子应覆盖该章主要形式、功能和易混点；后续修改需保持例子与章节内容对应。","coverage_check_status":{"checked":true,"visible":false,"note":"本项仅供维护核查，不在网站页面显示。"},"exercise_calibration_status":{"version":"17.3","basis":["learning_goal","core_table","must_see_examples"],"visible":false},"exercise_count":9,"card_count":3,"__detailLoaded":false},{"id":90,"title":"阶段测验一：发音与转写","category":"阶段测验","module":"入门与发音","level":"测验","difficulty":"阶段测验","status":"教学测验专题","summary":"检测学生是否能识别巴利语转写中的长元音、鼻音、卷舌音和 ṃ。","lesson_number":90,"content_level":"阶段测验","study_tier":"选学","minimal_mastery":["掌握本课核心形式。","能用一个例句说明它的基本功能。","遇到不确定用法时，结合句子和词典复核。"],"target_cleanup_status":{"version":"18.0","all_chapters_specific_targets":true,"visible":false},"example_coverage_note":"本课例子已按《阶段测验一：发音与转写》的核心学习内容重配。","coverage_check_status":{"checked":true,"visible":false,"note":"本项仅供维护核查，不在网站页面显示。"},"exercise_calibration_status":{"version":"17.3","basis":["learning_goal","core_table","must_see_examples"],"visible":false},"exercise_count":8,"card_count":2,"__detailLoaded":false}]
+[
+  {
+    "id": 65,
+    "title": "巴利语音系：8 个元音与 33 个辅音",
+    "category": "语音与拼写",
+    "module": "入门与发音",
+    "level": "基础",
+    "difficulty": "基础",
+    "status": "已核准",
+    "summary": "掌握巴利语罗马转写中的元音、辅音和常见变音符号，为后续变格、变位和查词打基础。",
+    "lesson_number": 1,
+    "order_note": "8.1版按“发音—动词—名词—代词—非后续课程内容—ind.—后续课程内容—阅读训练”的学习路径重排。",
+    "content_level": "必学",
+    "study_tier": "必学",
+    "minimal_mastery": [
+      "能准确识别 8 个元音和 33 个辅音。",
+      "能区分长短元音和 ṅ、ñ、ṭ、ḍ、ṇ、ḷ、ṃ 等符号。",
+      "能正确抄写三皈依句中的特殊转写符号。"
+    ],
+    "target_cleanup_status": {
+      "version": "18.0",
+      "all_chapters_specific_targets": true,
+      "visible": false
+    },
+    "example_coverage_note": "本课例子已按《巴利语音系：8 个元音与 33 个辅音》的核心学习内容重配。",
+    "coverage_check_status": {
+      "checked": true,
+      "visible": false,
+      "note": "本项仅供维护核查，不在网站页面显示。"
+    },
+    "exercise_calibration_status": {
+      "version": "17.3",
+      "basis": [
+        "learning_goal",
+        "core_table",
+        "must_see_examples"
+      ],
+      "visible": false
+    },
+    "exercise_count": 10,
+    "card_count": 4,
+    "__detailLoaded": false,
+    "learning_goals": [
+      "能准确识别 8 个元音和 33 个辅音。",
+      "能区分长短元音和 ṅ、ñ、ṭ、ḍ、ṇ、ḷ、ṃ 等符号。",
+      "能正确抄写三皈依句中的特殊转写符号。"
+    ],
+    "common_mistakes": [
+      "把 Saṅghaṃ 写成 Sangham，会丢失 ṅ 和 ṃ 两个关键信号。",
+      "把 saraṇaṃ 写成 saranaṃ，会混淆 ṇ 与 n。",
+      "把 ā、ī、ū 简写成 a、i、u，会影响读音和检索。"
+    ]
+  },
+  {
+    "id": 44,
+    "title": "连读音变 sandhi：从未连音到连音",
+    "category": "连读音变",
+    "module": "入门与发音",
+    "level": "进阶基础",
+    "difficulty": "进阶基础",
+    "status": "已核准",
+    "summary": "通过常见例子学习 sandhi 前后形式的对应，重点是能把连音后形式还原。",
+    "lesson_number": 2,
+    "order_note": "8.1版按“发音—动词—名词—代词—非后续语法内容—ind.—后续语法内容—阅读训练”的学习路径重排。",
+    "content_level": "进阶",
+    "study_tier": "进阶",
+    "minimal_mastery": [
+      "能把 ceva、itipi、tepi、natthi 还原为连音前形式。",
+      "能区分连音后形式和独立新词。",
+      "查词前能先尝试还原未连音形式。"
+    ],
+    "target_cleanup_status": {
+      "version": "18.0",
+      "all_chapters_specific_targets": true,
+      "visible": false
+    },
+    "example_coverage_note": "本课例子已按《连读音变 sandhi：元音省略与结合》的核心学习内容重配。",
+    "coverage_check_status": {
+      "checked": true,
+      "visible": false,
+      "note": "本项仅供维护核查，不在网站页面显示。"
+    },
+    "exercise_calibration_status": {
+      "version": "17.3",
+      "basis": [
+        "learning_goal",
+        "core_table",
+        "must_see_examples"
+      ],
+      "visible": false
+    },
+    "exercise_count": 4,
+    "card_count": 4,
+    "__detailLoaded": false,
+    "learning_goals": [
+      "能把 ceva、itipi、tepi、natthi 还原为连音前形式。",
+      "能区分连音后形式和独立新词。",
+      "查词前能先尝试还原未连音形式。"
+    ],
+    "common_mistakes": [
+      "把 ceva、itipi、tepi 当作完全不能拆的新词。",
+      "查词时直接查连音后形式，忽略 ca + eva、iti + api 等还原。",
+      "把 natthi 只看成普通词，而不理解它由 na + atthi 形成。"
+    ]
+  },
+  {
+    "id": 45,
+    "title": "连读音变 sandhi：ṃ 的同化与变化",
+    "category": "连读音变",
+    "module": "入门与发音",
+    "level": "进阶基础",
+    "difficulty": "进阶基础",
+    "status": "已核准",
+    "summary": "学习 ṃ 在不同辅音前可能发生的同化，重点是从变化后形式还原原结构。",
+    "lesson_number": 3,
+    "order_note": "8.1版按“发音—动词—名词—代词—非后续语法内容—ind.—后续语法内容—阅读训练”的学习路径重排。",
+    "content_level": "进阶",
+    "study_tier": "进阶",
+    "minimal_mastery": [
+      "能识别 ṃ 在 c、k/kh、p 等音前的常见变化。",
+      "能把 dhammañca、taṅkho、tampana 还原到原结构。",
+      "能区分 ṃ、ṅ、ñ、m 这些鼻音符号。"
+    ],
+    "target_cleanup_status": {
+      "version": "18.0",
+      "all_chapters_specific_targets": true,
+      "visible": false
+    },
+    "example_coverage_note": "本课例子已按《连读音变 sandhi：ṃ 的同化与变化》的核心学习内容重配。",
+    "coverage_check_status": {
+      "checked": true,
+      "visible": false,
+      "note": "本项仅供维护核查，不在网站页面显示。"
+    },
+    "exercise_calibration_status": {
+      "version": "17.3",
+      "basis": [
+        "learning_goal",
+        "core_table",
+        "must_see_examples"
+      ],
+      "visible": false
+    },
+    "exercise_count": 10,
+    "card_count": 5,
+    "__detailLoaded": false,
+    "learning_goals": [
+      "能识别 ṃ 在 c、k/kh、p 等音前的常见变化。",
+      "能把 dhammañca、taṅkho、tampana 还原到原结构。",
+      "能区分 ṃ、ṅ、ñ、m 这些鼻音符号。"
+    ],
+    "common_mistakes": [
+      "把 dhammañca 当成无法还原的新词。",
+      "把 ṃ、ṅ、ñ、m 都写成同一个符号。",
+      "查词前没有还原 dhammaṃ、taṃ 等基础形式。"
+    ]
+  },
+  {
+    "id": 83,
+    "title": "复习专题一：巴利语转写与读音易错点",
+    "category": "复习专题",
+    "module": "入门与发音",
+    "level": "复习",
+    "difficulty": "复习",
+    "status": "教学复习专题",
+    "summary": "集中复习长短元音、卷舌音、鼻音和 ṃ 等转写符号，避免一开始就把词形看错。",
+    "lesson_number": 83,
+    "content_level": "复习",
+    "study_tier": "选学",
+    "minimal_mastery": [
+      "掌握本课核心形式。",
+      "能用一个例句说明它的基本功能。",
+      "遇到不确定用法时，结合句子和词典复核。"
+    ],
+    "target_cleanup_status": {
+      "version": "18.0",
+      "all_chapters_specific_targets": true,
+      "visible": false
+    },
+    "example_coverage_note": "本课例子应覆盖该章主要形式、功能和易混点；后续修改需保持例子与章节内容对应。",
+    "coverage_check_status": {
+      "checked": true,
+      "visible": false,
+      "note": "本项仅供维护核查，不在网站页面显示。"
+    },
+    "exercise_calibration_status": {
+      "version": "17.3",
+      "basis": [
+        "learning_goal",
+        "core_table",
+        "must_see_examples"
+      ],
+      "visible": false
+    },
+    "exercise_count": 9,
+    "card_count": 3,
+    "__detailLoaded": false
+  },
+  {
+    "id": 90,
+    "title": "阶段测验一：发音与转写",
+    "category": "阶段测验",
+    "module": "入门与发音",
+    "level": "测验",
+    "difficulty": "阶段测验",
+    "status": "教学测验专题",
+    "summary": "检测学生是否能识别巴利语转写中的长元音、鼻音、卷舌音和 ṃ。",
+    "lesson_number": 90,
+    "content_level": "阶段测验",
+    "study_tier": "选学",
+    "minimal_mastery": [
+      "掌握本课核心形式。",
+      "能用一个例句说明它的基本功能。",
+      "遇到不确定用法时，结合句子和词典复核。"
+    ],
+    "target_cleanup_status": {
+      "version": "18.0",
+      "all_chapters_specific_targets": true,
+      "visible": false
+    },
+    "example_coverage_note": "本课例子已按《阶段测验一：发音与转写》的核心学习内容重配。",
+    "coverage_check_status": {
+      "checked": true,
+      "visible": false,
+      "note": "本项仅供维护核查，不在网站页面显示。"
+    },
+    "exercise_calibration_status": {
+      "version": "17.3",
+      "basis": [
+        "learning_goal",
+        "core_table",
+        "must_see_examples"
+      ],
+      "visible": false
+    },
+    "exercise_count": 8,
+    "card_count": 2,
+    "__detailLoaded": false
+  }
+]

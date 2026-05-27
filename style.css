@@ -1,4 +1,4 @@
-/* Pāli Learning Lab · 20.55 checked clean stylesheet */
+/* Pāli Learning Lab · 20.56 checked clean stylesheet */
 :root{
   --bg:#f6f7fb;--card:#ffffff;--ink:#111827;--muted:#6b7280;--line:#e5e7eb;
   --blue:#2563eb;--blue-soft:#dbeafe;--green:#16a34a;--green-soft:#dcfce7;
@@ -27,3 +27,152 @@ button.secondary{background:#64748b;color:#fff}
 
 
 .lookup-card,.lookup-layer{border:1px solid #e5e7eb;border-radius:14px;padding:14px;margin:12px 0;background:#fff}.lookup-layer h4{margin:0 0 8px;color:#111827}.lookup-row{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:8px;border-bottom:1px solid #f3f4f6;padding:8px 0}.lookup-row:last-child{border-bottom:0}.lemma-box{display:inline-block;background:#f8fafc;border:1px solid #d1d5db;border-radius:10px;padding:8px 12px;font-weight:800}.quick-row{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}.small-chip{width:auto;margin:0;padding:7px 10px;border-radius:999px;font-size:14px;background:#eef2ff;color:#1e3a8a}.dict-site h3{margin-bottom:8px}.sentence-card .notice,.notice{background:#fffbeb;border:1px solid #fde68a;border-radius:14px;padding:12px;margin:12px 0;color:#78350f}.search-groups .card.compact{box-shadow:none;border:1px solid #e5e7eb}.ipa-inline{font-weight:600;color:#374151;margin-left:6px}.term-card{border:1px solid #e5e7eb;border-radius:14px;padding:14px;background:#fff}.term-card h3{margin-top:0}.btn{display:inline-block;text-align:center;text-decoration:none;border-radius:12px;padding:10px 12px;font-weight:800}.grid.three{grid-template-columns:repeat(3,1fr)}@media(max-width:760px){.lookup-row{grid-template-columns:1fr}.grid.three{grid-template-columns:1fr}.quick-row .small-chip,.quick-row .concept-btn{flex:1 1 auto}.table-wrap{overflow-x:auto}}
+
+/* 20.56 dictionary panel cleanup */
+.pali-type-helper table{max-width:100%;}
+.pali-type-helper th,.pali-type-helper td{text-align:center;white-space:nowrap;}
+.char-btn{min-width:44px;padding:8px 10px;border:1px solid #d1d5db;background:#fff;border-radius:10px;font-weight:800;cursor:pointer;}
+.char-btn:hover{background:#eff6ff;border-color:#2563eb;}
+.dict-site .btn{display:inline-block;text-decoration:none;text-align:center;margin-top:10px;}
+#lookupStatus{margin-top:12px;}
+
+/* 20.57 dictionary layout and suggestion polish */
+.lookup-layout{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:16px;align-items:start}.lookup-side{background:#f8fafc;border:1px solid #e5e7eb;border-radius:18px;padding:14px}.suggest-box{min-height:42px;background:#f9fafb;border:1px dashed #d1d5db;border-radius:14px;padding:10px;margin:8px 0 12px}.dict-site .btn{display:inline-block;width:auto;margin-top:8px}.char-btn{width:auto;min-width:42px;margin:0;padding:8px 10px}.pali-type-helper table{text-align:center}.pali-type-helper th,.pali-type-helper td{text-align:center;white-space:nowrap}.small-chip{width:auto;margin:4px 6px 4px 0;padding:7px 10px;border-radius:999px;font-size:14px}.hidden{display:none!important}@media(max-width:760px){.lookup-layout{grid-template-columns:1fr}.lookup-side{order:2}}
+
+/* 20.60 diagnostics */
+.diag-table td:first-child{font-weight:800;min-width:180px}.diag-badge{display:inline-block;border-radius:999px;padding:3px 9px;font-size:12px;font-weight:800}.diag-badge.ok{background:#dcfce7;color:#166534}.diag-badge.warn{background:#fef3c7;color:#854d0e}.diag-badge.bad{background:#fee2e2;color:#991b1b}.diag-table td:nth-child(2){width:90px;white-space:nowrap}.diag-table td:nth-child(3){word-break:break-word}
+
+
+/* 20.61 diagnostics enhancement */
+.diag-table-wide th{background:#f8fafc;color:#111827;text-align:left}
+.diag-table-wide td:nth-child(1){font-weight:800;min-width:160px}
+.diag-table-wide td:nth-child(2){width:92px;white-space:nowrap}
+.diag-table-wide td:nth-child(4){min-width:220px;color:#374151}
+.diag-row.diag-bad{background:#fff7f7}
+.diag-row.diag-warn{background:#fffbeb}
+.diag-report-text{width:100%;min-height:180px;margin-top:12px;border:1px solid #e5e7eb;border-radius:14px;padding:12px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;line-height:1.6;background:#f9fafb;color:#111827}
+
+
+/* 20.63 句子分析分步训练优化 */
+.sentence-workbench .filter-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:12px 0}.sentence-filter-grid label{margin-top:0}.sentence-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}.badge.soft{background:#eef2ff;color:#3730a3}.badge.ok{background:#dcfce7;color:#166534}.badge.warn{background:#fee2e2;color:#991b1b}.sentence-step-row{grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}.sentence-step-panel{border:1px solid #e5e7eb;background:#fff;border-radius:14px;padding:12px;margin:12px 0}.sentence-step-panel h3{margin:0 0 8px;font-size:16px}.compact-block{background:#f9fafb;border-radius:12px;padding:10px;margin:10px 0}.compact-block ol{margin:6px 0 0 20px}.token-table td,.token-table th{font-size:14px}.sentence-main{font-size:22px;font-weight:800;line-height:1.5;margin:12px 0}@media(max-width:760px){.sentence-workbench .filter-grid,.sentence-step-row{grid-template-columns:1fr}.sentence-main{font-size:19px}}
+
+/* 20.65 练习反馈与进度保存版 */
+.terminology-page .term-tools{display:grid;grid-template-columns:minmax(0,2fr) minmax(160px,1fr) auto;gap:10px;align-items:center;margin:14px 0}
+.terminology-page .term-tools input,.terminology-page .term-tools select{margin:0}
+.chip-row{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 14px}
+.mini-chip{width:auto;margin:0;padding:7px 10px;border-radius:999px;font-size:13px;background:#f3f4f6;color:#374151;border:1px solid #e5e7eb}
+.mini-chip:hover{background:#e0f2fe;color:#075985;border-color:#7dd3fc}
+.term-card{background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:16px;margin:12px 0;box-shadow:0 4px 14px rgba(15,23,42,.05)}
+.term-card.term-exact{border-color:#2563eb;box-shadow:0 8px 20px rgba(37,99,235,.12)}
+.term-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.term-head h3{margin:0 0 8px}
+.match-badge{display:inline-block;white-space:nowrap;background:#dbeafe;color:#1d4ed8;border-radius:999px;padding:4px 9px;font-size:12px;font-weight:700}
+.term-aliases{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.tag{display:inline-block;background:#f8fafc;border:1px solid #e5e7eb;border-radius:999px;padding:3px 8px;font-size:12px;color:#374151}
+.term-example{background:#f9fafb;border-left-color:#64748b}
+.small-block{padding:10px;border-radius:12px;margin:10px 0}
+@media(max-width:760px){.terminology-page .term-tools{grid-template-columns:1fr}.term-head{display:block}.match-badge{margin-top:4px}}
+
+/* 20.65 练习反馈与进度保存 */
+.exercise-resume p{margin:.45rem 0 0;line-height:1.7}.exercise-box{border:1px solid #e5e7eb;border-radius:16px;padding:16px;background:#fff}.exercise-box .option{display:block;width:100%;text-align:left;margin:8px 0;padding:12px 14px;border:1px solid #d1d5db;border-radius:12px;background:#f9fafb;cursor:pointer}.exercise-box .option.selected{border-color:#2563eb;background:#eff6ff;font-weight:700}.feedback{margin-top:12px;padding:12px 14px;border-radius:12px;line-height:1.7}.feedback.good{background:#ecfdf5;border:1px solid #bbf7d0}.feedback.bad{background:#fef2f2;border:1px solid #fecaca}button[disabled]{opacity:.55;cursor:not-allowed}
+
+/* 20.69 移动端与视觉统一 */
+.searchbar{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;margin:12px 0}.searchbar input{margin:0}.search-shortcuts button{width:auto;margin:4px 6px 4px 0;padding:7px 10px;border-radius:999px;font-size:14px}.search-group{margin-top:14px}.search-group-head{display:flex;justify-content:space-between;gap:10px;align-items:center;border-bottom:1px solid #e5e7eb;margin-bottom:8px}.count-pill{display:inline-block;background:#eef2ff;color:#1e3a8a;border-radius:999px;padding:2px 8px;font-size:13px}.search-page .result-card h3{margin-bottom:6px}.search-page .result-card{border-left:4px solid #dbeafe}@media(max-width:760px){.searchbar{grid-template-columns:1fr}.search-group-head{display:block}}
+
+/* 20.69 移动端与视觉统一版 */
+textarea#progressText{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;line-height:1.5;min-height:280px}.notice{background:#eff6ff;border:1px solid #bfdbfe;border-radius:14px;padding:12px;margin:12px 0}.danger{background:#dc2626;color:#fff}.success{background:#16a34a;color:#fff}.button-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+
+/* 20.69 移动端与视觉统一版：只调整显示，不改功能逻辑 */
+:root{
+  --space-1:6px;
+  --space-2:10px;
+  --space-3:14px;
+  --space-4:18px;
+  --focus:0 0 0 3px rgba(37,99,235,.28);
+}
+body{font-size:16px;-webkit-text-size-adjust:100%;}
+button,.btn,input,select,textarea{min-height:42px;}
+button:focus-visible,.btn:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:none;box-shadow:var(--focus);}
+.card,.entry-card,.module-card,.lesson-card,.result-card,.term-card,.sentence-card{overflow-wrap:anywhere;}
+.table-wrap{max-width:100%;border-radius:14px;}
+.table-wrap table{min-width:620px;}
+.example,.notice,.exercise-box,.sentence-step-panel{overflow-wrap:anywhere;}
+.example .pali,.sentence-main{word-break:normal;overflow-wrap:anywhere;}
+.token-table td,.token-table th,.vocab-table td,.vocab-table th{line-height:1.55;}
+.top-nav{align-items:center;}
+.top-nav button{white-space:nowrap;}
+.version-badge{max-width:100%;white-space:normal;line-height:1.5;}
+.button-row,.nav-row,.tabs,.quick-row,.chip-row{align-items:stretch;}
+.button-row button,.nav-row button,.tabs button,.quick-row button{min-height:42px;}
+.lookup-layout,.sentence-workbench,.terminology-page{max-width:100%;}
+.char-btn{touch-action:manipulation;}
+.float-top{z-index:40;}
+
+@media(max-width:900px){
+  .header-inner{padding:18px 14px;}
+  .container{padding:14px;}
+  .grid,.grid.two,.grid.three,.grid.four,.stats{grid-template-columns:1fr 1fr;}
+  .card{padding:16px;border-radius:18px;}
+  .entry-card,.module-card,.lesson-card,.result-card,.term-card,.sentence-card{padding:14px;border-radius:16px;}
+  h2{font-size:22px;}
+  h3{font-size:17px;}
+}
+
+@media(max-width:640px){
+  body{font-size:15.5px;line-height:1.7;}
+  .site-header{position:relative;}
+  .brand-block h1{font-size:24px;line-height:1.25;}
+  .subtitle{font-size:14px;margin:6px 0 10px;}
+  .version-badge{font-size:12px;padding:4px 9px;}
+  .top-nav{display:flex;flex-wrap:nowrap;overflow-x:auto;gap:6px;margin-top:12px;padding-bottom:6px;scrollbar-width:thin;-webkit-overflow-scrolling:touch;}
+  .top-nav button{flex:0 0 auto;font-size:13px;padding:8px 10px;min-height:38px;}
+  .container{padding:10px;}
+  .app-panel{min-height:55vh;}
+  .grid,.grid.two,.grid.three,.grid.four,.stats{grid-template-columns:1fr;gap:10px;}
+  .stat{padding:12px;}
+  .stat strong{font-size:22px;}
+  .card{padding:14px;margin-bottom:12px;border-radius:16px;box-shadow:0 4px 14px rgba(15,23,42,.06);}
+  .entry-card,.module-card,.lesson-card,.result-card,.term-card,.sentence-card{padding:13px;border-radius:15px;box-shadow:0 3px 10px rgba(15,23,42,.05);}
+  h2{font-size:20px;margin-bottom:10px;}
+  h3{font-size:16px;margin:12px 0 7px;}
+  .section-title{margin:14px 0 8px;}
+  .section-title:before{height:18px;width:4px;}
+  .button-row,.nav-row,.tabs,.quick-row,.chip-row{display:grid;grid-template-columns:1fr;gap:8px;}
+  .button-row button,.button-row .btn,.nav-row button,.tabs button,.quick-row button,.small-chip,.concept-btn{width:100%;justify-content:center;margin:0;}
+  .tabs{position:static;}
+  input,select,textarea{font-size:16px;padding:10px 11px;border-radius:12px;}
+  .searchbar{grid-template-columns:1fr;gap:8px;}
+  .search-shortcuts button{width:100%;margin:0 0 6px;}
+  .sentence-main{font-size:18px;line-height:1.55;}
+  .sentence-step-row,.sentence-workbench .filter-grid,.sentence-filter-grid{grid-template-columns:1fr!important;}
+  .sentence-step-panel{padding:11px;border-radius:13px;}
+  .lookup-layout{grid-template-columns:1fr;gap:12px;}
+  .lookup-side{order:2;padding:12px;border-radius:15px;}
+  .pali-type-helper .table-wrap table{min-width:520px;}
+  .char-btn{min-width:40px;min-height:40px;padding:7px 8px;}
+  .terminology-page .term-tools{grid-template-columns:1fr!important;gap:8px;}
+  .term-head{display:block;}
+  .match-badge{display:inline-block;margin:2px 0 6px;}
+  .diag-table-wide,.diag-table{font-size:13px;}
+  .diag-report-text{font-size:12px;min-height:140px;}
+  table{font-size:13.5px;}
+  th,td{padding:8px;}
+  .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .float-top{right:10px;bottom:10px;width:42px;height:42px;}
+  textarea#progressText{min-height:220px;font-size:12.5px;}
+}
+
+@media(max-width:380px){
+  .brand-block h1{font-size:22px;}
+  .top-nav button{font-size:12.5px;padding:7px 9px;}
+  .card{padding:12px;}
+  .pali{font-size:17px;}
+  .sentence-main{font-size:17px;}
+}
+
+/* 20.69 版本发布流程版 */
+.release-checklist .mini-card{background:#f9fafb;border:1px solid #e5e7eb;border-radius:16px;padding:14px;}
+.release-checklist code{background:#eef2ff;color:#1e3a8a;border-radius:6px;padding:1px 5px;}
+.release-checklist ol{padding-left:1.25rem;}
+.release-checklist li{margin:.35rem 0;}
+.notice{background:#eff6ff;border:1px solid #bfdbfe;border-radius:14px;padding:12px;margin-top:12px;}
