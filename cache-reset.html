@@ -12,10 +12,10 @@
 <body>
   <div class="box">
     <h1>清理旧缓存</h1>
-    <p>本页会注销旧 Service Worker、清理浏览器缓存，然后进入 Pāli Learning Lab 20.53 缩略语与句子分析统一版</p>
+    <p>本页会注销旧 Service Worker、清理浏览器缓存，然后进入 Pāli Learning Lab 20.55 分板块体验优化版</p>
     <p id="status" class="muted">正在加载，请稍候……</p>
     <button onclick="reset()">重新清理</button>
-    <a href="./?v=20.53 缩略语与句子分析统一版">直接进入网站</a>
+    <a href="./?v=2054">直接进入网站</a>
   </div>
   <script>
     async function reset(){
@@ -30,7 +30,7 @@
           await Promise.all(keys.map(k=>caches.delete(k)));
         }
         status.textContent='缓存已清理，正在进入新版……';
-        setTimeout(()=>location.replace('./?v=20.53 缩略语与句子分析统一版'+Date.now()),700);
+        setTimeout(()=>location.replace('./?v=2054&ts='+Date.now()),700);
       }catch(e){
         status.textContent='自动清理失败，可手动 Ctrl+F5 后进入网站。';
       }
