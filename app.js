@@ -1,7 +1,7 @@
-/* Pāli Learning Lab · 20.48 全功能齐全验收版
+/* Pāli Learning Lab · 20.50 本节单词规则精修版
    纯 HTML/CSS/JS；无构建、无 service worker；GitHub Pages 可直接部署。
 */
-const VERSION = '20.48 全功能齐全验收版';
+const VERSION = '20.50 本节单词规则精修版';
 const FILE = {
   grammarIndex: 'grammar-index.json',
   manifest: 'grammar-lesson-manifest.json',
@@ -284,20 +284,51 @@ function conceptsHTML(lesson){
   if(!cs.length) return '';
   return `<section class="card compact"><div class="section-title"><h3>核心概念</h3></div><div>${cs.map(c=>`<button class="concept-btn" data-term-query="${text(c)}">${text(c)}</button>`).join('')}</div></section>`;
 }
-const PALI_SMALL=new Set(['ca','na','mā','iti','ti','vā','kho','so','te','yo','me','no','taṃ','atha','eva','api','pana','ce','hi']);
-const MEANINGS={Buddha:'佛；觉者',Dhamma:'法；教法',Saṅgha:'僧伽；僧团',dhamma:'法；教法',bhikkhu:'比丘',vihāra:'寺院',citta:'心',phala:'果',rūpa:'色；形态',kamma:'业',saraṇa:'皈依；庇护',gāma:'村庄',patta:'钵',sadda:'声音',paññā:'智慧',purisa:'人',itthi:'女子',sāvaka:'弟子',cetiya:'塔庙',Brahmā:'梵天',gacchati:'去',āgacchati:'来',deseti:'说；开示',suṇāti:'听',hoti:'是；成为',karoti:'做',vasati:'住',viharati:'住；停留',passati:'看见',labhati:'得到',icchati:'想要',vandati:'礼敬',pasīdati:'生信；欢喜',āroceti:'告知',pavisati:'进入',dadāti:'给',bhavati:'成为；存在'};
-const ROOTS={gacchati:'√gam',āgacchati:'√gam',deseti:'√dis',suṇāti:'√su',hoti:'√bhū',bhavati:'√bhū',karoti:'√kar',vasati:'√vas',viharati:'√har / vihar',passati:'√pass',labhati:'√labh',icchati:'√is',vandati:'√vand',pasīdati:'√sad',āroceti:'√ruc / āroceti',pavisati:'√vis',dadāti:'√dā'};
-const VERB_3SG_MAP={gacchāmi:'gacchati',gacchasi:'gacchati',gacchanti:'gacchati',gacchatha:'gacchati',gacchāma:'gacchati',gaccha:'gacchati',gacchatu:'gacchati',gaccheyya:'gacchati',gamissati:'gamissati',gamissāmi:'gamissati',agamāsi:'gacchati',suṇāmi:'suṇāti',suṇanti:'suṇāti',suṇātha:'suṇāti',desenti:'deseti',desessati:'deseti',karomi:'karoti',karonti:'karoti',kareyya:'karoti',akāsi:'karoti',honti:'hoti',bhavissati:'bhavati',labhanti:'labhati',labhāmi:'labhati',vasanti:'vasati',viharanti:'viharati',passanti:'passati',icchāmi:'icchati',vandāmi:'vandati',pasīdati:'pasīdati'};
+const PALI_SMALL=new Set(['ca','na','mā','vā','va','kho','iti','atha','eva','api','pana','ce','hi']);
+const GRAMMAR_WORD_BLACKLIST=new Set(['sg','pl','nom','acc','gen','dat','loc','ins','abl','voc','prs','pres','indic','act','mid','pass','m','f','n','nt','ger','inf','pp','fpp','pr','ind','root','html','css','json','lesson','module','grammar','pali','review','learning','lab','note','table','data','true','false','id','title','summary','text','card','chunk','file','ipa','the','and','or','to','of','in','for','with']);
+const PALI_LEXICON={
+  Buddha:{pos:'noun',gender:'m.',meaning:'佛；觉者'},Dhamma:{pos:'noun',gender:'m.',meaning:'法；教法'},Saṅgha:{pos:'noun',gender:'m.',meaning:'僧伽；僧团'},Bhagavā:{pos:'noun',gender:'m.',meaning:'世尊'},Tathāgata:{pos:'noun',gender:'m.',meaning:'如来'},Brahmā:{pos:'noun',gender:'m.',meaning:'梵天'},
+  dhamma:{pos:'noun',gender:'m.',meaning:'法；教法；现象'},bhikkhu:{pos:'noun',gender:'m.',meaning:'比丘'},vihāra:{pos:'noun',gender:'m.',meaning:'寺院；住处'},purisa:{pos:'noun',gender:'m.',meaning:'人；男子'},sāvaka:{pos:'noun',gender:'m.',meaning:'弟子；声闻'},gāma:{pos:'noun',gender:'m.',meaning:'村庄'},patta:{pos:'noun',gender:'m.',meaning:'钵'},sadda:{pos:'noun',gender:'m.',meaning:'声音'},samaya:{pos:'noun',gender:'m.',meaning:'时间；时候'},attha:{pos:'noun',gender:'m.',meaning:'意义；利益；目的'},kāya:{pos:'noun',gender:'m.',meaning:'身；身体'},loka:{pos:'noun',gender:'m.',meaning:'世间；世界'},
+  citta:{pos:'noun',gender:'n.',meaning:'心；心识'},phala:{pos:'noun',gender:'n.',meaning:'果；结果'},rūpa:{pos:'noun',gender:'n.',meaning:'色；形态'},kamma:{pos:'noun',gender:'n.',meaning:'业；行为'},saraṇa:{pos:'noun',gender:'n.',meaning:'皈依处；庇护'},cetiya:{pos:'noun',gender:'n.',meaning:'塔庙；圣迹'},sutta:{pos:'noun',gender:'n.',meaning:'经；经文'},dukkha:{pos:'noun',gender:'n.',meaning:'苦；不圆满'},nāma:{pos:'noun',gender:'n.',meaning:'名；名称'},mana:{pos:'noun',gender:'n.',meaning:'意；心'},
+  paññā:{pos:'noun',gender:'f.',meaning:'智慧'},itthi:{pos:'noun',gender:'f.',meaning:'女子'},Sāvatthī:{pos:'noun',gender:'f.',meaning:'舍卫城'},vibhatti:{pos:'noun',gender:'f.',meaning:'词尾变化；格变化'},gāthā:{pos:'noun',gender:'f.',meaning:'偈颂'},bhūmi:{pos:'noun',gender:'f.',meaning:'地；层级'},
+  gacchati:{pos:'verb',root:'√gam',meaning:'去；行走'},āgacchati:{pos:'verb',root:'ā + √gam',meaning:'来；到来'},deseti:{pos:'verb',root:'√dis / deś',meaning:'说示；开示；教导'},suṇāti:{pos:'verb',root:'√su',meaning:'听；听闻'},hoti:{pos:'verb',root:'√bhū',meaning:'是；成为；存在'},bhavati:{pos:'verb',root:'√bhū',meaning:'成为；存在；发生'},karoti:{pos:'verb',root:'√kar',meaning:'做；作'},vasati:{pos:'verb',root:'√vas',meaning:'住；居住'},viharati:{pos:'verb',root:'vi + √har / √hṛ',meaning:'住；停留；安住'},passati:{pos:'verb',root:'√pass',meaning:'看见；观察'},labhati:{pos:'verb',root:'√labh',meaning:'得到；获得'},icchati:{pos:'verb',root:'√is / icch',meaning:'想要；希望'},vandati:{pos:'verb',root:'√vand',meaning:'礼敬；敬礼'},pasīdati:{pos:'verb',root:'pa + √sad',meaning:'欢喜；生信；澄净'},āroceti:{pos:'verb',root:'ā + √ruc',meaning:'告知；报告'},pavisati:{pos:'verb',root:'pa + √vis',meaning:'进入'},dadāti:{pos:'verb',root:'√dā',meaning:'给；给予'},vadati:{pos:'verb',root:'√vad',meaning:'说'},āha:{pos:'verb',root:'√ah / √brū',meaning:'说；说道'},avoca:{pos:'verb',root:'√vac',meaning:'说了'},
+  ca:{pos:'other',grammar:'ind. 不变词',meaning:'和；并且；也'},vā:{pos:'other',grammar:'ind. 不变词',meaning:'或者'},na:{pos:'other',grammar:'ind. 否定词',meaning:'不；非'},mā:{pos:'other',grammar:'ind. 禁止否定词',meaning:'不要；勿'},ikho:{pos:'other',grammar:'ind. 语气小品词',meaning:'确实；于是；常不直译'},atha:{pos:'other',grammar:'ind. 不变词',meaning:'于是；然后'},eva:{pos:'other',grammar:'ind. 强调词',meaning:'正是；唯有；即'},api:{pos:'other',grammar:'ind. 不变词',meaning:'也；甚至'},pana:{pos:'other',grammar:'ind. 不变词',meaning:'又；而；于是'},ce:{pos:'other',grammar:'ind. 条件词',meaning:'如果'},hi:{pos:'other',grammar:'ind. 语气词',meaning:'因为；确实'},so:{pos:'pron',grammar:'pron.',meaning:'他；那'},te:{pos:'pron',grammar:'pron.',meaning:'他们；那些'},yo:{pos:'pron',grammar:'pron.',meaning:'谁；凡是……者'},me:{pos:'pron',grammar:'pron.',meaning:'我的；于我；由我'},taṃ:{pos:'pron',grammar:'pron.',meaning:'那个；它；他'}
+};
+const VERB_3SG_MAP={
+  gacchati:'gacchati',gacchāmi:'gacchati',gacchasi:'gacchati',gacchanti:'gacchati',gacchatha:'gacchati',gacchāma:'gacchati',gaccha:'gacchati',gacchatu:'gacchati',gaccheyya:'gacchati',gaccheyyuṃ:'gacchati',gamissati:'gacchati',gamissāmi:'gacchati',agamāsi:'gacchati',agamaṃ:'gacchati',gantuṃ:'gacchati',gantvā:'gacchati',gacchanto:'gacchati',gacchantī:'gacchati',gata:'gacchati',
+  āgacchati:'āgacchati',āgacchanti:'āgacchati',āgacchāmi:'āgacchati',āgantuṃ:'āgacchati',āgantvā:'āgacchati',
+  suṇāti:'suṇāti',suṇāmi:'suṇāti',suṇanti:'suṇāti',suṇātha:'suṇāti',sotuṃ:'suṇāti',sutvā:'suṇāti',suta:'suṇāti',
+  deseti:'deseti',desenti:'deseti',desetuṃ:'deseti',desetvā:'deseti',desessati:'deseti',
+  karoti:'karoti',karomi:'karoti',karonti:'karoti',kareyya:'karoti',akāsi:'karoti',kātuṃ:'karoti',kattum:'karoti',katvā:'karoti',kata:'karoti',kattabba:'karoti',karaṇīya:'karoti',
+  hoti:'hoti',honti:'hoti',ahosi:'hoti',bhavati:'bhavati',bhavissati:'bhavati',bhavituṃ:'bhavati',
+  labhati:'labhati',labhanti:'labhati',labhāmi:'labhati',labhate:'labhati',
+  vasati:'vasati',vasanti:'vasati',viharati:'viharati',viharanti:'viharati',passati:'passati',passanti:'passati',icchati:'icchati',icchāmi:'icchati',vandati:'vandati',vandāmi:'vandati',pasīdati:'pasīdati',āroceti:'āroceti',pavisati:'pavisati',dadāti:'dadāti',vadati:'vadati',āha:'āha',avoca:'avoca'
+};
 function tokenizePali(s){return dedupe(String(s||'').match(/[A-Za-zĀāĪīŪūṄṅÑñṬṭḌḍṆṇḶḷṂṃṀṁ]+/g)||[])}
+function normalizePaliToken(tok){return String(tok||'').trim().replace(/[“”"'.,;:!?，。；：！？()（）\[\]{}<>]/g,'')}
+function inferGenderFromGrammar(grammar){
+  const g=String(grammar||'');
+  if(/\bm\.\s*sg|阳性|m\.sg|m\./.test(g)) return 'm.';
+  if(/\bf\.\s*sg|阴性|f\.sg|f\./.test(g)) return 'f.';
+  if(/\bn\.\s*sg|nt\.|中性|n\.sg|n\./.test(g)) return 'n.';
+  return '';
+}
+function genderCn(g){return g==='m.'?'阳性名词':g==='f.'?'阴性名词':g==='n.'?'中性名词':'名词'}
 function lemmaNoun(tok){
-  if(tok.length<2) return '';
+  tok=normalizePaliToken(tok); if(!tok||tok.length<2) return '';
+  const lex=PALI_LEXICON[tok]; if(lex?.pos==='noun') return tok;
   if(tok.endsWith('ssa')) return tok.slice(0,-3)+'a';
   if(tok.endsWith('ena')) return tok.slice(0,-3)+'a';
-  if(tok.endsWith('āya')) return tok.slice(0,-3)+'ā';
   if(tok.endsWith('āyaṃ')) return tok.slice(0,-4)+'ā';
+  if(tok.endsWith('āya')) return tok.slice(0,-3)+'ā';
+  if(tok.endsWith('ānaṃ')) return tok.slice(0,-4)+'a';
+  if(tok.endsWith('āhi')||tok.endsWith('ābhi')) return tok.slice(0,-3)+'ā';
+  if(tok.endsWith('ehi')||tok.endsWith('ebhi')) return tok.slice(0,-3)+'a';
+  if(tok.endsWith('esu') && tok.length>5) return tok.slice(0,-3)+'a';
   if(tok.endsWith('e') && tok.length>4) return tok.slice(0,-1)+'a';
   if(tok.endsWith('o') && tok.length>3) return tok.slice(0,-1)+'a';
   if(tok.endsWith('aṃ') && tok.length>3) return tok.slice(0,-2)+'a';
+  if(tok.endsWith('ā') && PALI_LEXICON[tok]?.pos==='noun') return tok;
   if(tok.endsWith('ṃ') && tok.length>3) return tok.slice(0,-1);
   return tok;
 }
@@ -305,56 +336,66 @@ function tokenDataLookup(raw, canonical){
   const tokenData=cache.get(FILE.token[0]+'::'+FILE.token[1])||{};
   return tokenData[raw]||tokenData[canonical]||tokenData[String(raw||'').toLowerCase()]||tokenData[String(canonical||'').toLowerCase()]||null;
 }
-function grammarFromAnalysis(item, fallback){
-  const g=item?.analyses?.find(a=>a.grammar)?.grammar || '';
-  if(!g) return fallback;
-  return g.length>60 ? g.slice(0,60)+'…' : g;
-}
 function meaningFromAnalysis(item, fallback){
   const m=item?.analyses?.find(a=>a.meaning)?.meaning || '';
-  return m || fallback;
+  return m || fallback || '';
 }
 function canonicalVerb(tok){
+  tok=normalizePaliToken(tok); if(!tok) return '';
   if(VERB_3SG_MAP[tok]) return VERB_3SG_MAP[tok];
-  if(/ti$/i.test(tok) && tok.toLowerCase()!=='iti') return tok;
-  if(/anti$/i.test(tok) && tok.length>6) return tok.replace(/anti$/i,'ati');
-  if(/āmi$/i.test(tok) && tok.length>5) return tok.replace(/āmi$/i,'ati');
-  if(/āma$/i.test(tok) && tok.length>5) return tok.replace(/āma$/i,'ati');
+  if(/ti$/i.test(tok) && tok.toLowerCase()!=='iti' && tok.toLowerCase()!=='ti') return tok;
   return '';
 }
+function grammarForVerb(v){
+  const lex=PALI_LEXICON[v]||{};
+  return lex.root||'';
+}
+function grammarForNoun(lemma,item){
+  const lex=PALI_LEXICON[lemma]||{};
+  return lex.gender||inferGenderFromGrammar(item?.analyses?.find(a=>a.grammar)?.grammar||'');
+}
 function classifyToken(tok){
+  tok=normalizePaliToken(tok);
   if(!tok || tok.length<2) return null;
-  if(tok.length<=3 && !PALI_SMALL.has(tok)) return null;
+  const low=tok.toLowerCase().replace(/\.$/,'');
+  if(tok.length===1 || tok==='ti' || low==='ti' || GRAMMAR_WORD_BLACKLIST.has(low)) return null;
+  if(tok.length<=3 && !PALI_SMALL.has(tok) && !PALI_LEXICON[tok]) return null;
   if(/^[A-Z]{2,}$/.test(tok)) return null;
-  const low=tok.toLowerCase();
-  if(['sg','pl','nom','acc','gen','dat','loc','ins','abl','voc','prs','indic','act','pass','json','lesson','html','css','ipa','pali','grammar','review','learning','lab','root'].includes(low)) return null;
   const v=canonicalVerb(tok);
-  if(v){
+  if(v && PALI_LEXICON[v]?.pos==='verb'){
     const item=tokenDataLookup(tok,v);
-    return {form:v,type:'verb',grammar:`v. 3sg${ROOTS[v]?`；${ROOTS[v]}`:''}`,meaning:meaningFromAnalysis(item,MEANINGS[v]||'动词；需结合巴利词典复核')};
+    return {form:v,type:'verb',grammar:grammarForVerb(v),meaning:PALI_LEXICON[v]?.meaning||meaningFromAnalysis(item,'常用动词；需结合巴利词典复核')};
   }
-  if(PALI_SMALL.has(tok)){
-    const item=tokenDataLookup(tok,tok);
-    return {form:tok,type:'other',grammar:grammarFromAnalysis(item,'ind. / pron. 等；按语境判断'),meaning:meaningFromAnalysis(item,MEANINGS[tok]||'小词；按语境判断')};
+  if(PALI_LEXICON[tok]?.pos==='pron'){
+    const item=tokenDataLookup(tok,tok); const lex=PALI_LEXICON[tok]||{};
+    return {form:tok,type:'pronoun',grammar:'pron.',meaning:lex.meaning||meaningFromAnalysis(item,'代词；按语境判断')};
+  }
+  if(PALI_LEXICON[tok]?.pos==='adj'){
+    const item=tokenDataLookup(tok,tok); const lex=PALI_LEXICON[tok]||{};
+    return {form:tok,type:'adjective',grammar:'adj.',meaning:lex.meaning||meaningFromAnalysis(item,'形容词；按语境判断')};
+  }
+  if(PALI_SMALL.has(tok) || PALI_LEXICON[tok]?.pos==='other'){
+    const item=tokenDataLookup(tok,tok); const lex=PALI_LEXICON[tok]||{};
+    return {form:tok,type:'other',grammar:lex.grammar||'ind.',meaning:lex.meaning||meaningFromAnalysis(item,'小词；按语境判断')};
   }
   const lemma=lemmaNoun(tok);
-  if(!lemma || lemma.length<2 || (lemma.length<=3 && !PALI_SMALL.has(lemma))) return null;
-  const item=tokenDataLookup(tok,lemma);
-  let grammar=grammarFromAnalysis(item,'n.；原形/词典形');
-  if(!/\bn\.|m\.sg|f\.sg|n\.sg|nom|acc|gen|loc|ins/.test(grammar)) grammar='n.；原形/词典形';
-  return {form:lemma,type:'noun',grammar,meaning:meaningFromAnalysis(item,MEANINGS[lemma]||'名词；需结合巴利词典复核')};
+  if(!lemma || lemma.length<2 || (lemma.length<=3 && !PALI_LEXICON[lemma])) return null;
+  const item=tokenDataLookup(tok,lemma); const lex=PALI_LEXICON[lemma]||{};
+  const g=grammarForNoun(lemma,item);
+  const hasNounEvidence=lex.pos==='noun' || g;
+  if(!hasNounEvidence || !g) return null;
+  return {form:lemma,type:'noun',grammar:g,meaning:lex.meaning||meaningFromAnalysis(item,'名词；需结合巴利词典复核')};
 }
 async function vocabHTML(lesson,exercises){
   await loadData('token').catch(()=>null);
   const parts=[];
-  (lesson.examples||[]).forEach(e=>parts.push(e.pali,e.note,e.grammar_note,e.natural_cn,e.cn));
+  (lesson.examples||[]).forEach(e=>parts.push(e.pali,e.note,e.grammar_note));
   (lesson.table||[]).flat().forEach(x=>parts.push(x));
-  (lesson.explanation||[]).forEach(x=>parts.push(x));
   (exercises||[]).slice(0,40).forEach(e=>parts.push(e.question,e.answer,...(e.options||[]),e.explanation));
   const tokens=dedupe(parts.flatMap(tokenizePali));
   const map=new Map();
   tokens.map(classifyToken).filter(Boolean).forEach(v=>{if(!map.has(v.form)) map.set(v.form,v)});
-  const order={verb:1,noun:2,other:3};
+  const order={verb:1,noun:2,pronoun:3,adjective:4,other:5};
   let rows=[...map.values()].sort((a,b)=>(order[a.type]-order[b.type])||a.form.localeCompare(b.form)).slice(0,24);
   if(!rows.length) return '';
   const table=`<div class="table-wrap"><table class="vocab-table"><thead><tr><th>词形</th><th>语法信息</th><th>基本义</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${text(r.form)}</td><td>${text(r.grammar)}</td><td>${text(r.meaning)}</td></tr>`).join('')}</tbody></table></div>`;
