@@ -1,6 +1,6 @@
-/* Pāli Learning Lab · 20.77 页面入口修复版；纯 HTML/CSS/JS；无构建、无 service worker；GitHub Pages 可直接部署。
+/* Pāli Learning Lab · 20.78 佛典阅读与搜索修复版；纯 HTML/CSS/JS；无构建、无 service worker；GitHub Pages 可直接部署。
 */
-const VERSION = '20.77 页面入口修复版';
+const VERSION = '20.78 佛典阅读与搜索修复版';
 const FILE = {
   grammarIndex: 'grammar-index.json',
   manifest: 'grammar-lesson-manifest.json',
@@ -27,7 +27,7 @@ const EXERCISE_SESSION_KEY='pll_exercise_session_v1';
 const SENT_STATUS_KEY='pll_sentence_status_v1';
 const HISTORY_KEY='pll_lookup_history_v1';
 const LAST_LESSON_KEY='pll_last_lesson_v1';
-const PROGRESS_SCHEMA_VERSION='pll-progress-20.77';
+const PROGRESS_SCHEMA_VERSION='pll-progress-20.78';
 const app = document.getElementById('app');
 const cache = new Map();
 let currentPage='home';
@@ -896,7 +896,7 @@ async function drawSearch(q){
 }
 
 
-/* 20.77 页面入口修复版语库、搜索、练习反馈与页面体验。 */
+/* 20.78 佛典阅读与搜索修复版语库、搜索、练习反馈与页面体验。 */
 function dictionarySiteCards(sites){
   const extras=[
     {name:'Digital Pāli Dictionary (DPD)',url:'https://dpdict.net/',level:'词形与构词',best_for:'查词形、构词、派生和英文义项，适合进阶复核。',note:'适合复核词根、词类和复合词。'},
@@ -1313,7 +1313,7 @@ document.addEventListener('click',(e)=>{
 // Initial route
 window.addEventListener('DOMContentLoaded',()=>{ if(app && !app.innerHTML.trim()) app.innerHTML='<div class="card loading">正在加载，请稍候……</div>'; navigate('home',{},false); });
 
-// 20.77 页面入口修复版for dictionary and lookup history.
+// 20.78 佛典阅读与搜索修复版for dictionary and lookup history.
 document.addEventListener('click', (e)=>{
   const a=e.target.closest('[data-action]')?.dataset.action;
   if(a==='clearLookupHistory'){
@@ -1324,7 +1324,7 @@ document.addEventListener('click', (e)=>{
 });
 
 
-/* 20.77 页面入口修复版加变音符号输入表，词典链接自动复制并尽量直达查询。 */
+/* 20.78 佛典阅读与搜索修复版加变音符号输入表，词典链接自动复制并尽量直达查询。 */
 const DICT_QUERY_SITES_2056 = [
   {id:'sutta-dict', name:'巴利字典 Pāli Dictionary', level:'中文优先', best_for:'适合中文学习者快速查基本义。', url:'https://dictionary.sutta.org/', query:'https://dictionary.sutta.org/?q={q}'},
   {id:'dpd', name:'Digital Pāli Dictionary (DPD)', level:'词形与构词', best_for:'适合复核词根、词类、构词和英文义项。', url:'https://dpdict.net/', query:'https://dpdict.net/?q={q}'},
@@ -1381,7 +1381,7 @@ document.addEventListener('click',(e)=>{
   if(dict){e.preventDefault(); openDictionaryQuery2056(dict); return;}
 });
 
-/* 20.77 页面入口修复版不做词形分析，只做字母输入、推荐词形、复制并打开词典。
+/* 20.78 佛典阅读与搜索修复版不做词形分析，只做字母输入、推荐词形、复制并打开词典。
    - 本节单词：名词类词语显示词典形/lemma，不显示主格形式；语法信息只显示性别，如 m. / f. / n.。
    - 本节单词：动词显示现在时第三人称单数形式；语法信息只显示可靠词根，如 √gam。
    - 分词、inf.、ger. 等若可确认，归并到对应现在时第三人称单数；无法确认则不收。
@@ -1635,7 +1635,7 @@ function examplesHTML(lesson){
 }
 
 
-/* ===== 20.77 页面入口修复版：全站词根白名单与句法功能修正 =====
+/* ===== 20.78 佛典阅读与搜索修复版：全站词根白名单与句法功能修正 =====
    原则：词根只来自白名单；ind. 只表示不变词；indic. 表示陈述语气；
    名词/代词/形容词在句子中尽量给出确定格位，不机械显示 nom/acc 或 gen/dat。
 */
@@ -1916,7 +1916,7 @@ function parseSentenceTokens2057(pali){
 }
 
 
-/* 20.77 页面入口修复版：增强系统检查，不改动学习数据。 */
+/* 20.78 佛典阅读与搜索修复版：增强系统检查，不改动学习数据。 */
 const DIAG_ROOT_WHITELIST_2061 = new Set([
   'gam','kar','bhū','as','su','dis','pass','vas','vand','khād','pat','ñā','vac','vad','labh','pac','dā','han','pucch','sikkh','jān','hū','des'
 ]);
@@ -2204,7 +2204,7 @@ document.addEventListener('click', async (e)=>{
 });
 
 
-/* ===== 20.77 页面入口修复版：句子分析页重接管 ===== */
+/* ===== 20.78 佛典阅读与搜索修复版：句子分析页重接管 ===== */
 const SENT_LAST_KEY_2063 = 'pll_sentence_last_v2';
 function sentenceLast2063(){try{return JSON.parse(localStorage.getItem(SENT_LAST_KEY_2063))||{}}catch{return {}}}
 function saveSentenceLast2063(x){try{localStorage.setItem(SENT_LAST_KEY_2063,JSON.stringify(x||{}))}catch(e){}}
@@ -2321,7 +2321,7 @@ document.addEventListener('input', function(e){
   }
 });
 
-/* ===== 20.77 页面入口修复版：课程练习体验重接管 ===== */
+/* ===== 20.78 佛典阅读与搜索修复版：课程练习体验重接管 ===== */
 const EXERCISE_SESSION_KEY_2065 = 'pll_exercise_session_v2065';
 function exerciseId2065(ex,idx){return String(ex?.id||`${ex?.lesson_id||'lesson'}_${idx}_${ex?.question||''}`).slice(0,180)}
 function exerciseAnswers2065(){return Array.isArray(currentExerciseMeta?.answers)?currentExerciseMeta.answers:[]}
@@ -2442,7 +2442,7 @@ document.addEventListener('click', function(e){
   }
 }, true);
 
-/* ===== 20.77 页面入口修复版：统一搜索页面与分类结果 ===== */
+/* ===== 20.78 佛典阅读与搜索修复版：统一搜索页面与分类结果 ===== */
 function searchBlob2066(obj){
   try{return JSON.stringify(obj||{}).toLowerCase()}catch{return String(obj||'').toLowerCase()}
 }
@@ -2525,7 +2525,7 @@ document.addEventListener('click', function(e){
 }, true);
 
 
-/* ===== 20.77 页面入口修复版：内容质量诊断重接管 ===== */
+/* ===== 20.78 佛典阅读与搜索修复版：内容质量诊断重接管 ===== */
 const DIAG_ROOT_WHITELIST_2070 = new Set([
   'gam','kar','bhū','as','su','dis','pass','vas','vand','khād','pat','ñā','vac','vad','labh','pac','dā','han','pucch','sikkh','jān','hū','des','ā','i','ñā','rudh','hā','har','sad','ṭhā','bhaj','likh','rakkh','pā','pī','sev','cint','man','sar','gah','gaṇh','āp','āpucch','muc','chid','bandh','sev','vad','brū'
 ]);
@@ -2723,12 +2723,12 @@ async function renderDiagnostics(){
   add('发布验收','路线未找到残留',routeNF===0,routeNF?`发现 ${routeNF} 处“语法点未找到”残留`:'未发现路线未找到残留','若页面实际出现，修 learning-routes-data.js。',routeNF>0);
   const counts={ok:items.filter(x=>x.level==='ok').length,warn:items.filter(x=>x.level==='warn').length,bad:items.filter(x=>x.level==='bad').length}; const report={version:VERSION,generatedAt:new Date().toISOString(),counts,sections,items}; window.__PALI_DIAG_REPORT=report; const plain=plainReport2070(report);
   const priority=`<section class="card"><h2>内容质量优先处理顺序</h2><ol><li>先修异常项：文件缺失、课程无法对应、练习题 lesson_id 错误。</li><li>再修教学准确性：并列格位、ind./indic.、多词根、词根白名单外项目。</li><li>再修课程质量：缺例句、缺解析、目标空泛、常见误判空泛。</li><li>最后修体验问题：IPA 提示废话、冗余相关区块、路线残留文案。</li></ol></section>`;
-  const summary=`<section class="card"><h1>系统检查 / 内容质量诊断</h1><p class="muted">20.77 页面入口修复版：除数据完整性和发布流程外，新增课程目标、例句、练习相关性、词根、缩略语、本节单词质量等检查。它只读取数据，不修改内容。</p><div class="stats"><div class="stat"><strong>${counts.ok}</strong><span>通过</span></div><div class="stat"><strong>${counts.warn}</strong><span>需核查</span></div><div class="stat"><strong>${counts.bad}</strong><span>异常</span></div><div class="stat"><strong>${fileOk}</strong><span>文件已加载</span></div></div><div class="button-row"><button data-action="copyDiag2061">复制检查报告</button><button data-action="downloadDiag2061">下载检查报告</button></div><textarea id="diagReportText" class="diag-report-text" readonly>${text(plain)}</textarea></section>`;
+  const summary=`<section class="card"><h1>系统检查 / 内容质量诊断</h1><p class="muted">20.78 佛典阅读与搜索修复版：除数据完整性和发布流程外，新增课程目标、例句、练习相关性、词根、缩略语、本节单词质量等检查。它只读取数据，不修改内容。</p><div class="stats"><div class="stat"><strong>${counts.ok}</strong><span>通过</span></div><div class="stat"><strong>${counts.warn}</strong><span>需核查</span></div><div class="stat"><strong>${counts.bad}</strong><span>异常</span></div><div class="stat"><strong>${fileOk}</strong><span>文件已加载</span></div></div><div class="button-row"><button data-action="copyDiag2061">复制检查报告</button><button data-action="downloadDiag2061">下载检查报告</button></div><textarea id="diagReportText" class="diag-report-text" readonly>${text(plain)}</textarea></section>`;
   app.innerHTML=`${navControls()}${summary}${diagTable2070('一、数据规模核查',items.filter(x=>x.section==='数据规模'))}${diagTable2070('二、文件加载核查',items.filter(x=>x.section==='文件加载'))}${diagTable2070('三、路由与 ID 对应核查',items.filter(x=>x.section==='路由与 ID'))}${diagTable2070('四、内容质量核查',items.filter(x=>x.section==='内容质量'))}${diagTable2070('五、练习与例句相关性核查',items.filter(x=>x.section==='练习与例句相关性'))}${diagTable2070('六、语法标注与词根核查',items.filter(x=>x.section==='语法标注与词根'))}${diagTable2070('七、本节单词质量核查',items.filter(x=>x.section==='本节单词质量'))}${diagTable2070('八、发布验收核查',items.filter(x=>x.section==='发布验收'))}${priority}${releaseChecklist2069()}`;
 }
 
 
-/* 20.77 页面入口修复版：用受控词表生成“本节单词”，避免误抓、错还原、重复收录。 */
+/* 20.78 佛典阅读与搜索修复版：用受控词表生成“本节单词”，避免误抓、错还原、重复收录。 */
 const PALI_CORE_EXTRA_2073 = {
   // 常见名词
   dāna:{pos:'noun',gender:'n.',meaning:'布施；给予'}, sīla:{pos:'noun',gender:'n.',meaning:'戒；德行'},
@@ -2868,3 +2868,169 @@ async function vocabHTML(lesson,exercises=[]){
   const body=rows.length>8?`<details class="vocab-details"><summary>本节单词（${rows.length} 个，点击展开）</summary>${table}</details>`:table;
   return `<section class="card compact"><div class="section-title"><h3>本节单词</h3></div>${body}</section>`;
 }
+
+
+/* ===== 20.78 佛典阅读与搜索修复版：重接管佛典阅读、搜索、错题入口 ===== */
+function blob2078(x){
+  try{return JSON.stringify(x||'').toLowerCase()}catch{return String(x||'').toLowerCase()}
+}
+function paragraphList2078(arr){
+  if(!Array.isArray(arr) || !arr.length) return '';
+  return `<ol class="summary-list">${arr.map(x=>`<li>${text(x)}</li>`).join('')}</ol>`;
+}
+function kvList2078(obj){
+  if(!obj || typeof obj!=='object') return '';
+  return Object.entries(obj).map(([k,v])=>`<p><strong>${text(k)}：</strong>${text(typeof v==='string'?v:JSON.stringify(v))}</p>`).join('');
+}
+function buddhistCard2078(x){
+  if(!x) return '';
+  const title=x.title||x.pali||x.cn||x.term||x.id||'佛典阅读';
+  const lines=[];
+  if(x.formula) lines.push(`<p><strong>结构：</strong>${text(x.formula)}</p>`);
+  if(x.literal) lines.push(`<p><strong>直译：</strong>${text(x.literal)}</p>`);
+  if(x.natural) lines.push(`<p><strong>翻译：</strong>${text(x.natural)}</p>`);
+  if(x.structure) lines.push(`<p><strong>语法提示：</strong>${text(x.structure)}</p>`);
+  if(x.basic) lines.push(`<p>${text(x.basic)}</p>`);
+  if(x.reading_tip) lines.push(`<p><strong>阅读提示：</strong>${text(x.reading_tip)}</p>`);
+  if(x.example) lines.push(`<p><strong>例：</strong>${text(x.example)}</p>`);
+  if(Array.isArray(x.keywords)&&x.keywords.length){
+    lines.push(`<div class="table-wrap"><table><tr><th>词语</th><th>提示</th></tr>${x.keywords.map(k=>`<tr><td>${text(k.word||k.term||'')}</td><td>${text(k.note||k.meaning||'')}</td></tr>`).join('')}</table></div>`);
+  }
+  if(Array.isArray(x.items)&&x.items.length){
+    lines.push(`<div class="table-wrap"><table><tr><th>略号/术语</th><th>名称</th><th>说明</th></tr>${x.items.map(it=>`<tr><td>${text(it.abbr||it.term||'')}</td><td>${text(it.name||it.cn||'')}</td><td>${text(it.note||'')}</td></tr>`).join('')}</table></div>`);
+  }
+  if(x.warning) lines.push(`<p class="notice"><strong>提醒：</strong>${text(x.warning)}</p>`);
+  if(Array.isArray(x.related)&&x.related.length) lines.push(`<p class="muted">相关：${x.related.map(text).join('、')}</p>`);
+  return `<div class="result-card"><h3>${text(title)}</h3>${lines.join('')}</div>`;
+}
+async function renderBuddhistHome(){
+  app.innerHTML=`${navControls()}<section class="card"><h2>佛典阅读</h2><p class="muted">面向佛典原文阅读入门，重点是三藏结构、常见公式句、阅读方法、引用规范和材料记录。</p><div class="grid">
+${homeCard('三藏结构与略号','Tipiṭaka、三藏、五部、常见略号和引用格式。','buddhistBackground')}
+${homeCard('佛典句式','开头公式、叙事推进、引语结构、教义句式。','buddhistReading')}
+${homeCard('阅读方法','从原文、翻译、词形、句法到阅读记录。','readingMethod')}
+${homeCard('引用规范','DN、MN、SN、AN、Dhp、Vin 等略号和记录原则。','citationGuide')}
+${homeCard('词义观察','从词典义、搭配和语境判断佛典词义。','meaningObservation')}
+${homeCard('原文记录模板','原文、位置、翻译、关键词形、句法和阅读提醒。','recordTemplate')}
+${homeCard('阅读小任务','适合初学者的材料整理和短句阅读任务。','readingTasks')}
+${homeCard('阅读误区','避免只看译文、忽略词形、出处和公式句功能。','readingPitfalls')}
+</div></section>`;
+}
+async function renderBuddhistBackground(){
+  const data=await loadData('buddhistBackground').catch(()=>({}));
+  const concepts=Array.isArray(data)?data:(data.concepts||[]);
+  const canon=data.canon_structure||[];
+  const refs=data.reference_terms||[];
+  const cits=data.citation_examples||[];
+  const flow=data.sutta_flow||[];
+  const canonHTML=canon.length?`<section class="card"><h2>三藏结构与略号</h2>${canon.map(buddhistCard2078).join('')}</section>`:'';
+  const refsHTML=refs.length?`<section class="card"><h2>佛典结构术语</h2><div class="table-wrap"><table><tr><th>术语</th><th>中文</th><th>说明</th></tr>${refs.map(r=>`<tr><td>${text(r.term)}</td><td>${text(r.cn)}</td><td>${text(r.note)}</td></tr>`).join('')}</table></div></section>`:'';
+  const citHTML=cits.length?`<section class="card"><h2>常见引用示例</h2><div class="table-wrap"><table><tr><th>格式</th><th>含义</th></tr>${cits.map(r=>`<tr><td>${text(r.ref)}</td><td>${text(r.meaning)}</td></tr>`).join('')}</table></div></section>`:'';
+  const flowHTML=flow.length?`<section class="card"><h2>经文结构流程</h2>${flow.map(x=>`<div class="result-card"><h3>${text(x.stage)}</h3><p>${text(x.purpose||'')}</p>${Array.isArray(x.patterns)?`<p class="muted">常见形式：${x.patterns.map(text).join('；')}</p>`:''}</div>`).join('')}</section>`:'';
+  const conceptHTML=concepts.length?`<section class="card"><h2>核心背景词</h2>${dedupe(concepts.map(x=>x.category||'其他')).map(cat=>`<h3>${text(cat)}</h3>${concepts.filter(x=>(x.category||'其他')===cat).map(buddhistCard2078).join('')}`).join('')}</section>`:'';
+  app.innerHTML=`${navControls()}${canonHTML}${refsHTML}${citHTML}${flowHTML}${conceptHTML || '<section class="card"><p class="muted">暂无佛典背景数据。</p></section>'}`;
+}
+async function renderBuddhistReading(){
+  const items=await loadData('buddhistReading').catch(()=>[]);
+  const cats=dedupe((items||[]).map(x=>x.category||'佛典句式'));
+  const html=cats.map(cat=>`<section class="card"><h2>${text(cat)}</h2>${items.filter(x=>(x.category||'佛典句式')===cat).map(buddhistCard2078).join('')}</section>`).join('');
+  app.innerHTML=`${navControls()}<section class="card"><h2>佛典句式</h2><p class="muted">从常见公式句进入佛典阅读，先识别篇章功能，再做词形和句法分析。</p></section>${html || '<section class="card"><p class="muted">暂无佛典句式数据。</p></section>'}`;
+}
+async function renderAcademic(){
+  app.innerHTML=`${navControls()}<section class="card"><h2>阅读方法与引用</h2><div class="grid">
+${homeCard('阅读方法','把一句原文整理为可复查的阅读材料。','readingMethod')}
+${homeCard('引用规范','引用位置、版本、平台和材料记录格式。','citationGuide')}
+${homeCard('词义观察','从词形、搭配、语境判断当前义项。','meaningObservation')}
+${homeCard('原文记录模板','记录原文、位置、翻译、关键词形和句法结构。','recordTemplate')}
+${homeCard('阅读小任务','规范记录、词义观察和公式句整理任务。','readingTasks')}
+${homeCard('阅读误区','避免只保存译文、只写经名、机械套词典义。','readingPitfalls')}
+</div></section>`;
+}
+function academicItem2078(x){
+  if(!x) return '';
+  const title=x.title||x.id||'阅读条目';
+  const parts=[];
+  if(x.goal) parts.push(`<p><strong>目标：</strong>${text(x.goal)}</p>`);
+  if(x.core_warning) parts.push(`<p class="notice"><strong>提醒：</strong>${text(x.core_warning)}</p>`);
+  if(x.content) parts.push(`<p>${text(x.content)}</p>`);
+  if(x.note) parts.push(`<p>${text(x.note)}</p>`);
+  if(Array.isArray(x.steps)) parts.push(`<ol>${x.steps.map(st=>`<li>${text(st)}</li>`).join('')}</ol>`);
+  if(x.example) parts.push(`<div class="example"><strong>示例</strong>${kvList2078(x.example)}</div>`);
+  if(Array.isArray(x.sample_records)) parts.push(`<div class="table-wrap"><table><tr><th>原文</th><th>用法</th></tr>${x.sample_records.map(r=>`<tr><td>${text(r.pali)}</td><td>${text(r.use)}</td></tr>`).join('')}</table></div>`);
+  if(Array.isArray(x.items)) parts.push(`<div class="table-wrap"><table>${x.items.map(row=>`<tr>${Object.values(row).map(v=>`<td>${text(v)}</td>`).join('')}</tr>`).join('')}</table></div>`);
+  if(x.output) parts.push(`<p><strong>输出：</strong>${text(x.output)}</p>`);
+  if(x.fix) parts.push(`<p><strong>修正：</strong>${text(x.fix)}</p>`);
+  return `<div class="result-card"><h3>${text(title)}</h3>${parts.join('')}</div>`;
+}
+function recordTemplate2078(tpl){
+  if(!tpl) return '<p class="muted">暂无模板数据。</p>';
+  const fields=(tpl.fields||[]).map(f=>`<tr><td>${text(f.name)}</td><td>${text(f.tip)}</td></tr>`).join('');
+  return `<div class="result-card"><h3>${text(tpl.title||'原文记录模板')}</h3>${fields?`<div class="table-wrap"><table><tr><th>字段</th><th>说明</th></tr>${fields}</table></div>`:''}${tpl.example?`<div class="example"><strong>示例</strong>${kvList2078(tpl.example)}</div>`:''}</div>`;
+}
+async function renderAcademicSubpage(title,key){
+  const data=await loadData('academic').catch(()=>({}));
+  let html='';
+  if(key==='method') html=(data.method||[]).map(academicItem2078).join('');
+  else if(key==='citation'){
+    const c=data.citation||{};
+    html=`${(c.principles||[]).map(academicItem2078).join('')}${(c.citation_examples||[]).length?`<div class="result-card"><h3>引用示例</h3><div class="table-wrap"><table><tr><th>格式</th><th>含义</th></tr>${c.citation_examples.map(x=>`<tr><td>${text(x.format)}</td><td>${text(x.meaning)}</td></tr>`).join('')}</table></div></div>`:''}${(c.record_template||[]).length?`<div class="result-card"><h3>记录模板</h3><ol>${c.record_template.map(x=>`<li>${text(x)}</li>`).join('')}</ol></div>`:''}`;
+  }
+  else if(key==='meaning') html=(data.vocabulary||[]).map(academicItem2078).join('');
+  else if(key==='record') html=recordTemplate2078(data.analysis_template);
+  else if(key==='tasks') html=(data.research_tasks||[]).map(academicItem2078).join('');
+  else if(key==='pitfalls') html=(data.pitfalls||[]).map(academicItem2078).join('');
+  app.innerHTML=`${navControls()}<section class="card"><h2>${text(title)}</h2><p class="muted">佛典阅读入门工具：短、清楚、可操作。</p></section><section class="card">${html || '<p class="muted">暂无相关数据。</p>'}</section>`;
+}
+function group2078(title,arr,renderer){
+  if(!arr || !arr.length) return '';
+  return `<section class="card search-group"><h2>${text(title)} <span class="muted">${arr.length}</span></h2>${arr.slice(0,50).map(renderer).join('')}</section>`;
+}
+function blobSearch2078(x){return blob2078(x)}
+function snippet2078(s,q){
+  s=String(s||''); if(!s) return '';
+  if(s.length<180) return text(s);
+  const i=s.toLowerCase().indexOf(q.toLowerCase());
+  const start=Math.max(0,(i<0?0:i)-50); return text((start?'…':'')+s.slice(start,start+180)+'…');
+}
+async function renderSearch(query=''){
+  app.innerHTML=`${navControls()}<section class="card search-page"><h2>全站搜索</h2><p class="muted">搜索课程、本节单词、句子分析、术语库、佛典阅读、词形分析、句型模板、易混概念和练习题。</p><div class="searchbar"><input id="globalSearchInput" value="${text(query)}" placeholder="输入关键词，如 dhamma、主格、indic.、yo...so、佛典句式"><button class="primary" data-action="runGlobalSearch2078">搜索</button></div><div class="chip-row search-shortcuts">${['dhamma','主格','indic.','yo...so','ger.','佛典句式'].map(q=>`<button data-search-query2078="${text(q)}">${text(q)}</button>`).join('')}</div><div id="searchSummary" class="notice hidden"></div><div id="searchResults"><p class="muted">输入关键词后显示分类结果。</p></div></section>`;
+  $('#globalSearchInput')?.addEventListener('input',()=>{clearTimeout(window.__search2078); window.__search2078=setTimeout(()=>drawSearch2078($('#globalSearchInput').value),180)});
+  if(query) await drawSearch2078(query);
+}
+async function drawSearch2078(q){
+  q=String(q||'').trim().toLowerCase();
+  const box=$('#searchResults'), summary=$('#searchSummary'); if(!box) return;
+  if(!q){box.innerHTML='<p class="muted">输入关键词后显示分类结果。</p>'; summary?.classList.add('hidden'); return;}
+  box.innerHTML='<div class="loading">正在加载，请稍候……</div>';
+  try{
+    const [sidx,sent,terms,reading,bg,tokens,patterns,confusions,exercises,academic]=await Promise.all([
+      loadData('search').catch(()=>[]),loadData('sentence').catch(()=>[]),loadData('terminology').catch(()=>[]),loadData('buddhistReading').catch(()=>[]),loadData('buddhistBackground').catch(()=>({})),loadData('token').catch(()=>({})),loadData('patterns').catch(()=>[]),loadData('confusion').catch(()=>[]),loadData('exercise').catch(()=>[]),loadData('academic').catch(()=>({}))
+    ]);
+    const course=(sidx||[]).filter(x=>blobSearch2078(x).includes(q)).slice(0,80);
+    const vocab=(typeof lexiconSearchItems2066==='function'?lexiconSearchItems2066(q):(Object.keys(PALI_LEXICON||{}).filter(k=>blobSearch2078([k,PALI_LEXICON[k]]).includes(q)).map(k=>({form:k,...PALI_LEXICON[k]})))).slice(0,80);
+    const sentence=(sent||[]).filter(x=>blobSearch2078(x).includes(q)).slice(0,80);
+    const term=(terms||[]).filter(x=>blobSearch2078(x).includes(q)).slice(0,80);
+    const buddhist=[...(reading||[]),...((bg&&bg.concepts)||[]),...((bg&&bg.canon_structure)||[]),...((bg&&bg.reference_terms)||[]),...Object.values(academic||{}).flatMap(v=>Array.isArray(v)?v:(typeof v==='object'?Object.values(v).flatMap(x=>Array.isArray(x)?x:[x]):[v]))].filter(x=>blobSearch2078(x).includes(q)).slice(0,80);
+    const tokenKeys=Object.keys(tokens||{}).filter(k=>k.toLowerCase().includes(q)||blobSearch2078(tokens[k]).includes(q)).slice(0,80);
+    const pats=(patterns||[]).filter(x=>blobSearch2078(x).includes(q)).slice(0,80);
+    const conf=(confusions||[]).filter(x=>blobSearch2078(x).includes(q)).slice(0,80);
+    const exercise=(exercises||[]).filter(x=>blobSearch2078(x).includes(q)).slice(0,80);
+    const total=course.length+vocab.length+sentence.length+term.length+buddhist.length+tokenKeys.length+pats.length+conf.length+exercise.length;
+    if(summary){summary.classList.remove('hidden');summary.innerHTML=`关键词：<strong>${text(q)}</strong>；共找到 <strong>${total}</strong> 条分类结果。`}
+    box.innerHTML=(total?'' : '<section class="card"><p class="muted">没有找到匹配内容。</p></section>')+
+      group2078('课程',course,x=>`<div class="result-card clickable" data-lesson="${Number(x.id)||''}"><h3>【课程】${text(x.lesson_number||x.id)}. ${text(x.title)}</h3><p>${snippet2078(x.summary||x.search_text||'',q)}</p></div>`)+
+      group2078('本节单词 / 基础词表',vocab,x=>`<div class="result-card"><h3>【单词】${text(x.form||x.lemma||'')}</h3><p>${x.root?`词根：${text(x.root)}｜`:''}${x.gender?`性：${text(x.gender)}｜`:''}基本义：${text(x.meaning||'')}</p></div>`)+
+      group2078('句子分析',sentence,x=>`<div class="result-card clickable" data-page="sentence"><h3>【句子】${text(x.sentence)}</h3><p>${text(x.translation||'')}</p></div>`)+
+      group2078('术语库',term,x=>`<div class="result-card clickable" data-term-query="${text(x.en||x.cn||q)}"><h3>【术语】${text(x.en||x.cn)} ${x.ipa?`<span class="ipa-inline">${text(x.ipa)}</span>`:''}</h3><p>${text(x.cn||x.simple_explanation||x.note||'')}</p></div>`)+
+      group2078('佛典阅读',buddhist,x=>`<div class="result-card clickable" data-page="buddhist"><h3>【佛典】${text(x.title||x.pali||x.cn||x.term||x.id||'佛典阅读')}</h3><p>${snippet2078(x.structure||x.basic||x.natural||x.note||x.explanation||x.content||'',q)}</p></div>`)+
+      group2078('词形分析',tokenKeys,k=>`<div class="result-card clickable" data-lookup-word="${text(k)}"><h3>【词形】${text(k)}</h3><p>${text(((tokens[k]||{}).analyses||[])[0]?.meaning||'')}</p></div>`)+
+      group2078('句型模板',pats,x=>`<div class="result-card clickable" data-page="patterns"><h3>【句型】${text(x.title)}</h3><p>${text(x.formula||x.function||'')}</p></div>`)+
+      group2078('易混概念',conf,x=>`<div class="result-card clickable" data-page="confusion"><h3>【易混】${text(x.title)}</h3><p>${snippet2078(x.core||x.tip||'',q)}</p></div>`)+
+      group2078('练习题',exercise,x=>`<div class="result-card clickable" ${x.lesson_id?`data-lesson="${Number(x.lesson_id)}"`:''}><h3>【练习】${text(x.question||'')}</h3><p>答案：${text(x.answer||'')}</p></div>`);
+  }catch(e){console.error(e); box.innerHTML=`<div class="error">搜索加载失败。请确认 search-index.json 等文件已上传到根目录。<br>${text(e.message||e)}</div>`;}
+}
+document.addEventListener('click',function(e){
+  const run=e.target.closest('[data-action="runGlobalSearch2078"],[data-action="runGlobalSearch"]');
+  if(run){e.preventDefault();e.stopImmediatePropagation();drawSearch2078($('#globalSearchInput')?.value||'');return;}
+  const quick=e.target.closest('[data-search-query2078]');
+  if(quick){e.preventDefault();e.stopImmediatePropagation();const q=quick.dataset.searchQuery2078; const inp=$('#globalSearchInput'); if(inp) inp.value=q; drawSearch2078(q); return;}
+},true);
