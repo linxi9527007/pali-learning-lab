@@ -292,7 +292,6 @@ async function showView(viewId){
 
 // 辅助渲染函数
 async function showLesson(id){
-    markLessonOpened(id);
     const app = $q('#app'); if(!app) return;
     // load base index to show title if needed
     const grammar = await fetchJson('grammar-index.json').catch(()=>[]);
@@ -346,14 +345,11 @@ async function showLesson(id){
         const btnEl=e.currentTarget; const parent=btnEl.closest('.exercise-item'); if(!parent) return;
         const correct = btnEl.getAttribute('data-answer');
         const chosen = btnEl.textContent;
-        const questionId = parent.dataset.id || '';
-        const isCorrect = chosen===correct;
-        recordExerciseResult(id, questionId, isCorrect);
         const hint = parent.querySelector('.hint');
         if(hint) hint.style.display = 'block';
         // simple visual feedback
         parent.querySelectorAll('.opt').forEach(o=>o.disabled=true);
-        if(isCorrect){ btnEl.style.backgroundColor='#c8f7c5'; } else { btnEl.style.backgroundColor='#ffd6d6'; const right = Array.from(parent.querySelectorAll('.opt')).find(o=>o.getAttribute('data-answer')===o.textContent); if(right) right.style.outline='2px solid #2b7'; }
+        if(chosen===correct){ btnEl.style.backgroundColor='#c8f7c5'; } else { btnEl.style.backgroundColor='#ffd6d6'; const right = Array.from(parent.querySelectorAll('.opt')).find(o=>o.getAttribute('data-answer')===o.textContent); if(right) right.style.outline='2px solid #2b7'; }
     }));
 }
 async function showModuleLessons(module){
@@ -389,7 +385,6 @@ async function renderSentence(id){
     app.querySelectorAll('.nav-row button').forEach(b=>b.addEventListener('click',()=>{
         const prev=b.dataset.prev||b.dataset.next; if(prev) renderSentence(prev);
     }));
-    updateSentenceAnalysisState({ lastSentenceId: id });
 }
 // show reading detail
 async function showReading(id){
@@ -437,73 +432,3 @@ async function localSearch(q, opts={limit:100}){
 // 导出全局以便页面其它脚本可以调用
 window.showView = showView;
 window.scrollToTop = scrollToTop;
-
-const STORAGE_KEY = 'paliLab2Progress';
-function loadStudyState() {
-    try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        return raw ? JSON.parse(raw) : {
-            version: '2.0',
-            lastOpenedLessonId: null,
-            courseProgress: {},
-            exerciseRecords: {},
-            sentenceAnalysis: {}
-        };
-    } catch (e) {
-        console.warn('loadStudyState failed', e);
-        return {
-            version: '2.0',
-            lastOpenedLessonId: null,
-            courseProgress: {},
-            exerciseRecords: {},
-            sentenceAnalysis: {}
-        };
-    }
-}
-function saveStudyState(state) {
-    try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    } catch (e) {
-        console.warn('saveStudyState failed', e);
-    }
-}
-function markLessonOpened(lessonId) {
-    const state = loadStudyState();
-    state.lastOpenedLessonId = lessonId;
-    const key = `lesson-${lessonId}`;
-    const item = state.courseProgress[key] || { status: 'in-progress', startedAt: new Date().toISOString(), completedAt: null };
-    item.status = item.status === 'completed' ? 'completed' : 'in-progress';
-    state.courseProgress[key] = item;
-    saveStudyState(state);
-}
-function markLessonCompleted(lessonId) {
-    const state = loadStudyState();
-    const key = `lesson-${lessonId}`;
-    const item = state.courseProgress[key] || {};
-    item.status = 'completed';
-    item.completedAt = new Date().toISOString();
-    item.startedAt = item.startedAt || new Date().toISOString();
-    state.courseProgress[key] = item;
-    saveStudyState(state);
-}
-function recordExerciseResult(lessonId, questionId, isCorrect) {
-    const state = loadStudyState();
-    const key = `lesson-${lessonId}`;
-    const record = state.exerciseRecords[key] || { attempts: 0, correct: 0, wrong: 0, wrongItems: [] };
-    record.attempts += 1;
-    if (isCorrect) record.correct += 1;
-    else {
-        record.wrong += 1;
-        if (questionId && !record.wrongItems.includes(questionId)) record.wrongItems.push(questionId);
-    }
-    state.exerciseRecords[key] = record;
-    saveStudyState(state);
-}
-function updateSentenceAnalysisState(data = {}) {
-    const state = loadStudyState();
-    state.sentenceAnalysis = {
-        ...state.sentenceAnalysis,
-        ...data
-    };
-    saveStudyState(state);
-}
