@@ -1,10 +1,1 @@
-{
-  "name": "Pāli Learning Lab 20.74 练习题质量精修版",
-  "short_name": "Pāli Lab",
-  "start_url": "./",
-  "scope": "./",
-  "display": "browser",
-  "background_color": "#f6f7fb",
-  "theme_color": "#1f2937",
-  "description": "Pāli Learning Lab 20.74 练习题质量精修版"
-}
+{"name":"Pāli Learning Lab 20.77","short_name":"Pāli Lab","start_url":"./","scope":"./","display":"browser","background_color":"#f6f7fb","theme_color":"#1f2937","description":"20.77 页面入口修复版：全站课程语法说明合并相同或类似表述，最多显示 5 条但不强行补满。"}
