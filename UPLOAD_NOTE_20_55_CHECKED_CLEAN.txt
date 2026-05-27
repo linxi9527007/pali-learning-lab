@@ -1,0 +1,14 @@
+Pāli Learning Lab 20.55 checked clean upload package
+
+This package was checked after generation.
+Core visible/version files contain 20.55:
+- index.html
+- app.js
+- cache-reset.html
+- manifest.json
+
+JavaScript syntax check passed for app.js.
+Old upload-note files from 20.51-20.54 were removed from this clean package to avoid confusion.
+No service worker file is included.
+
+Upload all extracted files to the GitHub repository root and overwrite existing files.

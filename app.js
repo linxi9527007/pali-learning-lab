@@ -1,7 +1,7 @@
-/* Pāli Learning Lab · 20.53 缩略语与句子分析统一版
+/* Pāli Learning Lab · 20.55 分板块体验优化版
    纯 HTML/CSS/JS；无构建、无 service worker；GitHub Pages 可直接部署。
 */
-const VERSION = '20.53 缩略语与句子分析统一版';
+const VERSION = '20.55 分板块体验优化版';
 const FILE = {
   grammarIndex: 'grammar-index.json',
   manifest: 'grammar-lesson-manifest.json',
@@ -24,6 +24,7 @@ const FILE = {
 };
 const LESSON_STATUS_KEY='pll_lesson_status_v1';
 const WRONG_KEY='pll_wrong_exercises_v1';
+const EXERCISE_SESSION_KEY='pll_exercise_session_v1';
 const SENT_STATUS_KEY='pll_sentence_status_v1';
 const HISTORY_KEY='pll_lookup_history_v1';
 const app = document.getElementById('app');
@@ -254,15 +255,33 @@ async function getLessonDetail(id){
   const detail=(chunk||[]).find(l=>Number(l.id)===id)||{};
   return {...base,...detail};
 }
-async function loadLessonExercises(id){
+function exerciseIsRelevantToLesson(lesson,ex){
+  if(!lesson||!ex) return true;
+  const fs=exampleFocusSets(lesson);
+  if(!fs) return true;
+  const blob=[ex.question,ex.answer,ex.explanation,...(ex.options||[])].join(' ');
+  const hasAlien=fs.alien.some(t=>blob.includes(t));
+  const hasFocus=fs.focus.some(t=>blob.includes(t));
+  return !hasAlien || hasFocus;
+}
+async function loadLessonExercises(id,lesson=null){
   const ex=await loadData('exercise').catch(()=>[]);
-  return (ex||[]).filter(x=>Number(x.lesson_id)===Number(id));
+  const items=(ex||[]).filter(x=>Number(x.lesson_id)===Number(id));
+  return lesson ? items.filter(x=>exerciseIsRelevantToLesson(lesson,x)) : items;
+}
+function isGenericPedagogyLine(x){
+  const s=String(x||'').trim();
+  return !s || /本课目标|学习目标/.test(s)
+    || /不要求|不需要|只要求|无需|后续再|以后再/.test(s)
+    || /避免只背中文意思|只背中文意思|不看本课形式|只观察中文翻译|提前做完整句子分析/.test(s)
+    || /遇到不确定|结合教材|老师讲解|词典复核|按语境判断/.test(s);
 }
 function cleanGoalList(lesson){
   const arr=[];
   (lesson.learning_goals||[]).forEach(x=>arr.push(x));
   (lesson.minimal_mastery||[]).forEach(x=>arr.push(x));
-  return dedupe(arr.map(x=>String(x).trim()).filter(x=>x && !/本课目标|学习目标/.test(x))).slice(0,8);
+  const cleaned=dedupe(arr.map(x=>String(x).trim()).filter(x=>!isGenericPedagogyLine(x)));
+  return cleaned.slice(0,3);
 }
 const ABBRS=[
  ['n.','noun，名词','noun','/naʊn/'],['v.','verb，动词','verb','/vɝːb/'],['pron.','pronoun，代词','pronoun','/ˈproʊnaʊn/'],['adj.','adjective，形容词','adjective','/ˈædʒɪktɪv/'],['adv.','adverb，副词','adverb','/ˈædvɝːb/'],['ind.','indeclinable，不变词','indeclinable','/ˌɪndɪˈklaɪnəbəl/'],['num.','numeral，数词','numeral','/ˈnuːmərəl/'],
@@ -278,7 +297,8 @@ function abbrHTML(lesson){
   const blob=JSON.stringify(lesson);
   const hits=ABBRS.filter(a=>blob.includes(a[0]));
   if(!hits.length) return '';
-  return `<section class="card compact"><div class="section-title"><h3>语法标注</h3></div><div class="abbr-list">${hits.map(a=>`<span class="abbr-chip plain">${a[0]} = ${a[2]}，${a[1].split('，')[1]||''}</span>`).join('')}</div></section>`;
+  const body=`<div class="abbr-list">${hits.map(a=>`<div class="abbr-line">${a[0]} = ${a[2]}，${a[1].split('，')[1]||''}</div>`).join('')}</div>`;
+  return `<section class="card compact"><details class="abbr-details"><summary>语法标注</summary>${body}</details></section>`;
 }
 function inferConcepts(lesson){
   const textBlob=[lesson.title,lesson.category,lesson.summary,...(lesson.explanation||[]),...(lesson.common_mistakes||[])].join(' ');
@@ -298,7 +318,7 @@ const PALI_LEXICON={
   dhamma:{pos:'noun',gender:'m.',meaning:'法；教法；现象'},bhikkhu:{pos:'noun',gender:'m.',meaning:'比丘'},vihāra:{pos:'noun',gender:'m.',meaning:'寺院；住处'},purisa:{pos:'noun',gender:'m.',meaning:'人；男子'},sāvaka:{pos:'noun',gender:'m.',meaning:'弟子；声闻'},gāma:{pos:'noun',gender:'m.',meaning:'村庄'},patta:{pos:'noun',gender:'m.',meaning:'钵'},sadda:{pos:'noun',gender:'m.',meaning:'声音'},samaya:{pos:'noun',gender:'m.',meaning:'时间；时候'},attha:{pos:'noun',gender:'m.',meaning:'意义；利益；目的'},kāya:{pos:'noun',gender:'m.',meaning:'身；身体'},loka:{pos:'noun',gender:'m.',meaning:'世间；世界'},
   citta:{pos:'noun',gender:'n.',meaning:'心；心识'},phala:{pos:'noun',gender:'n.',meaning:'果；结果'},rūpa:{pos:'noun',gender:'n.',meaning:'色；形态'},kamma:{pos:'noun',gender:'n.',meaning:'业；行为'},saraṇa:{pos:'noun',gender:'n.',meaning:'皈依处；庇护'},cetiya:{pos:'noun',gender:'n.',meaning:'塔庙；圣迹'},sutta:{pos:'noun',gender:'n.',meaning:'经；经文'},dukkha:{pos:'noun',gender:'n.',meaning:'苦；不圆满'},nāma:{pos:'noun',gender:'n.',meaning:'名；名称'},mana:{pos:'noun',gender:'n.',meaning:'意；心'},
   paññā:{pos:'noun',gender:'f.',meaning:'智慧'},itthi:{pos:'noun',gender:'f.',meaning:'女子'},Sāvatthī:{pos:'noun',gender:'f.',meaning:'舍卫城'},vibhatti:{pos:'noun',gender:'f.',meaning:'词尾变化；格变化'},gāthā:{pos:'noun',gender:'f.',meaning:'偈颂'},bhūmi:{pos:'noun',gender:'f.',meaning:'地；层级'},
-  gacchati:{pos:'verb',root:'√gam',meaning:'去；行走'},āgacchati:{pos:'verb',root:'ā + √gam',meaning:'来；到来'},deseti:{pos:'verb',root:'√dis / deś',meaning:'说示；开示；教导'},suṇāti:{pos:'verb',root:'√su',meaning:'听；听闻'},hoti:{pos:'verb',root:'√bhū',meaning:'是；成为；存在'},bhavati:{pos:'verb',root:'√bhū',meaning:'成为；存在；发生'},karoti:{pos:'verb',root:'√kar',meaning:'做；作'},vasati:{pos:'verb',root:'√vas',meaning:'住；居住'},viharati:{pos:'verb',root:'vi + √har / √hṛ',meaning:'住；停留；安住'},passati:{pos:'verb',root:'√pass',meaning:'看见；观察'},labhati:{pos:'verb',root:'√labh',meaning:'得到；获得'},icchati:{pos:'verb',root:'√is / icch',meaning:'想要；希望'},vandati:{pos:'verb',root:'√vand',meaning:'礼敬；敬礼'},pasīdati:{pos:'verb',root:'pa + √sad',meaning:'欢喜；生信；澄净'},patati:{pos:'verb',root:'√pat',meaning:'落下；掉落'},āroceti:{pos:'verb',root:'ā + √ruc',meaning:'告知；报告'},pavisati:{pos:'verb',root:'pa + √vis',meaning:'进入'},dadāti:{pos:'verb',root:'√dā',meaning:'给；给予'},vadati:{pos:'verb',root:'√vad',meaning:'说'},āha:{pos:'verb',root:'√ah / √brū',meaning:'说；说道'},avoca:{pos:'verb',root:'√vac',meaning:'说了'},
+  gacchati:{pos:'verb',root:'√gam',meaning:'去；行走'},āgacchati:{pos:'verb',root:'√gam',meaning:'来；到来'},deseti:{pos:'verb',root:'√dis',meaning:'说示；开示；教导'},suṇāti:{pos:'verb',root:'√su',meaning:'听；听闻'},hoti:{pos:'verb',root:'√bhū',meaning:'是；成为；存在'},bhavati:{pos:'verb',root:'√bhū',meaning:'成为；存在；发生'},karoti:{pos:'verb',root:'√kar',meaning:'做；作'},vasati:{pos:'verb',root:'√vas',meaning:'住；居住'},viharati:{pos:'verb',root:'√har',meaning:'住；停留；安住'},passati:{pos:'verb',root:'√pass',meaning:'看见；观察'},labhati:{pos:'verb',root:'√labh',meaning:'得到；获得'},icchati:{pos:'verb',root:'√is',meaning:'想要；希望'},vandati:{pos:'verb',root:'√vand',meaning:'礼敬；敬礼'},pasīdati:{pos:'verb',root:'√sad',meaning:'欢喜；生信；澄净'},patati:{pos:'verb',root:'√pat',meaning:'落下；掉落'},āroceti:{pos:'verb',root:'√ruc',meaning:'告知；报告'},pavisati:{pos:'verb',root:'√vis',meaning:'进入'},dadāti:{pos:'verb',root:'√dā',meaning:'给；给予'},vadati:{pos:'verb',root:'√vad',meaning:'说'},āha:{pos:'verb',root:'√ah',meaning:'说；说道'},avoca:{pos:'verb',root:'√vac',meaning:'说了'},
   ca:{pos:'other',grammar:'ind.',meaning:'和；并且；也'},vā:{pos:'other',grammar:'ind.',meaning:'或者'},na:{pos:'other',grammar:'ind.',meaning:'不；非'},mā:{pos:'other',grammar:'ind.',meaning:'不要；勿'},kho:{pos:'other',grammar:'ind.',meaning:'确实；于是；常不直译'},atha:{pos:'other',grammar:'ind.',meaning:'于是；然后'},eva:{pos:'other',grammar:'ind.',meaning:'正是；唯有；即'},api:{pos:'other',grammar:'ind.',meaning:'也；甚至'},pana:{pos:'other',grammar:'ind.',meaning:'又；而；于是'},ce:{pos:'other',grammar:'ind.',meaning:'如果'},hi:{pos:'other',grammar:'ind.',meaning:'因为；确实'},so:{pos:'pron',grammar:'pron.',meaning:'他；那'},te:{pos:'pron',grammar:'pron.',meaning:'他们；那些'},yo:{pos:'pron',grammar:'pron.',meaning:'谁；凡是……者'},me:{pos:'pron',grammar:'pron.',meaning:'我的；于我；由我'},taṃ:{pos:'pron',grammar:'pron.',meaning:'那个；它；他'}
 };
 const VERB_3SG_MAP={
@@ -461,13 +481,82 @@ function tableHTML(lesson){
   if(!lesson.table?.length) return '';
   return `<section class="card compact"><div class="section-title"><h3>形式与结构</h3></div><div class="table-wrap"><table>${lesson.table.map(row=>`<tr>${row.map(c=>`<td>${text(c)}</td>`).join('')}</tr>`).join('')}</table></div></section>`;
 }
+function lessonSpecificGrammarNotes(lesson){
+  const title=String(lesson.title||'');
+  const cat=String(lesson.category||'');
+  const notes=[];
+  if(/-a 尾中性名词|中性名词/.test(title)){
+    notes.push('-a 尾中性名词的核心特点是单数主格和宾格常同形，如 phalaṃ 既可能作主语，也可能作宾语，必须结合动词判断句法功能。');
+    notes.push('复数主格/宾格通常用 -āni，如 phalāni、cittāni、rūpāni。');
+    notes.push('属格单数常用 -assa，如 phalassa，可表示“……的”或限定关系。');
+  } else if(/-a 尾阳性名词|阳性名词/.test(title)){
+    notes.push('-a 尾阳性名词常见单数主格为 -o，宾格为 -aṃ，属格为 -assa。');
+    notes.push('主格通常作主语，宾格通常作动作对象；不要只凭词序判断句法功能。');
+    notes.push('学习这一类名词时，应把词干、词尾和句中功能一起观察。');
+  } else if(/-ā 尾阴性名词|阴性名词/.test(title)){
+    notes.push('-ā 尾阴性名词常见单数主格为 -ā，宾格为 -aṃ，工具/与格/属格可见 -āya。');
+    notes.push('阴性名词的词尾变化不能套用 -a 尾阳性名词表。');
+    notes.push('分析例句时先确定该名词在句中是主语、宾语还是修饰/限定成分。');
+  } else if(/现在时|vattamānā/.test(title)){
+    notes.push('现在时常表示当前动作、习惯动作或一般事实。');
+    notes.push('主动现在时要同时观察词干和人称数词尾，如 -ti、-anti、-mi、-ma。');
+    notes.push('动词语法解析采用“时态.语气.语态.人称数”的顺序，如 prs.indic.act.3sg。');
+  } else if(/inf\.|不定式/.test(title)){
+    notes.push('inf. 通常表示目的或动作内容，常见词尾为 -tuṃ、-ituṃ、-etuṃ。');
+    notes.push('inf. 不是限定动词，本身不标出人称和数。');
+    notes.push('判断 inf. 时要看它与主句动词的关系，如“为了……”“想要……”。');
+  } else if(/ger\.|连续体|absolutive/.test(title)){
+    notes.push('ger. 常表示先行动作，可译为“……之后”。');
+    notes.push('常见形式包括 -tvā、-itvā、-tvāna、-ya。');
+    notes.push('ger. 不带人称数，通常依附主句限定动词来构成动作顺序。');
+  } else if(/主格|nominative/.test(title)){
+    notes.push('主格常作主语，也可用于名词性表语。');
+    notes.push('巴利语不能只靠词序判断主语，应结合词尾和限定动词。');
+    notes.push('中性名词主格可能与宾格同形，必须结合句法功能判断。');
+  } else if(/宾格|accusative/.test(title)){
+    notes.push('宾格常表示动作对象，也可表示方向、时间范围或空间范围。');
+    notes.push('看到 -ṃ 不能机械判断为宾格，因为中性名词主格也可能同形。');
+    notes.push('分析时先找限定动词，再看该名词是否受动词支配。');
+  } else if(/工具格|instrumental/.test(title)){
+    notes.push('工具格常表示工具、方式、伴随，也可表示被动结构中的施事。');
+    notes.push('常见译法包括“以、用、由、与……一起”。');
+    notes.push('工具格要结合动词语义判断，不宜只用一个中文词硬套。');
+  } else if(/属格|genitive/.test(title)){
+    notes.push('属格常表示所属、关系、来源或部分整体。');
+    notes.push('属格与与格常有同形形式，需要结合上下文判断。');
+    notes.push('属格短语通常修饰名词，不一定是句子核心论元。');
+  } else if(/处格|locative/.test(title)){
+    notes.push('处格常表示地点、时间或范围，可译为“在……中/于……”。');
+    notes.push('处格通常不是动作对象，应与宾格区分。');
+    notes.push('地点处格常与 vasati、viharati 等动词同现。');
+  } else if(/na：|mā：|否定/.test(title)){
+    notes.push('na 是普通否定，常否定动词、形容词或判断。');
+    notes.push('mā 多用于禁止、劝止，通常译为“不要、勿”。');
+    notes.push('分析否定句时，要先判断否定词作用于哪个动词或判断。');
+  } else if(/ca：|vā：|iti|ti：|不变词|ind\./.test(title)||cat==='ind.'){
+    notes.push('ind. 只表示 indeclinable“不变词”，不能用来表示陈述语气。');
+    notes.push('不变词本身不变格，但常决定并列、选择、否定、引语或语气功能。');
+    notes.push('ti 只有明确作引语标记时才作为独立不变词分析，不能把动词词尾 -ti 误认为 ti。');
+  }
+  return notes;
+}
+function cleanExplanationList(lesson){
+  const arr=[...lessonSpecificGrammarNotes(lesson),...(lesson.explanation||[])];
+  return dedupe(arr.map(x=>String(x).trim()).filter(x=>x && !isGenericPedagogyLine(x))).slice(0,7);
+}
 function explanationHTML(lesson){
-  const arr=lesson.explanation||[];
+  const arr=cleanExplanationList(lesson);
   return arr.length?`<section class="card compact"><div class="section-title"><h3>语法说明</h3></div><ol>${arr.map(x=>`<li>${text(x)}</li>`).join('')}</ol></section>`:'';
 }
+function isGenericMistakeLine(x){
+  const s=String(x||'').trim();
+  return isGenericPedagogyLine(s)
+    || /不要只按中文意思|只按中文意思|看到相似词形|先拆词干和词尾/.test(s)
+    || /词形、格位、动词形式和句法功能结合/.test(s);
+}
 function mistakesHTML(lesson){
-  const arr=lesson.common_mistakes||[];
-  return arr.length?`<section class="card compact"><div class="section-title"><h3>常见误区</h3></div><ul>${arr.slice(0,8).map(x=>`<li>${text(x)}</li>`).join('')}</ul></section>`:'';
+  const arr=dedupe((lesson.common_mistakes||[]).map(x=>String(x).trim()).filter(x=>x && !isGenericMistakeLine(x))).slice(0,3);
+  return arr.length?`<section class="card compact"><div class="section-title"><h3>常见误判</h3></div><ul>${arr.map(x=>`<li>${text(x)}</li>`).join('')}</ul></section>`:'';
 }
 function exercisePreviewHTML(exercises){
   if(!exercises?.length) return '';
@@ -483,7 +572,7 @@ async function renderLesson(id){
   currentLessonId=Number(id);
   const [lesson,grammar]=await Promise.all([getLessonDetail(id),loadData('grammarIndex')]);
   currentModule=lesson.module||currentModule;
-  const exercises=await loadLessonExercises(id).catch(()=>[]);
+  const exercises=await loadLessonExercises(id,lesson).catch(()=>[]);
   const goals=cleanGoalList(lesson);
   app.innerHTML=`${lessonNav(id,grammar)}<section class="card"><p class="pill">${text(lesson.module||'')}</p><h2>${text(lesson.lesson_number||lesson.id)}. ${text(lesson.title||'课程')}</h2><p class="muted">${text(lesson.category||'')}｜${text(lesson.level||lesson.difficulty||'')}</p><p>${text(lesson.summary||'')}</p><div class="button-row"><button class="${lessonStatus(id)==='学习中'?'primary':''}" data-set-status="学习中">标记学习中</button><button class="${lessonStatus(id)==='已掌握'?'success':''}" data-set-status="已掌握">标记已掌握</button><button class="${lessonStatus(id)==='需复习'?'danger':''}" data-set-status="需复习">标记需复习</button></div></section>
 ${goals.length?`<section class="card compact"><div class="section-title"><h3>学习目标</h3></div><ul>${goals.map(g=>`<li>${text(g)}</li>`).join('')}</ul></section>`:''}
@@ -497,23 +586,33 @@ ${exercisePreviewHTML(exercises)}
 ${mistakesHTML(lesson)}
 ${lessonNav(id,grammar)}`;
 }
-let currentExercises=[], exerciseIndex=0, selectedChoice='';
+let currentExercises=[], exerciseIndex=0, selectedChoice='', currentExerciseMeta={};
+function savedExerciseSession(){try{return JSON.parse(localStorage.getItem(EXERCISE_SESSION_KEY)||'null')}catch{return null}}
+function saveExerciseSession(){try{if(currentExercises.length)localStorage.setItem(EXERCISE_SESSION_KEY,JSON.stringify({items:currentExercises,index:exerciseIndex,meta:currentExerciseMeta,selectedChoice,saved_at:new Date().toISOString()}))}catch{}}
+function clearExerciseSession(){try{localStorage.removeItem(EXERCISE_SESSION_KEY)}catch{}}
 async function renderExerciseCenter(){
   const [ex,grammar]=await Promise.all([loadData('exercise'),loadData('grammarIndex')]);
   const modules=dedupe(grammar.map(l=>l.module));
   const lessons=sortLessons(grammar);
-  app.innerHTML=`${navControls()}<section class="card"><h2>课程练习</h2><p class="muted">按模块或具体课程抽题。练习题进入本页后才加载。</p><label>选择模块</label><select id="exerciseModule"><option value="全部">全部</option>${modules.map(m=>`<option>${text(m)}</option>`).join('')}</select><label>选择课程</label><select id="exerciseLesson"><option value="全部">全部课程</option>${lessons.map(l=>`<option value="${l.id}">${text(l.lesson_number||l.id)}. ${text(l.title)}</option>`).join('')}</select><label>抽题数量</label><select id="exerciseCount"><option>10</option><option>20</option><option>50</option></select><button class="primary" data-action="startExercise">开始练习</button><div id="exerciseArea"></div></section>`;
+  const saved=savedExerciseSession();
+  app.innerHTML=`${navControls()}<section class="card"><h2>课程练习</h2><p class="muted">按模块或具体课程抽题。练习题进入本页后才加载。</p>${saved?.items?.length?`<div class="notice"><strong>检测到未完成练习：</strong>已做到第 ${(saved.index||0)+1}/${saved.items.length} 题。<div class="button-row"><button class="primary" data-action="continueExercise">继续上次练习</button><button data-action="clearExerciseSession">清除上次练习</button></div></div>`:''}<label>选择模块</label><select id="exerciseModule"><option value="全部">全部</option>${modules.map(m=>`<option>${text(m)}</option>`).join('')}</select><label>选择课程</label><select id="exerciseLesson"><option value="全部">全部课程</option>${lessons.map(l=>`<option value="${l.id}">${text(l.lesson_number||l.id)}. ${text(l.title)}</option>`).join('')}</select><label>抽题数量</label><select id="exerciseCount"><option>10</option><option>20</option><option>50</option></select><button class="primary" data-action="startExercise">开始练习</button><div id="exerciseArea"></div></section>`;
 }
-function startExercise(items){
-  currentExercises=[...items].sort(()=>Math.random()-.5); exerciseIndex=0; selectedChoice=''; renderExerciseQuestion();
+function startExercise(items,meta={}){
+  currentExercises=[...items].sort(()=>Math.random()-.5); exerciseIndex=0; selectedChoice=''; currentExerciseMeta=meta; saveExerciseSession(); renderExerciseQuestion();
+}
+function continueExercise(){
+  const saved=savedExerciseSession();
+  if(!saved?.items?.length){alert('没有可继续的练习。');return;}
+  currentExercises=saved.items; exerciseIndex=Math.min(saved.index||0,currentExercises.length-1); selectedChoice=saved.selectedChoice||''; currentExerciseMeta=saved.meta||{}; renderExerciseQuestion();
 }
 function renderExerciseQuestion(){
   const area=$('#exerciseArea'); if(!area)return;
   if(!currentExercises.length){area.innerHTML='<p class="muted">当前没有练习题。</p>';return;}
-  if(exerciseIndex>=currentExercises.length){area.innerHTML='<div class="exercise-box"><h3>本轮完成</h3><button class="primary" data-page="wrong">查看错题</button></div>';return;}
+  if(exerciseIndex>=currentExercises.length){clearExerciseSession(); area.innerHTML='<div class="exercise-box"><h3>本轮完成</h3><button class="primary" data-page="wrong">查看错题</button></div>';return;}
+  saveExerciseSession();
   const ex=currentExercises[exerciseIndex];
   const options=ex.type==='choice'?(ex.options||[]).map(o=>`<button class="option" data-choice="${text(o)}">${text(o)}</button>`).join(''):`<input id="inputAnswer" placeholder="请输入答案">`;
-  area.innerHTML=`<div class="exercise-box"><p class="muted">题目 ${exerciseIndex+1}/${currentExercises.length}｜${text(ex.module||'')}｜${text(ex.lesson_title||'')}</p><h3>${text(ex.question)}</h3>${options}<div class="button-row"><button class="primary" data-action="submitExercise">提交答案</button><button data-action="nextExercise">下一题</button></div><div id="exerciseFeedback"></div></div>`;
+  area.innerHTML=`<div class="exercise-box"><p class="muted">题目 ${exerciseIndex+1}/${currentExercises.length}｜${text(ex.module||'')}｜${text(ex.lesson_title||'')}</p><h3>${text(ex.question)}</h3>${options}<div class="button-row"><button class="primary" data-action="submitExercise">提交答案</button><button data-action="nextExercise">下一题</button><button class="secondary" data-action="exitExercise">暂时退出</button></div><div id="exerciseFeedback"></div></div>`;
 }
 function submitExercise(){
   const ex=currentExercises[exerciseIndex]; if(!ex)return;
@@ -522,7 +621,7 @@ function submitExercise(){
   const good=normalizeAnswer(ans)===normalizeAnswer(ex.answer);
   const wrong=wrongMap();
   if(good) delete wrong[ex.id]; else wrong[ex.id]={...ex,user_answer:ans,wrong_at:new Date().toISOString()};
-  saveWrong(wrong);
+  saveWrong(wrong); saveExerciseSession();
   const fb=$('#exerciseFeedback');
   fb.className='feedback '+(good?'good':'bad');
   fb.innerHTML=`<strong>${good?'回答正确':'回答错误'}</strong><p>你的答案：${text(ans)}</p><p>标准答案：${text(ex.answer)}</p><p>${text(ex.explanation||'')}</p>`;
@@ -678,6 +777,121 @@ async function drawSearch(q){
   function group(title,items,render){return `<section class="card compact"><h3>${title}</h3><div class="result-list">${items.length?items.map(render).join(''):'<p class="muted">没有结果。</p>'}</div></section>`}
   box.innerHTML=group('课程',course,x=>`<div class="result-card clickable" data-lesson="${x.id}"><h3>${text(x.lesson_number||x.id)}. ${text(x.title)}</h3><p>${text(x.summary||'')}</p></div>`)+group('句子分析',sentence,x=>`<div class="result-card"><h3>${text(x.sentence)}</h3><p>${text(x.translation)}</p></div>`)+group('术语库',term,x=>`<div class="result-card clickable" data-term-query="${text(x.en||x.cn)}"><h3>${text(x.en||x.cn)} ${x.ipa?`<span class="ipa-inline">${text(x.ipa)}</span>`:''}</h3><p>${text(x.cn||x.simple_explanation||x.note||'')}</p></div>`)+group('佛典阅读',buddhist,x=>`<div class="result-card"><h3>${text(x.title||x.pali||x.id)}</h3><p>${text(x.structure||x.basic||x.natural||'')}</p></div>`)+group('词形分析',tokenKeys,k=>`<div class="result-card clickable" data-lookup-word="${text(k)}"><h3>${text(k)}</h3><p>${text(tokens[k]?.analyses?.[0]?.meaning||'')}</p></div>`);
 }
+
+
+/* 20.55 分板块体验优化：查词、句子分析、术语库、搜索、练习反馈与页面体验。 */
+function dictionarySiteCards(sites){
+  const extras=[
+    {name:'Digital Pāli Dictionary (DPD)',url:'https://dpdict.net/',level:'词形与构词',best_for:'查词形、构词、派生和英文义项，适合进阶复核。',note:'适合复核词根、词类和复合词。'},
+    {name:'SuttaCentral Dictionary',url:'https://suttacentral.net/define',level:'经文语境',best_for:'结合 SuttaCentral 语境查常用词。',note:'适合从词义回到经文语境。'},
+    {name:'PTS Pāli-English Dictionary',url:'https://dsal.uchicago.edu/dictionaries/pali/',level:'传统巴英',best_for:'复核传统巴英词典义项。',note:'适合作为严谨复核来源。'},
+    {name:'Wisdom Library',url:'https://www.wisdomlib.org/definition/',level:'补充参考',best_for:'补充梵巴佛教词汇解释。',note:'需与 Pāli 专门词典交叉核对。'}
+  ];
+  const all=[...(sites||[]),...extras];
+  const seen=new Set();
+  return all.filter(s=>{const k=(s.name||s.url||'').toLowerCase(); if(seen.has(k)) return false; seen.add(k); return true;})
+    .map(s=>`<div class="entry-card dict-site"><h3>${text(s.name)}</h3><p class="pill">${text(s.level||'词典')}</p><p>${text(s.best_for||'')}</p><p class="muted">${text(s.note||'')}</p><a class="btn primary" href="${text(s.url)}" target="_blank" rel="noopener">打开词典</a></div>`).join('');
+}
+function cautiousShortWordMessage(word){
+  const w=String(word||'').trim().toLowerCase();
+  if(w==='ti') return 'ti 只有明确作为独立引语标记时才解释为 ind.；如果只是动词词尾 -ti，不作为独立单词处理。请结合完整句子判断。';
+  if(w.length<=3 && !PALI_SMALL.has(w) && !PALI_LEXICON[word] && !PALI_LEXICON[w]) return '该形式很短，可能是词尾、连读片段或未收录词形。请结合完整句子和外部词典复核。';
+  return '';
+}
+function guessDictionaryForm(word,item=null){
+  const raw=normalizePaliToken(word);
+  if(!raw) return '';
+  if(PALI_LEXICON[raw]) return raw;
+  if(PALI_LEXICON[raw.toLowerCase()]) return raw.toLowerCase();
+  const v=canonicalVerb(raw); if(v) return v;
+  const n=lemmaNoun(raw); if(n && (PALI_LEXICON[n] || item)) return n;
+  if(item?.form) return item.form;
+  return raw;
+}
+function lookupItemFromTokens(tokens,word){
+  const raw=String(word||'').trim();
+  const low=raw.toLowerCase();
+  const lemma=guessDictionaryForm(raw);
+  return tokens[raw]||tokens[low]||tokens[lemma]||tokens[String(lemma||'').toLowerCase()]||null;
+}
+function lookupSummary(word,tokens){
+  const item=lookupItemFromTokens(tokens,word);
+  const lemma=guessDictionaryForm(word,item);
+  const lex=PALI_LEXICON[lemma]||PALI_LEXICON[String(lemma).toLowerCase()]||{};
+  const cautious=cautiousShortWordMessage(word);
+  const analyses=item?.analyses||[];
+  let confidence='需复核';
+  if(item) confidence='高：来自本站词形/例句库';
+  else if(lex.pos) confidence='中：根据内置基础词表推断';
+  const basic = analyses[0]?.meaning || lex.meaning || (cautious?'需结合句子判断':'未收录，建议查外部词典');
+  return {item,lemma,lex,analyses,cautious,confidence,basic};
+}
+async function renderDictionary(initial=''){
+  const [sites,tokens]=await Promise.all([loadData('dictionary'),loadData('token')]);
+  const history=lookupHistory();
+  app.innerHTML=`${navControls()}<section class="card"><h2>查词</h2><p class="muted">本站提供初步词形线索，正式释义请结合巴利词典和原文语境复核。</p><input id="lookupInput" value="${text(initial)}" placeholder="输入巴利语词形，如 dhammaṃ、Buddho、gacchati"><div class="button-row"><button class="primary" data-action="analyzeToken">分析词形</button><button data-action="clearLookup">清空</button></div><div class="quick-row"><span class="muted">常用示例：</span>${['dhammaṃ','Buddho','gacchati','gantuṃ','gantvā','ca','iti'].map(w=>`<button class="small-chip" data-lookup-word="${w}">${w}</button>`).join('')}</div><div id="tokenPanel"></div></section>
+  <section class="card"><h2>短句辅助分析</h2><p class="muted">输入短句后，本站会用已收录词形给出初步线索；未收录词形请继续查外部词典。</p><input id="sentenceLookupInput" placeholder="例如 Buddho dhammaṃ deseti."><button class="primary" data-action="runSentenceLookup">分析短句</button><div id="sentenceLookupPanel"></div></section>
+  <section class="card"><h2>外部词典入口</h2><div class="grid">${dictionarySiteCards(sites)}</div></section>
+  <section class="card"><h2>查询历史</h2><div class="button-row"><button data-action="clearLookupHistory">清空历史</button></div><div class="quick-row">${history.map(w=>`<button class="concept-btn" data-lookup-word="${text(w)}">${text(w)}</button>`).join('')||'<p class="muted">暂无历史。</p>'}</div></section>`;
+  const inp=$('#lookupInput'); inp?.addEventListener('keydown',e=>{if(e.key==='Enter') analyzeToken()});
+  if(initial) analyzeToken();
+}
+function analyzeToken(){
+  const word=($('#lookupInput')?.value||'').trim(); const panel=$('#tokenPanel'); if(!panel)return;
+  if(!word){panel.innerHTML='<p class="muted">请输入要分析的词形。</p>';return;}
+  addLookupHistory(word); const tokens=cache.get(FILE.token[0]+'::'+FILE.token[1])||{}; const s=lookupSummary(word,tokens);
+  const analysisBlock=s.analyses.length ? s.analyses.slice(0,4).map(a=>`<div class="lookup-row"><strong>${text(normalizeGrammarLine(a.grammar))}</strong><span>${text(a.role||'')}</span><span>${text(a.meaning||'')}</span></div>`).join('') : `<p>${text(s.lex.pos?((s.lex.pos==='verb'?'动词':s.lex.pos==='noun'?'名词':s.lex.pos)+'；'+(s.lex.gender||s.lex.root||'')):'本站暂未收录明确词形分析。')}</p>`;
+  const examples=s.item?.examples?.slice(0,3).map(e=>`<div class="example"><div class="pali">${text(e.sentence)}</div><div>翻译：${text(e.translation||'')}</div><div class="note">${text(e.tip||'')}</div></div>`).join('')||'';
+  panel.innerHTML=`<div class="lookup-card"><h3>查询词：${text(word)}</h3>${s.cautious?`<div class="notice">${text(s.cautious)}</div>`:''}<section class="lookup-layer"><h4>第一层：本站初步判断</h4>${analysisBlock}<p><strong>可信度：</strong>${text(s.confidence)}</p></section><section class="lookup-layer"><h4>第二层：可能词典形</h4><p class="lemma-box">${text(s.lemma||word)}</p><p><strong>常见基本义：</strong>${text(s.basic)}</p></section><section class="lookup-layer"><h4>第三层：外部词典复核</h4><p class="muted">建议复制词典形，到 DPD、SuttaCentral、PTS 或 dictionary.sutta.org 中复核具体语境义。</p></section>${examples?`<section class="lookup-layer"><h4>本站例句</h4>${examples}</section>`:''}</div>`;
+}
+function runSentenceLookup(){
+  const s=($('#sentenceLookupInput')?.value||'').trim(); const panel=$('#sentenceLookupPanel'); if(!panel)return;
+  if(!s){panel.innerHTML='<p class="muted">请输入一个短句。</p>';return;}
+  const tokens=cache.get(FILE.token[0]+'::'+FILE.token[1])||{};
+  const rows=tokenizePali(s).map(w=>{const r=lookupSummary(w,tokens); const a=r.analyses[0]; return `<tr><td>${text(w)}</td><td>${text(r.lemma||'')}</td><td>${text(a?normalizeGrammarLine(a.grammar):(r.lex.root||r.lex.gender||''))}</td><td>${text(a?.role||'')}</td><td>${text(a?.meaning||r.basic)}</td></tr>`}).join('');
+  panel.innerHTML=`<div class="table-wrap"><table><tr><th>词形</th><th>可能词典形</th><th>语法线索</th><th>句中功能</th><th>基本义</th></tr>${rows}</table></div>`;
+}
+async function renderSentencePage(priority=''){
+  const data=await loadData('sentence');
+  const levels=dedupe(data.map(x=>x.level));
+  const prios=dedupe(data.map(x=>x.practice_priority||'综合挑战'));
+  app.innerHTML=`${navControls()}<section class="card"><h2>句子分析训练</h2><div class="notice"><strong>分析顺序：</strong>先找限定动词 → 找主语 → 找宾语/补足成分 → 看格位成分 → 处理不变词、分词、从句。</div><div class="grid four"><div class="stat"><strong>${data.length}</strong><span>句子总数</span></div><div class="stat"><strong>${Object.values(sentenceStatusMap()).filter(x=>x==='已掌握').length}</strong><span>已掌握</span></div><div class="stat"><strong>${Object.values(sentenceStatusMap()).filter(x=>x==='需复习').length}</strong><span>需复习</span></div><div class="stat"><strong id="sentenceFilteredCount">0</strong><span>当前筛选</span></div></div><label>训练层级</label><select id="sentencePriority"><option value="全部">全部</option>${prios.map(p=>`<option ${p===priority?'selected':''}>${text(p)}</option>`).join('')}</select><label>难度</label><select id="sentenceLevel"><option value="全部">全部</option>${levels.map(l=>`<option>${text(l)}</option>`).join('')}</select><label>选择句子</label><select id="sentenceSelect"></select><div id="sentenceCard"></div></section>`;
+  refreshSentenceSelect();
+}
+function renderSentenceCard(step){
+  const item=currentSentence(), box=$('#sentenceCard'); if(!box)return;
+  if(!item){box.innerHTML='<p class="muted">当前筛选下没有句子。</p>';return;}
+  let html=`<div class="sentence-card"><p class="pill">${text(item.level)}</p><p class="sentence-main">${text(item.sentence)}</p><div class="button-row"><button data-sentence-step="translation">第一步：看翻译</button><button data-sentence-step="tokens">第二步：看词形</button><button data-sentence-step="structure">第三步：看结构</button><button class="primary" data-sentence-step="full">第四步：看完整解析</button></div>`;
+  if(['translation','tokens','structure','full'].includes(step)) html+=`<p><strong>翻译：</strong>${text(item.translation)}</p>`;
+  if(['tokens','full'].includes(step)) html+=`<div class="table-wrap"><table class="token-table"><tr><th>词形</th><th>语法信息</th><th>句中功能</th><th>意义</th></tr>${(item.tokens||[]).map(t=>`<tr><td>${text(t.form)}</td><td>${text(normalizeGrammarLine(t.grammar))}</td><td>${text(t.role)}</td><td>${text(t.meaning)}</td></tr>`).join('')}</table></div>`;
+  if(['structure','full'].includes(step)) html+=`<p><strong>结构：</strong>${text(item.structure)}</p><p class="note"><strong>分析提示：</strong>${text(item.tip||'先找限定动词，再判断名词格位与句中功能。')}</p>`;
+  if(step==='full') html+=`<div class="notice"><strong>完整解析：</strong>${text(item.analysis_level||item.training_goal||'按词形、句法功能和整体结构合成句意。')}</div><p><strong>相关语法点：</strong>${(item.related||[]).map(x=>`<button class="concept-btn" data-search-query="${text(x)}">${text(x)}</button>`).join('')}</p>`;
+  html+=`<div class="button-row"><button class="success" data-sentence-status="已掌握">标记已掌握</button><button class="danger" data-sentence-status="需复习">标记需复习</button><button data-action="nextSentence">下一句</button></div></div>`;
+  box.innerHTML=html;
+}
+async function renderTerminology(query=''){
+  const data=await loadData('terminology');
+  const cats=dedupe(data.map(t=>t.cat||t.category||'其他'));
+  app.innerHTML=`${navControls()}<section class="card"><h2>术语库</h2><div class="grid three"><div class="stat"><strong>${data.length}</strong><span>术语总数</span></div><div class="stat"><strong id="termCount">0</strong><span>当前显示</span></div><div class="stat"><strong>${cats.length}</strong><span>分类</span></div></div><input id="termSearch" value="${text(query)}" placeholder="搜索 case、nominative、主格、vibhatti"><select id="termCat"><option value="全部">全部</option>${cats.map(c=>`<option>${text(c)}</option>`).join('')}</select><div id="termList" class="result-list"></div></section>`;
+  function draw(){const q=($('#termSearch').value||'').toLowerCase(); const cat=$('#termCat').value; const items=data.filter(t=>{const blob=[t.en,t.cn,t.pali,t.note,t.simple_explanation,t.cat,t.category].join(' ').toLowerCase(); return (cat==='全部'||(t.cat||t.category)===cat)&&(!q||blob.includes(q))}); const count=$('#termCount'); if(count) count.textContent=items.length; $('#termList').innerHTML=items.map(t=>`<div class="term-card"><h3>${text(t.en||t.cn||'')} ${t.ipa?`<span class="ipa-inline">${text(t.ipa)}</span>`:''}</h3><p><strong>${text(t.cn||'')}</strong>${t.pali?`｜巴利对应：${text(t.pali)}`:''}</p><p>${text(t.simple_explanation||t.note||'')}</p>${(t.contrast_examples||[]).slice(0,2).map(e=>`<div class="example"><strong>${text(e.label||'')}</strong>：${text(e.form||'')}<br><span class="note">${text(e.meaning||'')}</span></div>`).join('')}</div>`).join('')||'<p class="muted">没有找到相关术语。</p>'}
+  draw(); $('#termSearch').addEventListener('input',draw); $('#termCat').addEventListener('change',draw);
+}
+async function drawSearch(q){
+  q=String(q||'').trim().toLowerCase(); const box=$('#searchResults'); if(!box)return;
+  if(!q){box.innerHTML='<p class="muted">输入关键词后显示搜索结果。</p>';return;}
+  box.innerHTML='<div class="loading">正在加载，请稍候……</div>';
+  const [sidx,sent,terms,reading,bg,tokens,patterns,confusions]=await Promise.all([loadData('search'),loadData('sentence'),loadData('terminology'),loadData('buddhistReading'),loadData('buddhistBackground'),loadData('token'),loadData('patterns'),loadData('confusion')]);
+  const course=sidx.filter(x=>JSON.stringify(x).toLowerCase().includes(q)).slice(0,10);
+  const sentence=sent.filter(x=>JSON.stringify(x).toLowerCase().includes(q)).slice(0,10);
+  const term=terms.filter(x=>JSON.stringify(x).toLowerCase().includes(q)).slice(0,10);
+  const buddhist=[...reading,...(bg.concepts||[])].filter(x=>JSON.stringify(x).toLowerCase().includes(q)).slice(0,10);
+  const tokenKeys=Object.keys(tokens).filter(k=>JSON.stringify(tokens[k]).toLowerCase().includes(q)||k.toLowerCase().includes(q)).slice(0,10);
+  const pats=patterns.filter(x=>JSON.stringify(x).toLowerCase().includes(q)).slice(0,8);
+  const conf=confusions.filter(x=>JSON.stringify(x).toLowerCase().includes(q)).slice(0,8);
+  function group(title,items,render){return `<section class="card compact"><h3>${title}</h3><div class="result-list">${items.length?items.map(render).join(''):'<p class="muted">没有结果。</p>'}</div></section>`}
+  box.innerHTML=group('课程',course,x=>`<div class="result-card clickable" data-lesson="${x.id}"><h3>【课程】${text(x.lesson_number||x.id)}. ${text(x.title)}</h3><p>${text(x.summary||'')}</p></div>`)+group('句子分析',sentence,x=>`<div class="result-card clickable" data-page="sentence"><h3>【句子】${text(x.sentence)}</h3><p>${text(x.translation)}</p></div>`)+group('术语库',term,x=>`<div class="result-card clickable" data-term-query="${text(x.en||x.cn)}"><h3>【术语】${text(x.en||x.cn)} ${x.ipa?`<span class="ipa-inline">${text(x.ipa)}</span>`:''}</h3><p>${text(x.cn||x.simple_explanation||x.note||'')}</p></div>`)+group('佛典阅读',buddhist,x=>`<div class="result-card clickable" data-page="buddhist"><h3>【佛典】${text(x.title||x.pali||x.id)}</h3><p>${text(x.structure||x.basic||x.natural||'')}</p></div>`)+group('词形分析',tokenKeys,k=>`<div class="result-card clickable" data-lookup-word="${text(k)}"><h3>【词形】${text(k)}</h3><p>${text(tokens[k]?.analyses?.[0]?.meaning||'')}</p></div>`)+group('句型模板',pats,x=>`<div class="result-card clickable" data-page="patterns"><h3>【句型】${text(x.title)}</h3><p>${text(x.formula||x.function||'')}</p></div>`)+group('易混概念',conf,x=>`<div class="result-card clickable" data-page="confusion"><h3>【易混】${text(x.title)}</h3><p>${text(x.core||'')}</p></div>`);
+}
+
 // Global event handling: centralized click delegation for all pages.
 document.addEventListener('click', async (e)=>{
   const nav=e.target.closest('[data-page]');
@@ -700,11 +914,15 @@ document.addEventListener('click', async (e)=>{
       const mod=$('#exerciseModule')?.value||'全部';
       const lesson=$('#exerciseLesson')?.value||'全部';
       const n=Number($('#exerciseCount')?.value||10);
-      const items=ex.filter(x=>(mod==='全部'||x.module===mod)&&(lesson==='全部'||Number(x.lesson_id)===Number(lesson))).slice(0,800);
-      startExercise(items.sort(()=>Math.random()-.5).slice(0,n));
+      let items=ex.filter(x=>(mod==='全部'||x.module===mod)&&(lesson==='全部'||Number(x.lesson_id)===Number(lesson))).slice(0,800);
+      if(lesson!=='全部'){const detail=await getLessonDetail(Number(lesson)); items=items.filter(x=>exerciseIsRelevantToLesson(detail,x));}
+      startExercise(items.sort(()=>Math.random()-.5).slice(0,n),{module:mod,lesson});
     }
+    if(a==='continueExercise') continueExercise();
+    if(a==='clearExerciseSession'){clearExerciseSession();renderExerciseCenter();}
+    if(a==='exitExercise'){saveExerciseSession();renderExerciseCenter();}
     if(a==='submitExercise') submitExercise();
-    if(a==='nextExercise'){exerciseIndex++; renderExerciseQuestion();}
+    if(a==='nextExercise'){exerciseIndex++; saveExerciseSession(); renderExerciseQuestion();}
     if(a==='analyzeToken') analyzeToken();
     if(a==='clearLookup'){$('#lookupInput').value='';$('#tokenPanel').innerHTML='';}
     if(a==='nextSentence'){const sel=$('#sentenceSelect'); if(sel&&sel.options.length){sel.selectedIndex=(sel.selectedIndex+1)%sel.options.length; renderSentenceCard('translation')}}
@@ -715,7 +933,7 @@ document.addEventListener('click', async (e)=>{
   }
   const choice=e.target.closest('[data-choice]'); if(choice){selectedChoice=choice.dataset.choice; $all('.option').forEach(x=>x.classList.remove('selected')); choice.classList.add('selected');return;}
   const setStatus=e.target.closest('[data-set-status]'); if(setStatus){setLessonStatus(currentLessonId,setStatus.dataset.setStatus);return;}
-  const startLesson=e.target.closest('[data-start-lesson-exercise]'); if(startLesson){const items=await loadLessonExercises(currentLessonId); navigate('exercise',{},true); setTimeout(()=>startExercise(items),100);return;}
+  const startLesson=e.target.closest('[data-start-lesson-exercise]'); if(startLesson){const detail=await getLessonDetail(currentLessonId); const items=await loadLessonExercises(currentLessonId,detail); navigate('exercise',{},true); setTimeout(()=>startExercise(items,{source:'lesson',lessonId:currentLessonId}),100);return;}
   const term=e.target.closest('[data-term-query]'); if(term){navigate('terminology',{query:term.dataset.termQuery});return;}
   const lookup=e.target.closest('[data-lookup-word]'); if(lookup){navigate('dictionary',{word:lookup.dataset.lookupWord});return;}
   const search=e.target.closest('[data-search-query]'); if(search){navigate('search',{query:search.dataset.searchQuery});return;}
@@ -734,3 +952,13 @@ document.addEventListener('click',(e)=>{
 (async function cleanupOldSW(){try{if('serviceWorker' in navigator){const regs=await navigator.serviceWorker.getRegistrations(); for(const r of regs) await r.unregister();}}catch(e){}})();
 // Initial route
 window.addEventListener('DOMContentLoaded',()=>{ if(app && !app.innerHTML.trim()) app.innerHTML='<div class="card loading">正在加载，请稍候……</div>'; navigate('home',{},false); });
+
+// 20.55 additional actions for dictionary and lookup history.
+document.addEventListener('click', (e)=>{
+  const a=e.target.closest('[data-action]')?.dataset.action;
+  if(a==='clearLookupHistory'){
+    saveLookupHistory([]);
+    renderDictionary($('#lookupInput')?.value||'');
+  }
+  if(a==='runSentenceLookup') runSentenceLookup();
+});
