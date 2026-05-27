@@ -1,7 +1,7 @@
-/* Pāli Learning Lab · 20.50 本节单词规则精修版
+/* Pāli Learning Lab · 20.53 缩略语与句子分析统一版
    纯 HTML/CSS/JS；无构建、无 service worker；GitHub Pages 可直接部署。
 */
-const VERSION = '20.50 本节单词规则精修版';
+const VERSION = '20.53 缩略语与句子分析统一版';
 const FILE = {
   grammarIndex: 'grammar-index.json',
   manifest: 'grammar-lesson-manifest.json',
@@ -265,13 +265,20 @@ function cleanGoalList(lesson){
   return dedupe(arr.map(x=>String(x).trim()).filter(x=>x && !/本课目标|学习目标/.test(x))).slice(0,8);
 }
 const ABBRS=[
- ['n.','noun，名词','noun','/naʊn/'],['v.','verb，动词','verb','/vɝːb/'],['m.','masculine，阳性','masculine','/ˈmæskjəlɪn/'],['f.','feminine，阴性','feminine','/ˈfemənɪn/'],['sg.','singular，单数','singular','/ˈsɪŋɡjələr/'],['pl.','plural，复数','plural','/ˈplʊrəl/'],['nom.','nominative，主格','nominative','/ˈnɑːmɪnətɪv/'],['acc.','accusative，宾格','accusative','/əˈkjuːzətɪv/'],['gen.','genitive，属格','genitive','/ˈdʒenətɪv/'],['dat.','dative，与格','dative','/ˈdeɪtɪv/'],['loc.','locative，处格','locative','/ˈlɑːkətɪv/'],['ins.','instrumental，工具格','instrumental','/ˌɪnstrəˈmentəl/'],['abl.','ablative，从格','ablative','/ˈæblətɪv/'],['voc.','vocative，呼格','vocative','/ˈvɑːkətɪv/'],['ind.','indeclinable，不变词','indeclinable','/ˌɪndɪˈklaɪnəbəl/'],['ger.','gerund，连续体','gerund','/ˈdʒerənd/'],['inf.','infinitive，不定式','infinitive','/ɪnˈfɪnətɪv/'],['pr.p.','present participle，现在分词','present participle','/ˈprezənt ˈpɑːrtɪsɪpəl/'],['p.p.','past participle，过去分词','past participle','/pæst ˈpɑːrtɪsɪpəl/'],['f.p.p.','future passive participle，将来被动分词','future passive participle','/ˈfjuːtʃər ˈpæsɪv ˈpɑːrtɪsɪpəl/']
+ ['n.','noun，名词','noun','/naʊn/'],['v.','verb，动词','verb','/vɝːb/'],['pron.','pronoun，代词','pronoun','/ˈproʊnaʊn/'],['adj.','adjective，形容词','adjective','/ˈædʒɪktɪv/'],['adv.','adverb，副词','adverb','/ˈædvɝːb/'],['ind.','indeclinable，不变词','indeclinable','/ˌɪndɪˈklaɪnəbəl/'],['num.','numeral，数词','numeral','/ˈnuːmərəl/'],
+ ['m.','masculine，阳性','masculine','/ˈmæskjəlɪn/'],['f.','feminine，阴性','feminine','/ˈfemənɪn/'],['sg.','singular，单数','singular','/ˈsɪŋɡjələr/'],['pl.','plural，复数','plural','/ˈplʊrəl/'],
+ ['nom.','nominative，主格','nominative','/ˈnɑːmɪnətɪv/'],['acc.','accusative，宾格','accusative','/əˈkjuːzətɪv/'],['ins.','instrumental，工具格','instrumental','/ˌɪnstrəˈmentəl/'],['dat.','dative，与格','dative','/ˈdeɪtɪv/'],['abl.','ablative，从格','ablative','/ˈæblətɪv/'],['gen.','genitive，属格','genitive','/ˈdʒenətɪv/'],['loc.','locative，处格','locative','/ˈlɑːkətɪv/'],['voc.','vocative，呼格','vocative','/ˈvɑːkətɪv/'],
+ ['prs.','present，现在时','present','/ˈprezənt/'],['fut.','future，将来时','future','/ˈfjuːtʃər/'],['aor.','aorist，不定过去时','aorist','/ˈeɪərɪst/'],['impf.','imperfect，未完成过去时','imperfect','/ɪmˈpɝːfɪkt/'],['perf.','perfect，完成时','perfect','/ˈpɝːfɪkt/'],
+ ['indic.','indicative，陈述语气','indicative','/ɪnˈdɪkətɪv/'],['imp.','imperative，命令语气','imperative','/ɪmˈperətɪv/'],['opt.','optative，祈愿语气/可能语气','optative','/ˈɑːptətɪv/'],['cond.','conditional，条件语气','conditional','/kənˈdɪʃənəl/'],
+ ['act.','active，主动语态','active','/ˈæktɪv/'],['mid.','middle，中间语态','middle','/ˈmɪdəl/'],['pass.','passive，被动语态','passive','/ˈpæsɪv/'],
+ ['1sg','first person singular，第一人称单数','first person singular',''],['2sg','second person singular，第二人称单数','second person singular',''],['3sg','third person singular，第三人称单数','third person singular',''],['1pl','first person plural，第一人称复数','first person plural',''],['2pl','second person plural，第二人称复数','second person plural',''],['3pl','third person plural，第三人称复数','third person plural',''],
+ ['inf.','infinitive，不定式','infinitive','/ɪnˈfɪnətɪv/'],['ger.','gerund / absolutive，连续体/绝对分词','gerund / absolutive','/ˈdʒerənd/'],['pr.p.','present participle，现在分词','present participle','/ˈprezənt ˈpɑːrtɪsɪpəl/'],['p.p.','past participle，过去分词','past participle','/pæst ˈpɑːrtɪsɪpəl/'],['f.p.p.','future passive participle，将来被动分词','future passive participle','/ˈfjuːtʃər ˈpæsɪv ˈpɑːrtɪsɪpəl/']
 ];
 function abbrHTML(lesson){
   const blob=JSON.stringify(lesson);
   const hits=ABBRS.filter(a=>blob.includes(a[0]));
   if(!hits.length) return '';
-  return `<section class="card compact"><div class="section-title"><h3>语法标注</h3></div><div class="abbr-list">${hits.map(a=>`<span class="abbr-chip">${a[0]} = <span class="ipa-term" data-ipa="${a[3]}">${a[2]}</span>，${a[1].split('，')[1]||''}</span>`).join('')}</div></section>`;
+  return `<section class="card compact"><div class="section-title"><h3>语法标注</h3></div><div class="abbr-list">${hits.map(a=>`<span class="abbr-chip plain">${a[0]} = ${a[2]}，${a[1].split('，')[1]||''}</span>`).join('')}</div></section>`;
 }
 function inferConcepts(lesson){
   const textBlob=[lesson.title,lesson.category,lesson.summary,...(lesson.explanation||[]),...(lesson.common_mistakes||[])].join(' ');
@@ -291,8 +298,8 @@ const PALI_LEXICON={
   dhamma:{pos:'noun',gender:'m.',meaning:'法；教法；现象'},bhikkhu:{pos:'noun',gender:'m.',meaning:'比丘'},vihāra:{pos:'noun',gender:'m.',meaning:'寺院；住处'},purisa:{pos:'noun',gender:'m.',meaning:'人；男子'},sāvaka:{pos:'noun',gender:'m.',meaning:'弟子；声闻'},gāma:{pos:'noun',gender:'m.',meaning:'村庄'},patta:{pos:'noun',gender:'m.',meaning:'钵'},sadda:{pos:'noun',gender:'m.',meaning:'声音'},samaya:{pos:'noun',gender:'m.',meaning:'时间；时候'},attha:{pos:'noun',gender:'m.',meaning:'意义；利益；目的'},kāya:{pos:'noun',gender:'m.',meaning:'身；身体'},loka:{pos:'noun',gender:'m.',meaning:'世间；世界'},
   citta:{pos:'noun',gender:'n.',meaning:'心；心识'},phala:{pos:'noun',gender:'n.',meaning:'果；结果'},rūpa:{pos:'noun',gender:'n.',meaning:'色；形态'},kamma:{pos:'noun',gender:'n.',meaning:'业；行为'},saraṇa:{pos:'noun',gender:'n.',meaning:'皈依处；庇护'},cetiya:{pos:'noun',gender:'n.',meaning:'塔庙；圣迹'},sutta:{pos:'noun',gender:'n.',meaning:'经；经文'},dukkha:{pos:'noun',gender:'n.',meaning:'苦；不圆满'},nāma:{pos:'noun',gender:'n.',meaning:'名；名称'},mana:{pos:'noun',gender:'n.',meaning:'意；心'},
   paññā:{pos:'noun',gender:'f.',meaning:'智慧'},itthi:{pos:'noun',gender:'f.',meaning:'女子'},Sāvatthī:{pos:'noun',gender:'f.',meaning:'舍卫城'},vibhatti:{pos:'noun',gender:'f.',meaning:'词尾变化；格变化'},gāthā:{pos:'noun',gender:'f.',meaning:'偈颂'},bhūmi:{pos:'noun',gender:'f.',meaning:'地；层级'},
-  gacchati:{pos:'verb',root:'√gam',meaning:'去；行走'},āgacchati:{pos:'verb',root:'ā + √gam',meaning:'来；到来'},deseti:{pos:'verb',root:'√dis / deś',meaning:'说示；开示；教导'},suṇāti:{pos:'verb',root:'√su',meaning:'听；听闻'},hoti:{pos:'verb',root:'√bhū',meaning:'是；成为；存在'},bhavati:{pos:'verb',root:'√bhū',meaning:'成为；存在；发生'},karoti:{pos:'verb',root:'√kar',meaning:'做；作'},vasati:{pos:'verb',root:'√vas',meaning:'住；居住'},viharati:{pos:'verb',root:'vi + √har / √hṛ',meaning:'住；停留；安住'},passati:{pos:'verb',root:'√pass',meaning:'看见；观察'},labhati:{pos:'verb',root:'√labh',meaning:'得到；获得'},icchati:{pos:'verb',root:'√is / icch',meaning:'想要；希望'},vandati:{pos:'verb',root:'√vand',meaning:'礼敬；敬礼'},pasīdati:{pos:'verb',root:'pa + √sad',meaning:'欢喜；生信；澄净'},āroceti:{pos:'verb',root:'ā + √ruc',meaning:'告知；报告'},pavisati:{pos:'verb',root:'pa + √vis',meaning:'进入'},dadāti:{pos:'verb',root:'√dā',meaning:'给；给予'},vadati:{pos:'verb',root:'√vad',meaning:'说'},āha:{pos:'verb',root:'√ah / √brū',meaning:'说；说道'},avoca:{pos:'verb',root:'√vac',meaning:'说了'},
-  ca:{pos:'other',grammar:'ind. 不变词',meaning:'和；并且；也'},vā:{pos:'other',grammar:'ind. 不变词',meaning:'或者'},na:{pos:'other',grammar:'ind. 否定词',meaning:'不；非'},mā:{pos:'other',grammar:'ind. 禁止否定词',meaning:'不要；勿'},ikho:{pos:'other',grammar:'ind. 语气小品词',meaning:'确实；于是；常不直译'},atha:{pos:'other',grammar:'ind. 不变词',meaning:'于是；然后'},eva:{pos:'other',grammar:'ind. 强调词',meaning:'正是；唯有；即'},api:{pos:'other',grammar:'ind. 不变词',meaning:'也；甚至'},pana:{pos:'other',grammar:'ind. 不变词',meaning:'又；而；于是'},ce:{pos:'other',grammar:'ind. 条件词',meaning:'如果'},hi:{pos:'other',grammar:'ind. 语气词',meaning:'因为；确实'},so:{pos:'pron',grammar:'pron.',meaning:'他；那'},te:{pos:'pron',grammar:'pron.',meaning:'他们；那些'},yo:{pos:'pron',grammar:'pron.',meaning:'谁；凡是……者'},me:{pos:'pron',grammar:'pron.',meaning:'我的；于我；由我'},taṃ:{pos:'pron',grammar:'pron.',meaning:'那个；它；他'}
+  gacchati:{pos:'verb',root:'√gam',meaning:'去；行走'},āgacchati:{pos:'verb',root:'ā + √gam',meaning:'来；到来'},deseti:{pos:'verb',root:'√dis / deś',meaning:'说示；开示；教导'},suṇāti:{pos:'verb',root:'√su',meaning:'听；听闻'},hoti:{pos:'verb',root:'√bhū',meaning:'是；成为；存在'},bhavati:{pos:'verb',root:'√bhū',meaning:'成为；存在；发生'},karoti:{pos:'verb',root:'√kar',meaning:'做；作'},vasati:{pos:'verb',root:'√vas',meaning:'住；居住'},viharati:{pos:'verb',root:'vi + √har / √hṛ',meaning:'住；停留；安住'},passati:{pos:'verb',root:'√pass',meaning:'看见；观察'},labhati:{pos:'verb',root:'√labh',meaning:'得到；获得'},icchati:{pos:'verb',root:'√is / icch',meaning:'想要；希望'},vandati:{pos:'verb',root:'√vand',meaning:'礼敬；敬礼'},pasīdati:{pos:'verb',root:'pa + √sad',meaning:'欢喜；生信；澄净'},patati:{pos:'verb',root:'√pat',meaning:'落下；掉落'},āroceti:{pos:'verb',root:'ā + √ruc',meaning:'告知；报告'},pavisati:{pos:'verb',root:'pa + √vis',meaning:'进入'},dadāti:{pos:'verb',root:'√dā',meaning:'给；给予'},vadati:{pos:'verb',root:'√vad',meaning:'说'},āha:{pos:'verb',root:'√ah / √brū',meaning:'说；说道'},avoca:{pos:'verb',root:'√vac',meaning:'说了'},
+  ca:{pos:'other',grammar:'ind.',meaning:'和；并且；也'},vā:{pos:'other',grammar:'ind.',meaning:'或者'},na:{pos:'other',grammar:'ind.',meaning:'不；非'},mā:{pos:'other',grammar:'ind.',meaning:'不要；勿'},kho:{pos:'other',grammar:'ind.',meaning:'确实；于是；常不直译'},atha:{pos:'other',grammar:'ind.',meaning:'于是；然后'},eva:{pos:'other',grammar:'ind.',meaning:'正是；唯有；即'},api:{pos:'other',grammar:'ind.',meaning:'也；甚至'},pana:{pos:'other',grammar:'ind.',meaning:'又；而；于是'},ce:{pos:'other',grammar:'ind.',meaning:'如果'},hi:{pos:'other',grammar:'ind.',meaning:'因为；确实'},so:{pos:'pron',grammar:'pron.',meaning:'他；那'},te:{pos:'pron',grammar:'pron.',meaning:'他们；那些'},yo:{pos:'pron',grammar:'pron.',meaning:'谁；凡是……者'},me:{pos:'pron',grammar:'pron.',meaning:'我的；于我；由我'},taṃ:{pos:'pron',grammar:'pron.',meaning:'那个；它；他'}
 };
 const VERB_3SG_MAP={
   gacchati:'gacchati',gacchāmi:'gacchati',gacchasi:'gacchati',gacchanti:'gacchati',gacchatha:'gacchati',gacchāma:'gacchati',gaccha:'gacchati',gacchatu:'gacchati',gaccheyya:'gacchati',gaccheyyuṃ:'gacchati',gamissati:'gacchati',gamissāmi:'gacchati',agamāsi:'gacchati',agamaṃ:'gacchati',gantuṃ:'gacchati',gantvā:'gacchati',gacchanto:'gacchati',gacchantī:'gacchati',gata:'gacchati',
@@ -302,10 +309,18 @@ const VERB_3SG_MAP={
   karoti:'karoti',karomi:'karoti',karonti:'karoti',kareyya:'karoti',akāsi:'karoti',kātuṃ:'karoti',kattum:'karoti',katvā:'karoti',kata:'karoti',kattabba:'karoti',karaṇīya:'karoti',
   hoti:'hoti',honti:'hoti',ahosi:'hoti',bhavati:'bhavati',bhavissati:'bhavati',bhavituṃ:'bhavati',
   labhati:'labhati',labhanti:'labhati',labhāmi:'labhati',labhate:'labhati',
-  vasati:'vasati',vasanti:'vasati',viharati:'viharati',viharanti:'viharati',passati:'passati',passanti:'passati',icchati:'icchati',icchāmi:'icchati',vandati:'vandati',vandāmi:'vandati',pasīdati:'pasīdati',āroceti:'āroceti',pavisati:'pavisati',dadāti:'dadāti',vadati:'vadati',āha:'āha',avoca:'avoca'
+  vasati:'vasati',vasanti:'vasati',viharati:'viharati',viharanti:'viharati',passati:'passati',passāmi:'passati',passanti:'passati',patati:'patati',patanti:'patati',icchati:'icchati',icchāmi:'icchati',vandati:'vandati',vandāmi:'vandati',pasīdati:'pasīdati',āroceti:'āroceti',pavisati:'pavisati',dadāti:'dadāti',vadati:'vadati',āha:'āha',avoca:'avoca'
 };
 function tokenizePali(s){return dedupe(String(s||'').match(/[A-Za-zĀāĪīŪūṄṅÑñṬṭḌḍṆṇḶḷṂṃṀṁ]+/g)||[])}
 function normalizePaliToken(tok){return String(tok||'').trim().replace(/[“”"'.,;:!?，。；：！？()（）\[\]{}<>]/g,'')}
+function lexemeKey(form){return String(form||'').toLowerCase().normalize('NFC')}
+function canonicalLexeme(form){
+  form=normalizePaliToken(form);
+  if(PALI_LEXICON[form]) return form;
+  const low=form.toLowerCase();
+  if(PALI_LEXICON[low]) return low;
+  return form;
+}
 function inferGenderFromGrammar(grammar){
   const g=String(grammar||'');
   if(/\bm\.\s*sg|阳性|m\.sg|m\./.test(g)) return 'm.';
@@ -315,22 +330,23 @@ function inferGenderFromGrammar(grammar){
 }
 function genderCn(g){return g==='m.'?'阳性名词':g==='f.'?'阴性名词':g==='n.'?'中性名词':'名词'}
 function lemmaNoun(tok){
-  tok=normalizePaliToken(tok); if(!tok||tok.length<2) return '';
+  tok=canonicalLexeme(normalizePaliToken(tok));
+  if(!tok||tok.length<2) return '';
   const lex=PALI_LEXICON[tok]; if(lex?.pos==='noun') return tok;
-  if(tok.endsWith('ssa')) return tok.slice(0,-3)+'a';
-  if(tok.endsWith('ena')) return tok.slice(0,-3)+'a';
-  if(tok.endsWith('āyaṃ')) return tok.slice(0,-4)+'ā';
-  if(tok.endsWith('āya')) return tok.slice(0,-3)+'ā';
-  if(tok.endsWith('ānaṃ')) return tok.slice(0,-4)+'a';
-  if(tok.endsWith('āhi')||tok.endsWith('ābhi')) return tok.slice(0,-3)+'ā';
-  if(tok.endsWith('ehi')||tok.endsWith('ebhi')) return tok.slice(0,-3)+'a';
-  if(tok.endsWith('esu') && tok.length>5) return tok.slice(0,-3)+'a';
-  if(tok.endsWith('e') && tok.length>4) return tok.slice(0,-1)+'a';
-  if(tok.endsWith('o') && tok.length>3) return tok.slice(0,-1)+'a';
-  if(tok.endsWith('aṃ') && tok.length>3) return tok.slice(0,-2)+'a';
+  if(tok.endsWith('ssa')) return canonicalLexeme(tok.slice(0,-3));
+  if(tok.endsWith('ena')) return canonicalLexeme(tok.slice(0,-3)+'a');
+  if(tok.endsWith('āyaṃ')) return canonicalLexeme(tok.slice(0,-4)+'ā');
+  if(tok.endsWith('āya')) return canonicalLexeme(tok.slice(0,-3)+'ā');
+  if(tok.endsWith('ānaṃ')) return canonicalLexeme(tok.slice(0,-4)+'a');
+  if(tok.endsWith('āhi')||tok.endsWith('ābhi')) return canonicalLexeme(tok.slice(0,-3)+'ā');
+  if(tok.endsWith('ehi')||tok.endsWith('ebhi')) return canonicalLexeme(tok.slice(0,-3)+'a');
+  if(tok.endsWith('esu') && tok.length>5) return canonicalLexeme(tok.slice(0,-3)+'a');
+  if(tok.endsWith('e') && tok.length>4) return canonicalLexeme(tok.slice(0,-1)+'a');
+  if(tok.endsWith('o') && tok.length>3) return canonicalLexeme(tok.slice(0,-1)+'a');
+  if(tok.endsWith('aṃ') && tok.length>3) return canonicalLexeme(tok.slice(0,-2)+'a');
   if(tok.endsWith('ā') && PALI_LEXICON[tok]?.pos==='noun') return tok;
-  if(tok.endsWith('ṃ') && tok.length>3) return tok.slice(0,-1);
-  return tok;
+  if(tok.endsWith('ṃ') && tok.length>3) return canonicalLexeme(tok.slice(0,-1));
+  return canonicalLexeme(tok);
 }
 function tokenDataLookup(raw, canonical){
   const tokenData=cache.get(FILE.token[0]+'::'+FILE.token[1])||{};
@@ -355,7 +371,7 @@ function grammarForNoun(lemma,item){
   return lex.gender||inferGenderFromGrammar(item?.analyses?.find(a=>a.grammar)?.grammar||'');
 }
 function classifyToken(tok){
-  tok=normalizePaliToken(tok);
+  tok=canonicalLexeme(normalizePaliToken(tok));
   if(!tok || tok.length<2) return null;
   const low=tok.toLowerCase().replace(/\.$/,'');
   if(tok.length===1 || tok==='ti' || low==='ti' || GRAMMAR_WORD_BLACKLIST.has(low)) return null;
@@ -394,7 +410,7 @@ async function vocabHTML(lesson,exercises){
   (exercises||[]).slice(0,40).forEach(e=>parts.push(e.question,e.answer,...(e.options||[]),e.explanation));
   const tokens=dedupe(parts.flatMap(tokenizePali));
   const map=new Map();
-  tokens.map(classifyToken).filter(Boolean).forEach(v=>{if(!map.has(v.form)) map.set(v.form,v)});
+  tokens.map(classifyToken).filter(Boolean).forEach(v=>{const k=lexemeKey(v.form); if(!map.has(k)) map.set(k,v)});
   const order={verb:1,noun:2,pronoun:3,adjective:4,other:5};
   let rows=[...map.values()].sort((a,b)=>(order[a.type]-order[b.type])||a.form.localeCompare(b.form)).slice(0,24);
   if(!rows.length) return '';
@@ -402,8 +418,43 @@ async function vocabHTML(lesson,exercises){
   const body=rows.length>8?`<details class="vocab-details"><summary>本节单词（${rows.length} 个，点击展开）</summary>${table}</details>`:table;
   return `<section class="card compact"><div class="section-title"><h3>本节单词</h3></div>${body}</section>`;
 }
+function exampleFocusSets(lesson){
+  const title=String(lesson.title||'');
+  if(/-a 尾中性名词|中性名词/.test(title)) return {focus:['citta','phala','rūpa','kamma','saraṇa'], alien:['Buddho','Buddhena','Buddhassa','paññā','paññaṃ','paññāya']};
+  if(/-a 尾阳性名词|阳性名词/.test(title)) return {focus:['Buddha','Buddho','Buddhaṃ','dhamma','dhammaṃ','purisa','loka'], alien:['paññā','paññaṃ','phala','phalaṃ','rūpa','rūpaṃ']};
+  if(/-ā 尾阴性名词|阴性名词/.test(title)) return {focus:['paññā','paññaṃ','paññāya','gāthā','itthi','bhūmi'], alien:['Buddho','Buddhaṃ','phala','phalaṃ','rūpa','rūpaṃ']};
+  return null;
+}
+function relevantExamples(lesson){
+  const examples=lesson.examples||[];
+  const fs=exampleFocusSets(lesson);
+  if(!fs) return examples;
+  const kept=examples.filter(e=>{
+    const blob=[e.pali,e.cn,e.natural_cn,e.note,e.grammar_note].join(' ');
+    const hasFocus=fs.focus.some(t=>blob.includes(t));
+    const hasAlien=fs.alien.some(t=>blob.includes(t));
+    return hasFocus || !hasAlien;
+  });
+  return kept.length ? kept : examples;
+}
+function normalizeGrammarLine(line){
+  return String(line||'')
+    .replace(/\b(prs|fut|aor|impf|perf)\.ind\./g, '$1.indic.')
+    .replace(/陈述·主动·/g, '陈述语气·主动语态·')
+    .replace(/陈述·被动·/g, '陈述语气·被动语态·')
+    .replace(/陈述·中间·/g, '陈述语气·中间语态·')
+    .replace(/陈述·主动\)/g, '陈述语气·主动语态）')
+    .replace(/陈述·被动\)/g, '陈述语气·被动语态）')
+    .replace(/不定过去·陈述语气/g, '不定过去时·陈述语气')
+    .replace(/，/g, ', ')
+    .replace(/\s+/g,' ')
+    .trim();
+}
 function examplesHTML(lesson){
-  const items=(lesson.examples||[]).map(e=>`<div class="example"><div class="pali">${text(e.pali||'')}</div><div class="translation"><strong>翻译：</strong>${text(e.natural_cn||e.cn||'')}</div>${e.note||e.grammar_note?`<div class="note">${text(e.note||e.grammar_note)}</div>`:''}</div>`).join('');
+  const items=relevantExamples(lesson).map(e=>{
+    const parse=normalizeGrammarLine(e.grammar_note||e.note||'');
+    return `<div class="example"><div class="pali">${text(e.pali||'')}</div><div class="translation"><strong>翻译：</strong>${text(e.natural_cn||e.cn||'')}</div>${parse?`<div class="note"><strong>语法解析：</strong>${text(parse)}</div>`:''}</div>`;
+  }).join('');
   return items?`<section class="card compact"><div class="section-title"><h3>例句</h3></div>${items}</section>`:'';
 }
 function tableHTML(lesson){
@@ -528,7 +579,7 @@ function renderSentenceCard(step){
   if(!item){box.innerHTML='<p class="muted">当前筛选下没有句子。</p>';return;}
   let html=`<div class="sentence-card"><p class="pill">${text(item.level)}</p><p class="sentence-main">${text(item.sentence)}</p><div class="button-row"><button data-sentence-step="translation">第一步：看翻译</button><button data-sentence-step="tokens">第二步：看词形</button><button data-sentence-step="structure">第三步：看结构</button><button class="primary" data-sentence-step="full">第四步：看完整解析</button></div>`;
   if(['translation','tokens','structure','full'].includes(step)) html+=`<p><strong>翻译：</strong>${text(item.translation)}</p>`;
-  if(['tokens','full'].includes(step)) html+=`<div class="table-wrap"><table class="token-table"><tr><th>词形</th><th>语法信息</th><th>句中功能</th><th>意义</th></tr>${(item.tokens||[]).map(t=>`<tr><td>${text(t.form)}</td><td>${text(t.grammar)}</td><td>${text(t.role)}</td><td>${text(t.meaning)}</td></tr>`).join('')}</table></div>`;
+  if(['tokens','full'].includes(step)) html+=`<div class="table-wrap"><table class="token-table"><tr><th>词形</th><th>语法信息</th><th>句中功能</th><th>意义</th></tr>${(item.tokens||[]).map(t=>`<tr><td>${text(t.form)}</td><td>${text(normalizeGrammarLine(t.grammar))}</td><td>${text(t.role)}</td><td>${text(t.meaning)}</td></tr>`).join('')}</table></div>`;
   if(['structure','full'].includes(step)) html+=`<p><strong>结构：</strong>${text(item.structure)}</p><p class="note">${text(item.tip||'')}</p>`;
   if(step==='full') html+=`<p><strong>训练目标：</strong>${text(item.training_goal||'')}</p><p><strong>相关语法点：</strong>${(item.related||[]).map(x=>`<button class="concept-btn" data-search-query="${text(x)}">${text(x)}</button>`).join('')}</p>`;
   html+=`<div class="button-row"><button class="success" data-sentence-status="已掌握">标记已掌握</button><button class="danger" data-sentence-status="需复习">标记需复习</button><button data-action="nextSentence">下一句</button></div></div>`;
@@ -556,12 +607,12 @@ function analyzeToken(){
   if(!word){panel.innerHTML='<p class="muted">请输入要分析的词形。</p>';return;}
   addLookupHistory(word); const data=cache.get(FILE.token[0]+'::'+FILE.token[1])||{}; const item=data[word]||data[word.toLowerCase()];
   if(!item){panel.innerHTML=`<div class="error">本站例子库未收录 ${text(word)}。可尝试还原词典形后查询外部词典。</div>`;return;}
-  panel.innerHTML=`<div class="result-card"><h3>${text(item.form||word)}</h3>${(item.analyses||[]).map(a=>`<p><strong>语法信息：</strong>${text(a.grammar)}<br><strong>句中功能：</strong>${text(a.role)}<br><strong>意义：</strong>${text(a.meaning)}</p>`).join('')}${(item.examples||[]).slice(0,4).map(e=>`<div class="example"><div class="pali">${text(e.sentence)}</div><div>翻译：${text(e.translation||'')}</div><div class="note">${text(e.tip||'')}</div></div>`).join('')}</div>`;
+  panel.innerHTML=`<div class="result-card"><h3>${text(item.form||word)}</h3>${(item.analyses||[]).map(a=>`<p><strong>语法信息：</strong>${text(normalizeGrammarLine(a.grammar))}<br><strong>句中功能：</strong>${text(a.role)}<br><strong>意义：</strong>${text(a.meaning)}</p>`).join('')}${(item.examples||[]).slice(0,4).map(e=>`<div class="example"><div class="pali">${text(e.sentence)}</div><div>翻译：${text(e.translation||'')}</div><div class="note">${text(e.tip||'')}</div></div>`).join('')}</div>`;
 }
 async function renderTerminology(query=''){
   const data=await loadData('terminology');
   const cats=dedupe(data.map(t=>t.cat||t.category||'其他'));
-  app.innerHTML=`${navControls()}<section class="card"><h2>术语库</h2><p class="muted">英文术语保留 IPA 音标；巴利语单词不加英语 IPA。</p><input id="termSearch" value="${text(query)}" placeholder="搜索 case、nominative、主格、vibhatti"><select id="termCat"><option value="全部">全部</option>${cats.map(c=>`<option>${text(c)}</option>`).join('')}</select><div id="termList" class="result-list"></div></section>`;
+  app.innerHTML=`${navControls()}<section class="card"><h2>术语库</h2><input id="termSearch" value="${text(query)}" placeholder="搜索 case、nominative、主格、vibhatti"><select id="termCat"><option value="全部">全部</option>${cats.map(c=>`<option>${text(c)}</option>`).join('')}</select><div id="termList" class="result-list"></div></section>`;
   function draw(){const q=($('#termSearch').value||'').toLowerCase(); const cat=$('#termCat').value; const items=data.filter(t=>{const blob=[t.en,t.cn,t.pali,t.note,t.simple_explanation,t.cat,t.category].join(' ').toLowerCase(); return (cat==='全部'||(t.cat||t.category)===cat)&&(!q||blob.includes(q))});$('#termList').innerHTML=items.map(t=>`<div class="term-card"><h3>${text(t.en||t.cn||'')} ${t.ipa?`<span class="ipa-inline">${text(t.ipa)}</span>`:''}</h3><p><strong>${text(t.cn||'')}</strong>${t.pali?`｜巴利对应：${text(t.pali)}`:''}</p><p>${text(t.simple_explanation||t.note||'')}</p>${(t.contrast_examples||[]).slice(0,2).map(e=>`<div class="example"><strong>${text(e.label||'')}</strong>：${text(e.form||'')}<br><span class="note">${text(e.meaning||'')}</span></div>`).join('')}</div>`).join('')||'<p class="muted">没有找到相关术语。</p>'}
   draw(); $('#termSearch').addEventListener('input',draw); $('#termCat').addEventListener('change',draw);
 }

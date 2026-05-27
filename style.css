@@ -8,3 +8,11 @@
 
 /* 1.1 hybrid polish */
 .loading{padding:18px;text-align:center;color:#6b7280}.ipa-term{border-bottom:1px dotted currentColor;cursor:help;position:relative}.ipa-term::after{content:attr(data-ipa);display:none;position:absolute;left:0;top:1.4em;z-index:20;background:#111827;color:#fff;border-radius:10px;padding:4px 8px;font-size:12px;white-space:nowrap;box-shadow:0 8px 18px rgba(0,0,0,.16)}.ipa-term:hover::after,.ipa-term.show-ipa::after{display:inline-block}.ipa-inline{font-weight:500;color:#6b7280;margin-left:6px}.vocab-table td:first-child{font-weight:800;color:#111827}.nav-row{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 14px}.nav-row button{width:auto}.button-row{display:flex;gap:8px;flex-wrap:wrap}.button-row button{width:auto;flex:1 1 150px}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.tabs button{width:auto}.tabs .active{background:#2563eb;color:white}.result-card,.lesson-card,.entry-card,.module-card{word-break:break-word}
+
+
+/* 20.51 cleanup: grammar labels are plain text, not link-like chips */
+.abbr-list{display:block;line-height:1.9}
+.abbr-chip,.abbr-chip.plain{background:transparent!important;color:#111827!important;border-radius:0!important;padding:0!important;margin-right:12px;font-weight:500;font-size:14px}
+.abbr-chip .ipa-term{border-bottom:0!important;color:#111827!important;cursor:default!important}
+.abbr-chip .ipa-term::after{display:none!important;content:none!important}
+.term-card .ipa-inline{color:#4b5563;font-weight:500;margin-left:6px}
